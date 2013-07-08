@@ -169,10 +169,8 @@ class NeoDB private (val neo4j: GraphDatabaseService) {
     }
   }
 
-  def printNodeName(node: Node) = node match {
-    case node => println(node.getProperty("idxName"))
-    case _    => println("No Node to Print")
-  }
+  def printNodeName(node: Node) =
+    if (node == null) println("No Node to Print") else println(node.getProperty("idxName"))
 
 
   def printIndexHits(hits: IndexHits[_ <: AnyRef]) = {

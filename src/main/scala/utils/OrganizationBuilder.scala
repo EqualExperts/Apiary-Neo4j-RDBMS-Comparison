@@ -2,6 +2,7 @@ package utils
 
 import org.neo4j.graphdb.{Direction, GraphDatabaseService, Node, RelationshipType}
 import scala.util.Random
+import java.util.Date
 
 /**
  * i/ps =>
@@ -47,7 +48,6 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
     this
   }
 
-
   private def showLevelErrorMessage(levels: List[Int]) = {
     println("Cannot distribute people properly in the hierarchy, try increasing the value of personManagingMax above " + managingMax)
     println("Alternatively, Lessen the people at ")
@@ -62,26 +62,29 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
 
   def totalPeople = peopleAtLevels.values.foldLeft(0)(_ + _.length)
 
-  def buildUsing(neo4j: NeoDB): Unit = {
+  private def logToConsole(logLevel: String, message: String)(date: Date) = {
+    printf("[%s] [%s] %s\n", logLevel, date,  message)
+  }
 
-    def toNode(graphDb: GraphDatabaseService, level: Int, person: String): Node = {
+  class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels: Map[Int, List[String]]) {
+    private def toNode(graphDb: GraphDatabaseService, level: Int, person: String): Node = {
       val personNode = graphDb.createNode()
       personNode.setProperty("name", person)
       personNode.setProperty("level", level)
       personNode.setProperty("type", "Person")
-//      println("Created Person " + person)
+      //      println("Created Person " + person)
       personNode
     }
 
-    def persistNodes(graphDb: GraphDatabaseService) =
-      peopleAtLevels.toMap map {
+    private def persistNodes(graphDb: GraphDatabaseService) =
+      peopleAtLevels map {
         case (level, people) => (level, people map { toNode (graphDb, level, _) })
       } withDefaultValue Nil
 
-    def persistRelationships(relationships: List[Relationship]) =
+    private def persistRelationships(relationships: List[Relationship]) =
       relationships map { case (manager, reportee) => manager.createRelationshipTo(reportee, DIRECTLY_MANAGES) }
 
-    def makeRelationshipsBetween(nodesAtLevels: Map[Int, List[Node]]): List[Relationship] = {
+    private def makeRelationshipsBetween(nodesAtLevels: Map[Int, List[Node]]): List[Relationship] = {
 
       def parentToChildrenRelationships(parent: Node, children: List[Node]): List[Relationship] =
         for (child <- children) yield (parent, child)
@@ -94,7 +97,7 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
               val rs = parentToChildrenRelationships(parent, childNodes.slice(from, to))
               between0(rs ::: acc, rest, from + managingMax, to + managingMax)
             }
-        }
+          }
         between0(Nil, parentNodes, 0, managingMax)
       }
 
@@ -109,13 +112,23 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
       relationships(Nil, level = 1)
     }
 
+    def build = {
+      println("Creating People...")
+      val people = persistNodes(neo4j)
+      println("Created People")
+      val managerReporteePairs = makeRelationshipsBetween(people)
+      println("Creating Relationships...")
+      persistRelationships(managerReporteePairs)
+      println("Created Relationships")
+    }
+  }
+
+  def buildWith(neo4j: NeoDB): Unit = {
     printf("Total in Org = %d people\n", totalPeople)
     illFormedLevels match {
       case (Nil, _) => {
         neo4j usingTx { graphDb =>
-          val people = persistNodes(graphDb)
-          val managerReporteePairs = makeRelationshipsBetween(people)
-          persistRelationships(managerReporteePairs)
+          new Neo4JBuilder(graphDb, peopleAtLevels.toMap).build
         }
       }
       case (levels, _) => showLevelErrorMessage(levels.toList)
@@ -128,7 +141,7 @@ object OrganizationBuilder {
     new OrganizationBuilder(names, withPersonManagingMaxOf, withPersonDirectlyReportingToMaxOf)
 }
 
-object Test extends App {
+object Runner extends App {
   override def main(args: Array[String]) = {
     val parentPath = "src" :: "main" :: "resources" :: Nil
     val firstNames = NamesLoader(parentPath, List("firstNames.txt"))
@@ -139,14 +152,12 @@ object Test extends App {
       lastName <- lastNames
     } yield firstName + " " + lastName
 
-    val neoDb = NeoDB("http://localhost:7474/db/data")
-
 
     /**
      * case 1:
      * total people in organisation = 1000, with Levels = 3, withPersonManagingMaxOf = 5, directlyReportingToMax = 1
-     *  At Level 1 => 40  (manages 4)
-     *  At Level 2 => 160 (manages 5)
+     *  At Level 1 => 40
+     *  At Level 2 => 160
      *  At Level 3 => 800
      *  Total => 1000
      */
@@ -160,16 +171,16 @@ object Test extends App {
     /**
      * case 2:
      * total people in organisation = 1000 with levels = 4, withPersonManagingMaxOf = 5, directlyReportingToMax = 1
-     * At Level 1 => 10    (manages 5)
-     * At Level 2 => 50    (manages 4)
-     * At Level 3 => 200   (manages 4)
+     * At Level 1 => 10
+     * At Level 2 => 50
+     * At Level 3 => 200
      * At Level 4 => 740
      * Total => 1000
      */
 
 //    val builder  = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
 //                      .withPeopleAtLevel(1, 10)
-//                      .withPeopleAtLevel(2, 50)
+//                      .withPeopleAt0.12.3Level(2, 50)
 //                      .withPeopleAtLevel(3, 200)
 //                      .withPeopleAtLevel(4, 740)
 
@@ -178,22 +189,23 @@ object Test extends App {
      * case 3:
      * total people in organisation = 1000 with levels = 5, withPersonManagingMaxOf = 5, directlyReportingToMax = 1
      *
-     * At Level 1 => 3     (manages 5)
-     * At Level 2 => 15    (manages 5)
-     * At Level 3 => 75    (manages 4)
-     * At Level 4 => 300   (manages 3)
+     * At Level 1 => 3
+     * At Level 2 => 15
+     * At Level 3 => 75
+     * At Level 4 => 300
      * At Level 5 => 607
      * Total => 1000
      */
 
     val builder  = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
-                      .withPeopleAtLevel(1, 3)
-                      .withPeopleAtLevel(2, 15)
-                      .withPeopleAtLevel(3, 75)
-                      .withPeopleAtLevel(4, 300)
-                      .withPeopleAtLevel(5, 607)
+                       .withPeopleAtLevel(1, 3)
+                       .withPeopleAtLevel(2, 15)
+                       .withPeopleAtLevel(3, 75)
+                       .withPeopleAtLevel(4, 300)
+                       .withPeopleAtLevel(5, 607)
 
-    builder buildUsing neoDb
+    val neoDb = NeoDB("http://localhost:7474/db/data")
+    builder buildWith neoDb
   }
 }
 

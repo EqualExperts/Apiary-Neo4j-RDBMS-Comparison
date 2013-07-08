@@ -27,7 +27,7 @@ object NamesLoader {
 
   private def resourceAsStream(parentPath: List[String], resourcePath: List[String]): Option[java.io.InputStream] = {
     val classesDir = new File(getClass.getResource(".").toURI)
-    val projectDir = classesDir.getParentFile.getParentFile.getParentFile
+    val projectDir = classesDir.getParentFile.getParentFile.getParentFile.getParentFile
     val completePath = parentPath ::: resourcePath
     val resourceFile = asFile(projectDir, completePath: _*)
     if (resourceFile != null && resourceFile.exists)
