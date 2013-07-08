@@ -1,6 +1,7 @@
-package utils
+package utils.generator
 
 import scala.util.Random
+import utils.{NeoDB}
 
 object Neo4JOrgPopulator extends App {
   override def main(args: Array[String]) = {
@@ -57,7 +58,7 @@ object Neo4JOrgPopulator extends App {
      * Total => 1000
      */
 
-    val builder  = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+    val builder = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
       .withPeopleAtLevel(1, 3)
       .withPeopleAtLevel(2, 15)
       .withPeopleAtLevel(3, 75)

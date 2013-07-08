@@ -1,11 +1,11 @@
-package utils
+package utils.generator
 
 import java.io.{File, InputStream}
 
 object NamesLoader {
   private def loadNamesFrom(s: Option[InputStream]) = {
     s match {
-      case None => sys.error("Names.txt file not Found!! Please Check src/main/resources dir.")
+      case None => sys.error("File not Found!! Please Check src/main/resources dir.")
       case Some(is) => {
         try {
           val s = io.Source.fromInputStream(is)
@@ -27,7 +27,7 @@ object NamesLoader {
 
   private def resourceAsStream(parentPath: List[String], resourcePath: List[String]): Option[java.io.InputStream] = {
     val classesDir = new File(getClass.getResource(".").toURI)
-    val projectDir = classesDir.getParentFile.getParentFile.getParentFile.getParentFile
+    val projectDir = classesDir.getParentFile.getParentFile.getParentFile.getParentFile.getParentFile
     val completePath = parentPath ::: resourcePath
     val resourceFile = asFile(projectDir, completePath: _*)
     if (resourceFile != null && resourceFile.exists)

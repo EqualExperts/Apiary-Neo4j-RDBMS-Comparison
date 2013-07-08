@@ -1,9 +1,15 @@
+## Handy Cypher Queries
+##################################################
+
 ## Count of all nodes and relationships
 start n = node(*), r = relationship(*)  return count(distinct(n)), count(distinct(r));
 
 ## Delete All nodes and relationships
 start n = node(*), r= relationship(*)  match p = n-[r?]->() delete p;
 
+
+## Measurement Queries
+##################################################
 ## Aggregate Data
 ## Count of People At all levels
 start n = node(*) return n.level as Level, count(n) as Total order by Level;

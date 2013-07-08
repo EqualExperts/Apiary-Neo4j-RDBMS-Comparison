@@ -1,5 +1,6 @@
 Anderson
 Armstrong
+Ash
 Ashton
 Atkins
 Augustine
@@ -13,11 +14,13 @@ Barrett
 Bates
 Batliwala
 Beckford
+Berry
 Bishop
 Blake
 Boehm
 Borge
 Bradley
+Broadbent
 Brooks
 Bulsara
 Burton
@@ -39,6 +42,7 @@ Crampton
 Crawford
 Cripps
 Crosby
+Cruise
 Davies
 Dalton
 Daimon
@@ -50,6 +54,7 @@ Dell
 Donahue
 Douglas
 Dowling
+Eastwood
 Edwards
 Edmonds
 Einstein
@@ -68,7 +73,9 @@ Greenspan
 Goldenberg
 Grundy
 Gundecha
+Hackman
 Hall
+Hanks
 Harmon
 Harris
 Hernández
@@ -89,6 +96,7 @@ Jones
 Kambatta
 Keaton
 Khan
+Kitano
 King
 Kostyra
 Koshti
@@ -96,6 +104,7 @@ Kresge
 Kumar
 Kutcher
 Lancer
+Langton
 Lauren
 Lewis
 Lee
@@ -105,15 +114,20 @@ Lydon
 MacDowell
 MacDonald
 MacLaine
+Marshall
 McLeod
 Mehta
+Meyer
+Miles
 Miller
 Moore
 Morrison
 Mumba
 Myles
 Norton
+Nicholson
 Odersky
+Pacino
 Palmer
 Pater
 Patel
@@ -121,8 +135,12 @@ Patil
 Patton
 Peltola
 Phillips
+Pollak
+Portman
 Raymond
 Reynolds
+Rea
+Reilly
 Ritchie
 Rosenberg
 Scherer
@@ -142,8 +160,10 @@ Sullivan
 Tallarico
 Templeton
 Thompson
+Theron
 Turner
 Twain
+Tytler
 Tyler
 Ulrich
 Venners
@@ -153,6 +173,7 @@ Voight
 Walken
 Walker
 Wallace
+Walsh
 Warner
 Webber
 Weiss
@@ -165,6 +186,7 @@ Whitmore
 Whitman
 Whitney
 Woods
+Wyle
 Yoelson
 Zimmerman
 Zuck
