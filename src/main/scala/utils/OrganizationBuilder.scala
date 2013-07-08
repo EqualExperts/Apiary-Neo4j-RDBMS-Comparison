@@ -12,18 +12,9 @@ import java.util.Date
  * 4) levelsOfDirectRelationships: -levels (valid values: 2 to 10)
  */
 
-object DIRECTLY_MANAGES extends RelationshipType {
-  def name = "DIRECTLY_MANAGES"
-}
-
-object INDIRECTLY_MANAGES extends RelationshipType {
-  def name = "INDIRECTLY_MANAGES"
-}
-
 class OrganizationBuilder private (val names: List[String], val managingMax: Int = 1, val directlyReportingToMax: Int = 1, val indirectlyReportingToMax: Int = 0) {
   require(managingMax >= 0, "For an Organisation, a person manages, at max 0..* person")
   require(directlyReportingToMax >= 0, "For an Organisation, a person can report to max  0..* person")
-  type Relationship = (Node, Node)
 
   var from = 0
   val peopleAtLevels = scala.collection.mutable.Map[Int, List[String]]() withDefaultValue Nil
@@ -49,11 +40,12 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
   }
 
   private def showLevelErrorMessage(levels: List[Int]) = {
-    println("Cannot distribute people properly in the hierarchy, try increasing the value of personManagingMax above " + managingMax)
-    println("Alternatively, Lessen the people at ")
+    logToConsole("ERROR", "Cannot distribute people properly in the hierarchy! Options: ")
+    logToConsole("ERROR", "1) Try increasing the value of personManagingMax above " + managingMax)
+    logToConsole("ERROR" ,"2) Alternatively, Lessen the people at ")
     levels match {
-      case level :: Nil => println("=> level " + level)
-      case _ => println("=> levels " + levels)
+      case level :: Nil => logToConsole("ERROR", "=> level " + level)
+      case _ => logToConsole("ERROR", "=> levels " + levels)
     }
     sys.error("Could Not Build Organization!")
   }
@@ -62,11 +54,21 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
 
   def totalPeople = peopleAtLevels.values.foldLeft(0)(_ + _.length)
 
-  private def logToConsole(logLevel: String, message: String)(date: Date) = {
-    printf("[%s] [%s] %s\n", logLevel, date,  message)
+  private def logToConsole(logLevel: String, message: String) = {
+    printf("[%s] [%s] %s\n", logLevel, new Date(),  message)
   }
 
-  class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels: Map[Int, List[String]]) {
+  private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels: Map[Int, List[String]]) {
+    type Relationship = (Node, Node)
+
+    object DIRECTLY_MANAGES extends RelationshipType {
+      def name = "DIRECTLY_MANAGES"
+    }
+
+    object INDIRECTLY_MANAGES extends RelationshipType {
+      def name = "INDIRECTLY_MANAGES"
+    }
+
     private def toNode(graphDb: GraphDatabaseService, level: Int, person: String): Node = {
       val personNode = graphDb.createNode()
       personNode.setProperty("name", person)
@@ -113,13 +115,13 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
     }
 
     def build = {
-      println("Creating People...")
+      logToConsole("INFO", "Creating People...")
       val people = persistNodes(neo4j)
-      println("Created People")
+      logToConsole("INFO", "Done Creating People")
       val managerReporteePairs = makeRelationshipsBetween(people)
-      println("Creating Relationships...")
+      logToConsole("INFO", "Creating Relationships...")
       persistRelationships(managerReporteePairs)
-      println("Created Relationships")
+      logToConsole("INFO", "Done Creating Relationships")
     }
   }
 
@@ -140,72 +142,3 @@ object OrganizationBuilder {
   def apply(names: List[String], withPersonManagingMaxOf: Int = 1, withPersonDirectlyReportingToMaxOf : Int = 1) =
     new OrganizationBuilder(names, withPersonManagingMaxOf, withPersonDirectlyReportingToMaxOf)
 }
-
-object Runner extends App {
-  override def main(args: Array[String]) = {
-    val parentPath = "src" :: "main" :: "resources" :: Nil
-    val firstNames = NamesLoader(parentPath, List("firstNames.txt"))
-    val lastNames  = NamesLoader(parentPath, List("lastNames.txt"))
-
-    val names = for {
-      firstName <- firstNames
-      lastName <- lastNames
-    } yield firstName + " " + lastName
-
-
-    /**
-     * case 1:
-     * total people in organisation = 1000, with Levels = 3, withPersonManagingMaxOf = 5, directlyReportingToMax = 1
-     *  At Level 1 => 40
-     *  At Level 2 => 160
-     *  At Level 3 => 800
-     *  Total => 1000
-     */
-
-//    val builder = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
-//                        .withPeopleAtLevel(1, 40)
-//                        .withPeopleAtLevel(2, 160)
-//                        .withPeopleAtLevel(3, 800)
-
-
-    /**
-     * case 2:
-     * total people in organisation = 1000 with levels = 4, withPersonManagingMaxOf = 5, directlyReportingToMax = 1
-     * At Level 1 => 10
-     * At Level 2 => 50
-     * At Level 3 => 200
-     * At Level 4 => 740
-     * Total => 1000
-     */
-
-//    val builder  = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
-//                      .withPeopleAtLevel(1, 10)
-//                      .withPeopleAt0.12.3Level(2, 50)
-//                      .withPeopleAtLevel(3, 200)
-//                      .withPeopleAtLevel(4, 740)
-
-
-    /**
-     * case 3:
-     * total people in organisation = 1000 with levels = 5, withPersonManagingMaxOf = 5, directlyReportingToMax = 1
-     *
-     * At Level 1 => 3
-     * At Level 2 => 15
-     * At Level 3 => 75
-     * At Level 4 => 300
-     * At Level 5 => 607
-     * Total => 1000
-     */
-
-    val builder  = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
-                       .withPeopleAtLevel(1, 3)
-                       .withPeopleAtLevel(2, 15)
-                       .withPeopleAtLevel(3, 75)
-                       .withPeopleAtLevel(4, 300)
-                       .withPeopleAtLevel(5, 607)
-
-    val neoDb = NeoDB("http://localhost:7474/db/data")
-    builder buildWith neoDb
-  }
-}
-
