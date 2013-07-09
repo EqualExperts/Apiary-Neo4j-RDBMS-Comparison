@@ -17,6 +17,7 @@ Angie
 Angela
 Angelina
 Ann
+Annie
 Anthony
 Asha
 Barbara
@@ -26,6 +27,7 @@ Bejan
 Bela
 Ben
 Bernard
+Betty
 Bill
 Billy
 Bina
@@ -37,10 +39,13 @@ Brooke
 Bobby
 Carl
 Carlos
+Carly
 Casey
 Charlize
 Chet
 Cheryl
+Chris
+Christopher
 Cory
 Clayton
 Dan
@@ -74,6 +79,7 @@ Heather
 Heena
 Helen
 Holly
+Hugo
 Ira
 Jack
 James
@@ -100,11 +106,14 @@ Kane
 Kareem
 Kathy
 Katie
+Keanu
 Keith
 Ken
 Kent
 Kiefer
 Kim
+Laurence
+Laurent
 Lex
 Lily
 Lisa

@@ -33,7 +33,7 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
   def withPeopleAtLevel(level: Int, howMany: Int): OrganizationBuilder = {
     require(level > 0, "Level needs to be greater than 0")
     val people = names.slice(from, from + howMany)
-    from = howMany
+    from = from + howMany
     peopleAtLevels += (level -> people)
     printf("At Level %d (%d people) = %s\n", level, people.size, people)
     this

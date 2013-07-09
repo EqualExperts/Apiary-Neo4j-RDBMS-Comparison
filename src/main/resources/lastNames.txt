@@ -41,6 +41,7 @@ Coppola
 Crampton
 Crawford
 Cripps
+Crocker
 Crosby
 Cruise
 Davies
@@ -64,6 +65,7 @@ Francis
 Frankel
 Ferguson
 Fernandes
+Fishburne
 Foster
 Fullerton
 George
@@ -126,9 +128,11 @@ Mumba
 Myles
 Norton
 Nicholson
+Nixon
 Odersky
 Pacino
 Palmer
+Pandergast
 Pater
 Patel
 Patil
@@ -137,9 +141,11 @@ Peltola
 Phillips
 Pollak
 Portman
+Powell
 Raymond
 Reynolds
 Rea
+Reeves
 Reilly
 Ritchie
 Rosenberg
