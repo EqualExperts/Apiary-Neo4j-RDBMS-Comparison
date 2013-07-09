@@ -14,7 +14,11 @@ start n = node(*) where n.level = 1 return id(n) as ID, n.name as Name;
 
 # People with same names
 ###################################################
-TODO:
+start n = node(*)
+match n-[r?*]-m
+where n.name=m.name
+return distinct n.level as level, n.name as name
+order by level;
 
 ## Measurement Queries
 ##################################################
