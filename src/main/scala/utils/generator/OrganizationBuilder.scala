@@ -1,6 +1,5 @@
 package utils.generator
 
-import java.util.Date
 import utils.NeoDB
 import java.sql.{Connection}
 
@@ -35,29 +34,25 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
     val people = names.slice(from, from + howMany)
     from = from + howMany
     peopleAtLevels += (level -> people)
-    printf("At Level %d (%d people) = %s\n", level, people.size, people)
+    info("At Level %d (%d people) = %s\n", level, people.size, people)
     this
   }
 
   private def showLevelErrorMessage(levels: List[Int]) = {
-    logToConsole("ERROR", "Cannot distribute people properly in the hierarchy! Options: ")
-    logToConsole("ERROR", "1) Try increasing the value of personManagingMax above " + managingMax)
-    logToConsole("ERROR" ,"2) Alternatively, Lessen the people at ")
+    error("Cannot distribute people properly in the hierarchy! Options: ")
+    error("1) Try increasing the value of personManagingMax above %d", managingMax)
+    error("2) Alternatively, Lessen the people at ")
     levels match {
-      case level :: Nil => logToConsole("ERROR", "=> level " + level)
-      case _ => logToConsole("ERROR", "=> levels " + levels)
+      case level :: Nil => error("=> level %d", level)
+      case _ => error("=> levels %s", levels)
     }
     sys.error("Could Not Build Organization!")
   }
 
   def totalPeople = peopleAtLevels.values.foldLeft(0)(_ + _.length)
 
-  private def logToConsole(logLevel: String, message: String) = {
-    printf("[%s] [%s] %s\n", logLevel, new Date(),  message)
-  }
-
   def buildWith(neo4j: NeoDB): Unit = {
-    printf("Total in Org = %d people\n", totalPeople)
+    info("Total in Org = %d people\n", totalPeople)
     illFormedLevels match {
       case (Nil, _) => neo4j usingTx { graphDb =>
           new Neo4JBuilder(graphDb, peopleAtLevels.toMap, managingMax).build
@@ -67,7 +62,7 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
   }
 
   def buildWith(mysql: Connection): Unit = {
-    printf("Total in Org = %d people\n", totalPeople)
+    info("Total in Org = %d people\n", totalPeople)
     illFormedLevels match {
       case (Nil, _)    => new MySQLBuilder(mysql, peopleAtLevels.toMap).build
       case (levels, _) => showLevelErrorMessage(levels.toList)

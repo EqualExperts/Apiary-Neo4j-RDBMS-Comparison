@@ -67,17 +67,17 @@ private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels:
   }
 
   def build = {
-//    logToConsole("INFO", "Creating People...")
+    info("Creating People...")
     val people = persistNodes(neo4j)
-//    logToConsole("INFO", "Done Creating People")
+    info("Creating People Complete")
 
-    //    logToConsole("INFO", "Indexing People...")
+    info("Indexing People...")
     indexAll(people)
-    //logToConsole("INFO", "Done Indexing People")
+    info("Indexing People Complete")
 
     val managerReporteePairs = makeRelationshipsBetween(people)
-//    logToConsole("INFO", "Creating Relationships...")
+    info("Creating Relationships...")
     persistRelationships(managerReporteePairs)
-//    logToConsole("INFO", "Done Creating Relationships")
+    info("Creating Relationships Complete")
   }
 }
