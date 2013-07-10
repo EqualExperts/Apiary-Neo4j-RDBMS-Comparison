@@ -17,4 +17,13 @@ package object generator {
 
   def fatal : Unit = fatal(_: String)
   def fatal(text: String, xs: Any*) = logToConsole("FATAL", text, xs: _*)
+
+  def measure[I, O](message: String, f: I => O, arg0: I): O = {
+    val startTime = System.currentTimeMillis
+    info(message)
+    val result = f(arg0)
+    val diff = System.currentTimeMillis - startTime
+    info(message + " Complete. Took %d(ms) = %.3f(secs) to execute", diff, diff.toFloat/1000 )
+    result
+  }
 }

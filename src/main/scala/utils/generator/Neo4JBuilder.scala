@@ -18,8 +18,8 @@ private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels:
     def name = getClass.getSimpleName.replace("$", "")
   }
 
-  private def toNode(graphDb: GraphDatabaseService, level: Int, name: String): Node = {
-    val personNode = graphDb.createNode()
+  private def toNode(neo4j: GraphDatabaseService, level: Int, name: String): Node = {
+    val personNode = neo4j.createNode()
     personNode.setProperty(PERSON_NAME, name)
     personNode.setProperty("level", level)
     personNode.setProperty("type", PERSON)
@@ -67,17 +67,9 @@ private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels:
   }
 
   def build = {
-    info("Creating People...")
-    val people = persistNodes(neo4j)
-    info("Creating People Complete")
-
-    info("Indexing People...")
-    indexAll(people)
-    info("Indexing People Complete")
-
+    val people = measure("Creating People", persistNodes, neo4j)
+    measure("Indexing People", indexAll, people)
     val managerReporteePairs = makeRelationshipsBetween(people)
-    info("Creating Relationships...")
-    persistRelationships(managerReporteePairs)
-    info("Creating Relationships Complete")
+    measure("Creating Relationships", persistRelationships, managerReporteePairs)
   }
 }
