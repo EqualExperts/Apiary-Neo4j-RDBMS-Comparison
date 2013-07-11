@@ -20,10 +20,10 @@ package object generator {
 
   def measure[I, O](message: String, f: I => O, arg0: I): O = {
     val startTime = System.currentTimeMillis
-    info(message)
+    info(message + "...")
     val result = f(arg0)
     val diff = System.currentTimeMillis - startTime
-    info(message + " Complete. Took %d(ms) = %.3f(secs) to execute", diff, diff.toFloat/1000 )
+    info(message + "...Complete. Execution Time %d(ms) =~ %.3f(secs)", diff, diff.toFloat/1000)
     result
   }
 }

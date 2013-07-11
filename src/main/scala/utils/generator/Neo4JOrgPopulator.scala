@@ -10,9 +10,11 @@ object Neo4JOrgPopulator extends App {
     val lastNames  = NamesLoader(parentPath, List("lastNames.txt"))
 
     val names = for {
-      firstName <- firstNames
-      lastName <- lastNames
-    } yield firstName + " " + lastName
+//      firstName <- firstNames
+      firstName <- 1 to 1000
+//      lastName <- lastNames
+      lastName <- 1 to 1000
+    } yield "first" + firstName + " " + "last" + lastName
 
 
     /**
@@ -58,7 +60,7 @@ object Neo4JOrgPopulator extends App {
      * Total => 1000
      */
 
-    val builder = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+    val builder = OrganizationBuilder(Random.shuffle(names.toList), withPersonManagingMaxOf = 5)
       .withPeopleAtLevel(1, 3)
       .withPeopleAtLevel(2, 15)
       .withPeopleAtLevel(3, 75)
@@ -66,7 +68,7 @@ object Neo4JOrgPopulator extends App {
       .withPeopleAtLevel(5, 607)
 
     val neoDb = NeoDB("http://localhost:7474/db/data")
-    builder buildWith neoDb
+    //builder buildWith neoDb
 
   }
 }
