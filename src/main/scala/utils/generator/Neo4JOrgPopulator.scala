@@ -4,17 +4,24 @@ import scala.util.Random
 import utils.{NeoDB}
 
 object Neo4JOrgPopulator extends App {
-  override def main(args: Array[String]) = {
+  def syntheticNames =
+    (for {
+      i <- 1 to 1000
+      j <- 1 to 1000
+    } yield "first" + i + " last" + j).toList
+
+  def naturalNames =  {
     val parentPath = "src" :: "main" :: "resources" :: Nil
     val firstNames = NamesLoader(parentPath, List("firstNames.txt"))
     val lastNames  = NamesLoader(parentPath, List("lastNames.txt"))
 
-    val names = for {
-//      firstName <- firstNames
-      firstName <- 1 to 1000
-//      lastName <- lastNames
-      lastName <- 1 to 1000
-    } yield "first" + firstName + " " + "last" + lastName
+    (for {
+      firstName <- firstNames
+      lastName <- lastNames
+    } yield "first" + firstName + " " + "last" + lastName).toList
+  }
+
+  override def main(args: Array[String]) = {
 
 
     /**
@@ -26,7 +33,7 @@ object Neo4JOrgPopulator extends App {
      *  Total => 1000
      */
 
-    //    val builder = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+    //    val builder = OrganizationBuilder(Random.shuffle(naturalNames), withPersonManagingMaxOf = 5)
     //                        .withPeopleAtLevel(1, 40)
     //                        .withPeopleAtLevel(2, 160)
     //                        .withPeopleAtLevel(3, 800)
@@ -42,7 +49,7 @@ object Neo4JOrgPopulator extends App {
      * Total => 1000
      */
 
-    //    val builder  = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+    //    val builder  = OrganizationBuilder(Random.shuffle(naturalNames), withPersonManagingMaxOf = 5)
     //                      .withPeopleAtLevel(1, 10)
     //                      .withPeopleAt0.12.3Level(2, 50)
     //                      .withPeopleAtLevel(3, 200)
@@ -60,7 +67,7 @@ object Neo4JOrgPopulator extends App {
      * Total => 1000
      */
 
-    val builder = OrganizationBuilder(Random.shuffle(names.toList), withPersonManagingMaxOf = 5)
+    val builder = OrganizationBuilder(Random.shuffle(syntheticNames), withPersonManagingMaxOf = 5)
       .withPeopleAtLevel(1, 3)
       .withPeopleAtLevel(2, 15)
       .withPeopleAtLevel(3, 75)
@@ -68,7 +75,7 @@ object Neo4JOrgPopulator extends App {
       .withPeopleAtLevel(5, 607)
 
     val neoDb = NeoDB("http://localhost:7474/db/data")
-    //builder buildWith neoDb
+    builder buildWith neoDb
 
   }
 }
