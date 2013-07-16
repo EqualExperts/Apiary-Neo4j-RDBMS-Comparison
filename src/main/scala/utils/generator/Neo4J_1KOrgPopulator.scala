@@ -1,30 +1,13 @@
 package utils.generator
 
 import scala.util.Random
-import utils.{NeoDB}
+import utils.NeoDB
 
-object Neo4JOrgPopulator extends App {
-  def syntheticNames =
-    (for {
-      i <- 1 to 1000
-      j <- 1 to 1000
-    } yield "first" + i + " last" + j).toList
-
-  def naturalNames =  {
-    val parentPath = "src" :: "main" :: "resources" :: Nil
-    val firstNames = NamesLoader(parentPath, List("firstNames.txt"))
-    val lastNames  = NamesLoader(parentPath, List("lastNames.txt"))
-
-    (for {
-      firstName <- firstNames
-      lastName <- lastNames
-    } yield firstName + " " + lastName).toList
-  }
-
+object Neo4J_1KOrgPopulator extends App with NamesData {
   override def main(args: Array[String]) = {
 
-//    val names = syntheticNames
-    val names = naturalNames
+//    val names = syntheticNames(1000)
+    val names = naturalNames(1000)
 
     /**
      * case 1:
@@ -51,7 +34,7 @@ object Neo4JOrgPopulator extends App {
      * Total => 1000
      */
 
-        val builder  = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+     val builder  = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
                           .withPeopleAtLevel(1, 10)
                           .withPeopleAtLevel(2, 43)
                           .withPeopleAtLevel(3, 200)

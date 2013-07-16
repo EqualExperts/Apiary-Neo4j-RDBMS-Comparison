@@ -3,7 +3,6 @@ package utils.generator
 import org.neo4j.graphdb.{RelationshipType, Node, GraphDatabaseService}
 import DistributionStrategy._
 import scala.annotation.tailrec
-import scala.collection.immutable.Stream.Empty
 
 private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels: Map[Int, List[String]], val managingMax: Int) {
 
