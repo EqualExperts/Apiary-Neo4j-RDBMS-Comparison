@@ -1,6 +1,9 @@
 package utils.generator
 
 import org.neo4j.graphdb.{RelationshipType, Node, GraphDatabaseService}
+import DistributionStrategy._
+import scala.annotation.tailrec
+import scala.collection.immutable.Stream.Empty
 
 private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels: Map[Int, List[String]], val managingMax: Int) {
 
@@ -38,23 +41,30 @@ private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels:
   private def persistRelationships(relationships: List[Relationship]) =
     relationships map { case (manager, reportee) => manager.createRelationshipTo(reportee, DIRECTLY_MANAGES) }
 
-  private def makeRelationshipsBetween(nodesAtLevels: Map[Int, List[Node]]): List[Relationship] = {
+  private def makeRelationshipsBetween(nodesAtLevels: Map[Int, List[Node]], distributionStrategy: DistributionStrategy): List[Relationship] = {
 
     def parentToChildrenRelationships(parent: Node, children: List[Node]): List[Relationship] =
       for (child <- children) yield (parent, child)
 
     def between(parentNodes: List[Node], childNodes: List[Node]) : List[Relationship] = {
+      val manages = distributionStrategy match {
+        case Contiguous => managingMax
+        case Even =>   Math.min(Math.ceil(childNodes.length.toFloat/parentNodes.length).toInt, managingMax)
+      }
+
+      @tailrec
       def between0(acc: List[Relationship], parentNodes: List[Node], from: Int, to: Int): List[Relationship] =
         parentNodes match {
           case Nil =>  acc
           case parent :: rest => {
             val rs = parentToChildrenRelationships(parent, childNodes.slice(from, to))
-            between0(rs ::: acc, rest, from + managingMax, to + managingMax)
+            between0(rs ::: acc, rest, from + manages, to + manages)
           }
         }
-      between0(Nil, parentNodes, 0, managingMax)
+      between0(Nil, parentNodes, 0, manages)
     }
 
+    @tailrec
     def relationships(acc: List[Relationship], level: Int) : List[Relationship] = {
       if (level == maxLevels) acc
       else {
@@ -66,10 +76,11 @@ private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels:
     relationships(Nil, level = 1)
   }
 
-  def build = {
-    val people = measure("Creating People", persistNodes, neo4j)
+  def build(distributionStrategy: DistributionStrategy) = {
+    val people = measure("Persisting People", persistNodes, neo4j)
     measure("Indexing People", indexAll, people)
-    val managerReporteePairs = makeRelationshipsBetween(people)
-    measure("Creating Relationships", persistRelationships, managerReporteePairs)
+    info("Creating Relationships using %s Distribution strategy", distributionStrategy)
+    val managerReporteePairs = makeRelationshipsBetween(people, distributionStrategy)
+    measure("Persisting Relationships", persistRelationships, managerReporteePairs)
   }
 }

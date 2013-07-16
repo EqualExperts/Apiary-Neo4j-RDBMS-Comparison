@@ -12,10 +12,17 @@ import org.neo4j.graphdb.GraphDatabaseService
  * 4) levelsOfDirectRelationships: -levels (valid values: 2 to 10)
  */
 
+object DistributionStrategy extends Enumeration {
+  type DistributionStrategy = Value
+  val Contiguous, Even = Value
+}
+
 class OrganizationBuilder private (val names: List[String], val managingMax: Int = 1, val directlyReportingToMax: Int = 1, val indirectlyReportingToMax: Int = 0) {
+
   require(managingMax >= 0, "For an Organisation, a person manages, at max 0..* person")
   require(directlyReportingToMax >= 0, "For an Organisation, a person can report to max  0..* person")
 
+  var distributionStrategy = DistributionStrategy.Contiguous
   var from = 0
   val peopleAtLevels = scala.collection.mutable.Map[Int, List[String]]() withDefaultValue Nil
 
@@ -39,7 +46,7 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
     this
   }
 
-  private def showLevelErrorMessage(levels: List[Int]) = {
+  private def showErrorMessage(levels: List[Int]) = {
     error("Cannot distribute people properly in the hierarchy! Options: ")
     error("1) Try increasing the value of personManagingMax above %d", managingMax)
     error("2) Alternatively, Lessen the people at ")
@@ -50,15 +57,22 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
     sys.error("Could Not Build Organization!")
   }
 
+  import DistributionStrategy._
+
+  def distribute(distributionStrategy: DistributionStrategy) =  {
+    this.distributionStrategy = distributionStrategy
+    this
+  }
+
   def totalPeople = peopleAtLevels.values.foldLeft(0)(_ + _.length)
 
   def buildWith(neo4j: NeoDB): Unit = {
     info("Total in Org = %d people\n", totalPeople)
     illFormedLevels match {
       case (Nil, _) => neo4j usingTx { graphDb =>
-          new Neo4JBuilder(graphDb, peopleAtLevels.toMap, managingMax).build
+          new Neo4JBuilder(graphDb, peopleAtLevels.toMap, managingMax).build(distributionStrategy)
         }
-      case (levels, _) => showLevelErrorMessage(levels.toList)
+      case (levels, _) => showErrorMessage(levels.toList)
     }
   }
 
@@ -66,7 +80,7 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
     info("Total in Org = %d people\n", totalPeople)
     illFormedLevels match {
       case (Nil, _)    => new MySQLBuilder(mysql, peopleAtLevels.toMap).build
-      case (levels, _) => showLevelErrorMessage(levels.toList)
+      case (levels, _) => showErrorMessage(levels.toList)
     }
   }
 }
