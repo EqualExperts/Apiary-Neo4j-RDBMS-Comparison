@@ -2,10 +2,10 @@ package utils.generator
 
 import scala.util.Random
 import utils.NeoDB
+import DistributionStrategy._
 
 object Neo4J_1KOrgPopulator extends App with NamesData {
   override def main(args: Array[String]) = {
-
 //    val names = syntheticNames(1000)
     val names = naturalNames(1000)
 
@@ -22,7 +22,7 @@ object Neo4J_1KOrgPopulator extends App with NamesData {
 //                            .withPeopleAtLevel(1, 40)
 //                            .withPeopleAtLevel(2, 160)
 //                            .withPeopleAtLevel(3, 800)
-//                            .distribute(DistributionStrategy.Even)
+//                            .distribute(Even)
 
     /**
      * case 2:
@@ -39,7 +39,7 @@ object Neo4J_1KOrgPopulator extends App with NamesData {
                           .withPeopleAtLevel(2, 43)
                           .withPeopleAtLevel(3, 200)
                           .withPeopleAtLevel(4, 747)
-                          .distribute(DistributionStrategy.Even)
+                          .distribute(Even)
 
     /**
      * case 3:
@@ -79,7 +79,7 @@ object Neo4J_1KOrgPopulator extends App with NamesData {
 //      .withPeopleAtLevel(3, 75)
 //      .withPeopleAtLevel(4, 300)
 //      .withPeopleAtLevel(5, 607)
-//      .distribute(DistributionStrategy.Contiguous)
+//      .distribute(Contiguous)
 
     /**
      * case 5:

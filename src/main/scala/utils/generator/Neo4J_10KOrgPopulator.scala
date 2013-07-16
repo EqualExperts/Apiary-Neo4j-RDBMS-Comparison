@@ -2,6 +2,7 @@ package utils.generator
 
 import scala.util.Random
 import utils.NeoDB
+import DistributionStrategy._
 
 object Neo4J_10KOrgPopulator extends App with NamesData {
   override def main(args: Array[String]) = {
@@ -21,7 +22,7 @@ object Neo4J_10KOrgPopulator extends App with NamesData {
     //                            .withPeopleAtLevel(1, 400)
     //                            .withPeopleAtLevel(2, 1600)
     //                            .withPeopleAtLevel(3, 8000)
-    //                            .distribute(DistributionStrategy.Even)
+    //                            .distribute(Even)
 
     /**
      * case 2:
@@ -38,7 +39,7 @@ object Neo4J_10KOrgPopulator extends App with NamesData {
       .withPeopleAtLevel(2, 500)
       .withPeopleAtLevel(3, 2000)
       .withPeopleAtLevel(4, 7400)
-      .distribute(DistributionStrategy.Even)
+      .distribute(Even)
 
     /**
      * case 3:
@@ -79,7 +80,7 @@ object Neo4J_10KOrgPopulator extends App with NamesData {
     //      .withPeopleAtLevel(4, 1000)
     //      .withPeopleAtLevel(5, 3000)
     //      .withPeopleAtLevel(6, 5370)
-    //      .distribute(DistributionStrategy.Contiguous)
+    //      .distribute(Contiguous)
 
     /**
      * case 5:
@@ -129,7 +130,7 @@ object Neo4J_10KOrgPopulator extends App with NamesData {
     //      .withPeopleAtLevel(6, 1400)
     //      .withPeopleAtLevel(7, 2500)
     //      .withPeopleAtLevel(8, 5046)
-    //      .distribute(DistributionStrategy.Even)
+    //      .distribute(Even)
 
 
     val neoDb = NeoDB("http://localhost:7474/db/data")
