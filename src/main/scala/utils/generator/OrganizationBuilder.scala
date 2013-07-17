@@ -2,7 +2,6 @@ package utils.generator
 
 import utils.NeoDB
 import java.sql.{Connection}
-import org.neo4j.graphdb.GraphDatabaseService
 
 /**
  * i/ps =>

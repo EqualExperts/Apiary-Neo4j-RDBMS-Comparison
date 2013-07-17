@@ -114,6 +114,7 @@ Kiefer
 Kim
 Laurence
 Laurent
+Leonard
 Lex
 Lily
 Lisa
@@ -136,9 +137,11 @@ Nancy
 Nathan
 Natalie
 Natasha
+Neil
 Neville
 Newton
 Nicole
+Nigel
 Nilesh
 Noah
 Olivia
@@ -155,6 +158,7 @@ Rorie
 Roy
 Rita
 Ruby
+Ruhi
 Ryan
 Sagar
 Sally
@@ -163,9 +167,11 @@ Sandra
 Scott
 Seuss
 Sid
+Siddhi
 Sneha
 Sheila
 Steve
+Solomon
 Sophie
 Takeshi
 Tanvi
@@ -188,6 +194,7 @@ Vithal
 Wendy
 Whoopie
 Wren
+Yasmin
 Yves
 Zavrina
 Zubi

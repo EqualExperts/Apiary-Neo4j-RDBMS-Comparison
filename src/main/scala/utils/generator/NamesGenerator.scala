@@ -1,6 +1,6 @@
 package utils.generator
 
-trait NamesData {
+trait NamesGenerator {
   private def sqrt(x : Int) =  Math.ceil(Math.sqrt(x)).toInt
 
   def syntheticNames(howMany: Int) = {

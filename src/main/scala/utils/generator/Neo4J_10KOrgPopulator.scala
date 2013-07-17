@@ -4,7 +4,7 @@ import scala.util.Random
 import utils.NeoDB
 import DistributionStrategy._
 
-object Neo4J_10KOrgPopulator extends App with NamesData {
+object Neo4J_10KOrgPopulator extends App with NamesGenerator {
   override def main(args: Array[String]) = {
     //    val names = syntheticNames(10000)
     val names = naturalNames(10000)

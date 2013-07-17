@@ -2,7 +2,7 @@
 ##################################################
 
 ## Count of all nodes and relationships
-start n = node(*), r = relationship(*)  return count(distinct(n)), count(distinct(r));
+start n = node(*) match n-[r?]->() return count(n), count(r);
 
 ## Delete All nodes and relationships
 start n = node(*) match n-[r?]->() delete r, n;
