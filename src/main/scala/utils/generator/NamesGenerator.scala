@@ -1,14 +1,17 @@
 package utils.generator
 
+import scala.util.Random
+
 trait NamesGenerator {
   private def sqrt(x : Int) =  Math.ceil(Math.sqrt(x)).toInt
 
   def syntheticNames(howMany: Int) = {
     val total = sqrt(howMany)
-    (for {
+    val names = (for {
       i <- 1 to total
       j <- 1 to total
     } yield "first" + i + " last" + j).toList
+    Random.shuffle(names)
   }
 
   def naturalNames(howMany: Int) = {
@@ -17,9 +20,10 @@ trait NamesGenerator {
     val firstNames = NamesLoader(parentPath, List("firstNames.txt")).take(total)
     val lastNames  = NamesLoader(parentPath, List("lastNames.txt")).take(total)
 
-    (for {
+    val names = (for {
       firstName <- firstNames
       lastName <- lastNames
     } yield firstName + " " + lastName).toList
+    Random.shuffle(names)
   }
 }

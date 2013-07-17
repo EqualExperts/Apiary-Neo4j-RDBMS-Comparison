@@ -1,6 +1,5 @@
 package utils.generator
 
-import scala.util.Random
 import utils.NeoDB
 import DistributionStrategy._
 
@@ -18,7 +17,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      *  Total => 10000
      */
 
-    //        val builder = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+    //        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
     //                            .withPeopleAtLevel(1, 400)
     //                            .withPeopleAtLevel(2, 1600)
     //                            .withPeopleAtLevel(3, 8000)
@@ -34,7 +33,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      * Total => 10000
      */
 
-    val builder  = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+    val builder  = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
       .withPeopleAtLevel(1, 100)
       .withPeopleAtLevel(2, 500)
       .withPeopleAtLevel(3, 2000)
@@ -53,7 +52,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      * Total => 10000
      */
 
-    //    val builder = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+    //    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
     //      .withPeopleAtLevel(1, 30)
     //      .withPeopleAtLevel(2, 150)
     //      .withPeopleAtLevel(3, 750)
@@ -73,7 +72,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      * Total => 10000
      */
 
-    //    val builder = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+    //    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
     //      .withPeopleAtLevel(1, 30)
     //      .withPeopleAtLevel(2, 100)
     //      .withPeopleAtLevel(3, 500)
@@ -96,7 +95,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      * Total => 10000
      */
 
-    //    val builder = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+    //    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
     //      .withPeopleAtLevel(1, 20)
     //      .withPeopleAtLevel(2, 50)
     //      .withPeopleAtLevel(3, 200)
@@ -104,7 +103,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
     //      .withPeopleAtLevel(5, 1400)
     //      .withPeopleAtLevel(6, 2800)
     //      .withPeopleAtLevel(7, 4830)
-    //      .distribute(DistributionStrategy.Even)
+    //      .distribute(Even)
 
     /**
      * case 6:
@@ -121,7 +120,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      * Total => 10000
      */
 
-    //    val builder = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 5)
+    //    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
     //      .withPeopleAtLevel(1, 4)
     //      .withPeopleAtLevel(2, 20)
     //      .withPeopleAtLevel(3, 80)
@@ -131,7 +130,6 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
     //      .withPeopleAtLevel(7, 2500)
     //      .withPeopleAtLevel(8, 5046)
     //      .distribute(Even)
-
 
     val neoDb = NeoDB("http://localhost:7474/db/data")
     builder buildWith neoDb

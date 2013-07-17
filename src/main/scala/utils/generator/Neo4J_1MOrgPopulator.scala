@@ -1,6 +1,5 @@
 package utils.generator
 
-import scala.util.Random
 import utils.NeoDB
 import DistributionStrategy._
 
@@ -21,7 +20,7 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
      *  Total => 1000000
      */
 
-    val builder = OrganizationBuilder(Random.shuffle(names), withPersonManagingMaxOf = 10)
+    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
       .withPeopleAtLevel(1, 10)
       .withPeopleAtLevel(2, 100)
       .withPeopleAtLevel(3, 1000)
