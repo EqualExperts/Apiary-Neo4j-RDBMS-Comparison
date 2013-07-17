@@ -3,6 +3,13 @@ package utils.generator
 import utils.NeoDB
 import DistributionStrategy._
 
+/**
+ * Note: You may need to enable and change the old value 64M of the wrapper.java.maxmemory property
+ * in neo4j-wrapper.conf.
+ *
+ * # Maximum Java Heap Size (in MB)
+ * wrapper.java.maxmemory=512
+ */
 object Neo4J_100KOrgPopulator extends App with NamesGenerator {
   override def main(args: Array[String]) = {
       val names = syntheticNames(100000)

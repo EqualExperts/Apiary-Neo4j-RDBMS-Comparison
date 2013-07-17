@@ -129,9 +129,11 @@ Morrison
 Mumba
 Myles
 Nader
+Nelson
 Norton
 Nicholson
 Nixon
+Nygard
 Odersky
 Pacino
 Palmer
@@ -166,6 +168,8 @@ Smith
 Spoon
 Stewart
 Sullivan
+Swaine
+Swindoll
 Tallarico
 Templeton
 Thompson
