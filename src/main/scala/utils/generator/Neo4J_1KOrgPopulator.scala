@@ -21,7 +21,7 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 //                            .withPeopleAtLevel(1, 40)
 //                            .withPeopleAtLevel(2, 160)
 //                            .withPeopleAtLevel(3, 800)
-//                            .distribute(Even)
+//                            .distribute(Contiguous)
 
     /**
      * case 2:
@@ -38,7 +38,7 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
                           .withPeopleAtLevel(2, 43)
                           .withPeopleAtLevel(3, 200)
                           .withPeopleAtLevel(4, 747)
-                          .distribute(Even)
+                          .distribute(Contiguous)
 
     /**
      * case 3:

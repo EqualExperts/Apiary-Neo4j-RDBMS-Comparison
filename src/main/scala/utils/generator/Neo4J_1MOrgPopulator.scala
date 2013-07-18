@@ -4,7 +4,6 @@ import utils.NeoDB
 import DistributionStrategy._
 
 /**
- *
  * Note: You may need to enable and change the old value 64M of the wrapper.java.maxmemory property
  * in neo4j-wrapper.conf.
  *
@@ -18,16 +17,25 @@ import DistributionStrategy._
  *
  * PLEASE NOTE THIS WILL TAKE HOURS TO RUN, SO LEAVE IT OVERNIGHT AND COME BACK NEXT DAY!!!
  *
- * [Wed Jul 17 11:05:19 IST 2013] [INFO]: Total in Org = 1000000 people
+ * [Thu Jul 18 10:09:50 IST 2013] [INFO]: Total in Org = 1000000 people
  *
- * [Wed Jul 17 11:05:19 IST 2013] [INFO]: Persisting People...
- * [Wed Jul 17 13:47:48 IST 2013] [INFO]: Persisting People...Complete. Execution Time 9749375(ms) =~ 9749.375(secs)
- * [Wed Jul 17 13:47:48 IST 2013] [INFO]: Indexing People...
- * [Wed Jul 17 15:48:32 IST 2013] [INFO]: Indexing People...Complete. Execution Time 7243980(ms) =~ 7243.980(secs)
- * [Wed Jul 17 15:48:32 IST 2013] [INFO]: Creating Relationships using Even Distribution strategy
- * [Wed Jul 17 16:23:03 IST 2013] [INFO]: Persisting Relationships...
+ * [Thu Jul 18 10:09:50 IST 2013] [INFO]: Persisting People...
+ * [Thu Jul 18 13:04:07 IST 2013] [INFO]: Persisting People...Complete. Execution Time 10456857(ms) =~ 10456.857(secs)
+ * [Thu Jul 18 13:04:07 IST 2013] [INFO]: Indexing People...
+ * [Thu Jul 18 14:59:28 IST 2013] [INFO]: Indexing People...Complete. Execution Time 6921555(ms) =~ 6921.555(secs)
+ * [Thu Jul 18 14:59:28 IST 2013] [INFO]: Creating Relationships using Contiguous Distribution strategy
+ * [Thu Jul 18 15:35:06 IST 2013] [INFO]: Persisting Relationships...
+ * [Thu Jul 18 16:11:23 IST 2013] [INFO]: Persisting Relationships...Complete. Execution Time 2176988(ms) =~ 2176.988(secs)
  *
+ * NOTE: And remember if you want to delete all the data, you DO NOT WANT TO FIRE
+ * --> start n = node(*) match n-[r?]->() delete r, n;
  *
+ * because the Shell Bombs!!!  (you will have to increase shell memory or do a programmatic delete)
+ * neo4j-sh (first290 last14,0)$ start n = node(*) match n-[r?]->() delete r, n;
+ * Error occurred in server thread; nested exception is:
+ *	java.lang.OutOfMemoryError: Java heap space
+ *
+ * Best is to zip up the DB or point to a new location on FileSystem.
  */
 object Neo4J_1MOrgPopulator extends App with NamesGenerator {
   override def main(args: Array[String]) = {
@@ -53,7 +61,7 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
       .withPeopleAtLevel(4, 10000)
       .withPeopleAtLevel(5, 100000)
       .withPeopleAtLevel(6, 888890)
-      .distribute(Even)
+      .distribute(Contiguous)
 
     val neoDb = NeoDB("http://localhost:7474/db/data")
     builder buildWith neoDb
