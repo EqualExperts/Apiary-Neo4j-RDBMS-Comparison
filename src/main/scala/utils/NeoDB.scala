@@ -6,6 +6,8 @@ import org.neo4j.rest.graphdb.RestGraphDatabase
 import scala.Predef._
 import org.neo4j.graphdb.index.IndexHits
 import java.util
+import org.neo4j.unsafe.batchinsert.{BatchInserters, BatchInserterImpl}
+import org.neo4j.kernel.impl.nioneo.store.FileSystemAbstraction
 
 class NeoDB private (val neo4j: GraphDatabaseService) {
 
@@ -71,6 +73,8 @@ class NeoDB private (val neo4j: GraphDatabaseService) {
   def getRelationshipAutoIndexer = neo4j.index.getRelationshipAutoIndexer
   def getIndexForNodes(idxName: String) = neo4j.index.forNodes(idxName)
   def getIndexForRelationships(idxName: String) = neo4j.index.forRelationships(idxName)
+  def getGraphDatabaseService = neo4j
+  def shutdown = neo4j.shutdown()
 
   def relationshipCount(node : Node, direction: Direction, types: RelationshipType*): Int = {
     var count = 0
@@ -191,7 +195,11 @@ class NeoDB private (val neo4j: GraphDatabaseService) {
   }
 }
 
+import collection.JavaConverters._
+
 object NeoDB {
+  def apply(storeDir: String, fileSystem: FileSystemAbstraction, config: Map[String, String]) = new NeoDB(BatchInserters.batchDatabase(storeDir, fileSystem, config.asJava))
+  def apply(storeDir: String, fileSystem: FileSystemAbstraction) = new NeoDB(BatchInserters.batchDatabase(storeDir, fileSystem))
   def apply(url: String) = new NeoDB(new RestGraphDatabase(url))
   def apply(url: String, user: String, password: String) = new NeoDB(new RestGraphDatabase(url, user, password))
 }

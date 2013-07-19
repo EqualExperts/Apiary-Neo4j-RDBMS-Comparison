@@ -36,6 +36,10 @@ import DistributionStrategy._
  *	java.lang.OutOfMemoryError: Java heap space
  *
  * Best is to zip up the DB or point to a new location on FileSystem.
+ *
+ * SECOND OPTION: Use BatchInserter to bulk upload data, its fast because
+ * 1. No Transactions
+ * 2. No Indexing.
  */
 object Neo4J_1MOrgPopulator extends App with NamesGenerator {
   override def main(args: Array[String]) = {

@@ -10,7 +10,7 @@ private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels:
   val maxLevels = peopleAtLevels.size
   private val PERSON = "Person"
   private val PERSON_NAME = "name"
-  private val personIndex = neo4j.index.forNodes(PERSON)
+//  private val personIndex = neo4j.index.forNodes(PERSON)
 
   private object DIRECTLY_MANAGES extends RelationshipType {
     def name = getClass.getSimpleName.replace("$", "")
@@ -28,9 +28,9 @@ private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels:
     personNode
   }
 
-  private def index(node: Node) = personIndex.add(node, PERSON_NAME, node.getProperty(PERSON_NAME))
+//  private def index(node: Node) = personIndex.add(node, PERSON_NAME, node.getProperty(PERSON_NAME))
 
-  private def indexAll(nodesAtLevels: Map[Int, List[Node]]) = nodesAtLevels.values.flatten.foreach(index)
+//  private def indexAll(nodesAtLevels: Map[Int, List[Node]]) = nodesAtLevels.values.flatten.foreach(index)
 
   private def persistNodes(graphDb: GraphDatabaseService) =
     peopleAtLevels map {
@@ -77,7 +77,7 @@ private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels:
 
   def build(distributionStrategy: DistributionStrategy) = {
     val people = measure("Persisting People", persistNodes, neo4j)
-    measure("Indexing People", indexAll, people)
+    //measure("Indexing People", indexAll, people)
     info("Creating Relationships using %s Distribution strategy", distributionStrategy)
     val managerReporteePairs = makeRelationshipsBetween(people, distributionStrategy)
     measure("Persisting Relationships", persistRelationships, managerReporteePairs)

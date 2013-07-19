@@ -2,8 +2,11 @@ package utils.generator
 
 import utils.NeoDB
 import DistributionStrategy._
+import org.neo4j.kernel.DefaultFileSystemAbstraction
 
 object Neo4J_1KOrgPopulator extends App with NamesGenerator {
+
+
   override def main(args: Array[String]) = {
 //    val names = syntheticNames(1000)
     val names = naturalNames(1000)
@@ -94,7 +97,12 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
      * Total => 1000
      */
 
-    val neoDb = NeoDB("http://localhost:7474/db/data")
+//    val neoDb = NeoDB("http://localhost:7474/db/data")
+
+    val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
+    val fileSystem = new DefaultFileSystemAbstraction
+
+    val neoDb = NeoDB(storeDir, fileSystem)
     builder buildWith neoDb
 
   }
