@@ -2,6 +2,7 @@ package utils.generator
 
 import utils.NeoDB
 import DistributionStrategy._
+import org.neo4j.kernel.DefaultFileSystemAbstraction
 
 /**
  * Note: You may need to enable and change the old value 64M of the wrapper.java.maxmemory property
@@ -40,6 +41,17 @@ import DistributionStrategy._
  * SECOND OPTION: Use BatchInserter to bulk upload data, its fast because
  * 1. No Transactions
  * 2. No Indexing.
+ * Viola here are the surprising results of using BatchInserter
+ *
+ * [Fri Jul 19 16:21:20 IST 2013] [INFO]: Total in Org = 1000000 people
+ *
+ * [Fri Jul 19 16:21:20 IST 2013] [INFO]: Total in Org = 1000000 people
+ *
+ * [Fri Jul 19 16:21:20 IST 2013] [INFO]: Persisting People...
+ * [Fri Jul 19 16:21:23 IST 2013] [INFO]: Persisting People...Complete. Execution Time 3829(ms) =~ 3.829(secs)
+ * [Fri Jul 19 16:21:23 IST 2013] [INFO]: Creating Relationships using Contiguous Distribution strategy
+ * [Fri Jul 19 17:14:37 IST 2013] [INFO]: Persisting Relationships...
+ * [Fri Jul 19 17:14:43 IST 2013] [INFO]: Persisting Relationships...Complete. Execution Time 6051(ms) =~ 6.051(secs)
  */
 object Neo4J_1MOrgPopulator extends App with NamesGenerator {
   override def main(args: Array[String]) = {
@@ -67,7 +79,12 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
       .withPeopleAtLevel(6, 888890)
       .distribute(Contiguous)
 
-    val neoDb = NeoDB("http://localhost:7474/db/data")
+//    val neoDb = NeoDB("http://localhost:7474/db/data")
+    val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
+    val fileSystem = new DefaultFileSystemAbstraction
+
+    val neoDb = NeoDB(storeDir, fileSystem)
+
     builder buildWith neoDb
 
   }

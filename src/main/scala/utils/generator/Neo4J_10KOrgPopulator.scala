@@ -17,11 +17,11 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      *  Total => 10000
      */
 
-    //        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-    //                            .withPeopleAtLevel(1, 400)
-    //                            .withPeopleAtLevel(2, 1600)
-    //                            .withPeopleAtLevel(3, 8000)
-    //                            .distribute(Even)
+    //val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
+    //                   .withPeopleAtLevel(1, 400)
+    //                   .withPeopleAtLevel(2, 1600)
+    //                   .withPeopleAtLevel(3, 8000)
+    //                   .distribute(Even)
 
     /**
      * case 2:
@@ -34,11 +34,11 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      */
 
     val builder  = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-      .withPeopleAtLevel(1, 100)
-      .withPeopleAtLevel(2, 500)
-      .withPeopleAtLevel(3, 2000)
-      .withPeopleAtLevel(4, 7400)
-      .distribute(Even)
+                      .withPeopleAtLevel(1, 100)
+                      .withPeopleAtLevel(2, 500)
+                      .withPeopleAtLevel(3, 2000)
+                      .withPeopleAtLevel(4, 7400)
+                      .distribute(Even)
 
     /**
      * case 3:

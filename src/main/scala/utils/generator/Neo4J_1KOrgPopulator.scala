@@ -6,7 +6,6 @@ import org.neo4j.kernel.DefaultFileSystemAbstraction
 
 object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 
-
   override def main(args: Array[String]) = {
 //    val names = syntheticNames(1000)
     val names = naturalNames(1000)
@@ -36,7 +35,7 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
      * Total => 1000
      */
 
-     val builder  = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
+     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
                           .withPeopleAtLevel(1, 10)
                           .withPeopleAtLevel(2, 43)
                           .withPeopleAtLevel(3, 200)
@@ -104,6 +103,5 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 
     val neoDb = NeoDB(storeDir, fileSystem)
     builder buildWith neoDb
-
   }
 }
