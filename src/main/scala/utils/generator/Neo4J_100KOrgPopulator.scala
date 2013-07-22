@@ -2,6 +2,7 @@ package utils.generator
 
 import utils.NeoDB
 import DistributionStrategy._
+import org.neo4j.kernel.DefaultFileSystemAbstraction
 
 /**
  * Note: You may need to enable and change the old value 64M of the wrapper.java.maxmemory property
@@ -101,7 +102,11 @@ object Neo4J_100KOrgPopulator extends App with NamesGenerator {
      * Total => 1000
      */
 
-    val neoDb = NeoDB("http://localhost:7474/db/data")
+//    val neoDb = NeoDB("http://localhost:7474/db/data")
+    val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
+    val fileSystem = new DefaultFileSystemAbstraction
+
+    val neoDb = NeoDB(storeDir, fileSystem)
     builder buildWith neoDb
   }
 }
