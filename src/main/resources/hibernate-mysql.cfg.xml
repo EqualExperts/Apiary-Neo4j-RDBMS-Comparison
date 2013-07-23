@@ -1,0 +1,26 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+
+
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.username">root</property>
+        <!--<property name="hibernate.connection.password">admin</property>-->
+        <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <property name="hibernate.default_schema">apiary_1k</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+				<property name="hibernate.jdbc.batch_size">40</property>
+        
+        <!--<property name="hibernate.hbm2ddl.auto">create</property>-->
+        <mapping class="com.ee.apiary.sql.hibernate.entities.Person"/>
+        <mapping class="com.ee.apiary.sql.hibernate.entities.DirectManager"/>
+        <mapping class="com.ee.apiary.sql.hibernate.entities.IndirectManager"/>
+        
+        </session-factory>
+</hibernate-configuration>
