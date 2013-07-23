@@ -1,6 +1,6 @@
 package utils.generator
 
-import utils.NeoDB
+import utils.{NeoDBBatchInserter, NeoDB}
 import java.sql.{Connection}
 
 /**
@@ -65,13 +65,23 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
 
   def totalPeople = peopleAtLevels.values.foldLeft(0)(_ + _.length)
 
+  def buildWith(neo4j: NeoDBBatchInserter): Unit = {
+    info("Total in Org = %d people\n", totalPeople)
+    illFormedLevels match {
+      case (Nil, _) => {
+          new Neo4JBatchBuilder(neo4j.batchInserter, peopleAtLevels.toMap, managingMax).build(distributionStrategy)
+          neo4j.shutdown
+        }
+      case (levels, _) => showErrorMessage(levels.toList)
+    }
+  }
+
   def buildWith(neo4j: NeoDB): Unit = {
     info("Total in Org = %d people\n", totalPeople)
     illFormedLevels match {
-      case (Nil, _) => //neo4j usingTx { graphDb =>
-          new Neo4JBuilder(neo4j.getGraphDatabaseService, peopleAtLevels.toMap, managingMax).build(distributionStrategy)
-          neo4j.shutdown
-        //}
+      case (Nil, _) => neo4j usingTx { graphDb =>
+          new Neo4JBuilder(graphDb, peopleAtLevels.toMap, managingMax).build(distributionStrategy)
+        }
       case (levels, _) => showErrorMessage(levels.toList)
     }
   }

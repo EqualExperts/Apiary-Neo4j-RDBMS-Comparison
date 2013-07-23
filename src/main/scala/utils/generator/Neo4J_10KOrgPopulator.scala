@@ -1,6 +1,6 @@
 package utils.generator
 
-import utils.NeoDB
+import utils.{NeoDBBatchInserter, NeoDB}
 import DistributionStrategy._
 import org.neo4j.kernel.DefaultFileSystemAbstraction
 
@@ -22,7 +22,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
     //                   .withPeopleAtLevel(1, 400)
     //                   .withPeopleAtLevel(2, 1600)
     //                   .withPeopleAtLevel(3, 8000)
-    //                   .distribute(Even)
+    //                   .distribute(Contiguous)
 
     /**
      * case 2:
@@ -39,7 +39,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
                       .withPeopleAtLevel(2, 500)
                       .withPeopleAtLevel(3, 2000)
                       .withPeopleAtLevel(4, 7400)
-                      .distribute(Even)
+                      .distribute(Contiguous)
 
     /**
      * case 3:
@@ -104,7 +104,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
     //      .withPeopleAtLevel(5, 1400)
     //      .withPeopleAtLevel(6, 2800)
     //      .withPeopleAtLevel(7, 4830)
-    //      .distribute(Even)
+    //      .distribute(Contiguous)
 
     /**
      * case 6:
@@ -130,13 +130,11 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
     //      .withPeopleAtLevel(6, 1400)
     //      .withPeopleAtLevel(7, 2500)
     //      .withPeopleAtLevel(8, 5046)
-    //      .distribute(Even)
+    //      .distribute(Contiguous)
 
 //    val neoDb = NeoDB("http://localhost:7474/db/data")
     val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
-    val fileSystem = new DefaultFileSystemAbstraction
-
-    val neoDb = NeoDB(storeDir, fileSystem)
+    val neoDb = NeoDBBatchInserter(storeDir, new DefaultFileSystemAbstraction)
     builder buildWith neoDb
   }
 }

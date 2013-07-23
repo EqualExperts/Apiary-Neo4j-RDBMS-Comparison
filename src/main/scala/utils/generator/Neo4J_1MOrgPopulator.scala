@@ -1,6 +1,6 @@
 package utils.generator
 
-import utils.NeoDB
+import utils.{NeoDBBatchInserter, NeoDB}
 import DistributionStrategy._
 import org.neo4j.kernel.DefaultFileSystemAbstraction
 
@@ -81,9 +81,7 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
 
 //    val neoDb = NeoDB("http://localhost:7474/db/data")
     val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
-    val fileSystem = new DefaultFileSystemAbstraction
-
-    val neoDb = NeoDB(storeDir, fileSystem)
+    val neoDb = NeoDBBatchInserter(storeDir, new DefaultFileSystemAbstraction)
 
     builder buildWith neoDb
 

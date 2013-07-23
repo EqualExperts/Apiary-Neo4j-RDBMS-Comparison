@@ -176,7 +176,6 @@ class NeoDB private (val neo4j: GraphDatabaseService) {
   def printNodeName(node: Node) =
     if (node == null) println("No Node to Print") else println(node.getProperty("idxName"))
 
-
   def printIndexHits(hits: IndexHits[_ <: AnyRef]) = {
     if(hits.size == 0) {
       println("No Index Hits to Print!!")
@@ -195,11 +194,7 @@ class NeoDB private (val neo4j: GraphDatabaseService) {
   }
 }
 
-import collection.JavaConverters._
-
 object NeoDB {
-  def apply(storeDir: String, fileSystem: FileSystemAbstraction, config: Map[String, String]) = new NeoDB(BatchInserters.batchDatabase(storeDir, fileSystem, config.asJava))
-  def apply(storeDir: String, fileSystem: FileSystemAbstraction) = new NeoDB(BatchInserters.batchDatabase(storeDir, fileSystem))
   def apply(url: String) = new NeoDB(new RestGraphDatabase(url))
   def apply(url: String, user: String, password: String) = new NeoDB(new RestGraphDatabase(url, user, password))
 }
