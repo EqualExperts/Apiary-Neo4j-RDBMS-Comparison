@@ -40,18 +40,20 @@ import org.neo4j.kernel.DefaultFileSystemAbstraction
  *
  * SECOND OPTION: Use BatchInserter to bulk upload data, its fast because
  * 1. No Transactions
- * 2. No Indexing.
+ * 2. No need for Neo4j memory configuration params, like above 
+ * 
  * Viola here are the surprising results of using BatchInserter
  *
- * [Fri Jul 19 16:21:20 IST 2013] [INFO]: Total in Org = 1000000 people
+ * [Wed Jul 24 11:29:11 IST 2013] [INFO]: Total in Org = 1000000 people
  *
- * [Fri Jul 19 16:21:20 IST 2013] [INFO]: Total in Org = 1000000 people
- *
- * [Fri Jul 19 16:21:20 IST 2013] [INFO]: Persisting People...
- * [Fri Jul 19 16:21:23 IST 2013] [INFO]: Persisting People...Complete. Execution Time 3829(ms) =~ 3.829(secs)
- * [Fri Jul 19 16:21:23 IST 2013] [INFO]: Creating Relationships using Contiguous Distribution strategy
- * [Fri Jul 19 17:14:37 IST 2013] [INFO]: Persisting Relationships...
- * [Fri Jul 19 17:14:43 IST 2013] [INFO]: Persisting Relationships...Complete. Execution Time 6051(ms) =~ 6.051(secs)
+ *[Wed Jul 24 11:29:11 IST 2013] [INFO]: Persisting People...
+ *[Wed Jul 24 11:29:16 IST 2013] [INFO]: Persisting People...Complete. Execution Time 4573(ms) =~ 4.573(secs)
+ *[Wed Jul 24 11:29:16 IST 2013] [INFO]: Indexing People...
+ *[Wed Jul 24 11:29:31 IST 2013] [INFO]: Indexing People...Complete. Execution Time 14710(ms) =~ 14.710(secs)
+ *[Wed Jul 24 11:29:31 IST 2013] [INFO]: Creating Relationships using Contiguous Distribution strategy
+ *[Wed Jul 24 11:35:11 IST 2013] [INFO]: Persisting Relationships...
+ *[Wed Jul 24 11:35:16 IST 2013] [INFO]: Persisting Relationships...Complete. Execution Time 4443(ms) =~ 4.443(secs)
+ *[Wed Jul 24 11:35:19 IST 2013] [INFO]: PLEASE DELETE NODE WITH ID 0 MANUALLY!!!
  */
 object Neo4J_1MOrgPopulator extends App with NamesGenerator {
   override def main(args: Array[String]) = {
@@ -68,9 +70,8 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
      *  At Level 5 => 100000
      *  At Level 6 => 888890
      *  Total => 1000000
-     */
-
-    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
+    
+	val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
       .withPeopleAtLevel(1, 10)
       .withPeopleAtLevel(2, 100)
       .withPeopleAtLevel(3, 1000)
@@ -78,9 +79,34 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
       .withPeopleAtLevel(5, 100000)
       .withPeopleAtLevel(6, 888890)
       .distribute(Contiguous)
+	 
+	 Case 6 : (Levels = 8, Manages Limit = 10)
+		 * At Level 1 => 1
+         * At Level 2 => 5
+         * At Level 3 => 10
+         * At Level 4 => 100
+         * At Level 5 => 1000
+         * At Level 6 => 10000
+         * At Level 7 => 100000
+         * At Level 8 => 1000000
+		 *  Total => 1111116
+ */
+
+    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
+      .withPeopleAtLevel(1, 1)
+      .withPeopleAtLevel(2, 5)
+      .withPeopleAtLevel(3, 10)
+      .withPeopleAtLevel(4, 100)
+      .withPeopleAtLevel(5, 1000)
+      .withPeopleAtLevel(6, 10000)
+	  .withPeopleAtLevel(7, 100000)
+	  .withPeopleAtLevel(8, 1000000)
+      .distribute(Contiguous)
+	  
 
 //    val neoDb = NeoDB("http://localhost:7474/db/data")
-    val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
+    //val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
+	val storeDir = "D:/rnd/apiary/NEO4J_DATA/apiary_1m_case6"
     val neoDb = NeoDBBatchInserter(storeDir, new DefaultFileSystemAbstraction)
 
     builder buildWith neoDb

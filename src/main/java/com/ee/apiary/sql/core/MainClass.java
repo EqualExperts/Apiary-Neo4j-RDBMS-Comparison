@@ -191,12 +191,12 @@ public class MainClass {
 			        At Level 3 => 80000
 			        
 			        Total => 100000
-
+*/
                 peopleAtLevel.put(LEVEL_ONE, new OrgLevelData(fullNames.subList(0, 4000), DIRECTLY_MANAGES_LIMIT_LEVEL_ONE));	
 		        peopleAtLevel.put(LEVEL_TWO, new OrgLevelData(fullNames.subList(4000, 20000), DIRECTLY_MANAGES_LIMIT_LEVEL_TWO));
 		        peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(20000, 100000), DIRECTLY_MANAGES_LIMIT_LEVEL_THREE));	
        
-  */       
+         
         
         
 /*        Case 2 : (Levels = 4, Manages Limit = 5)
@@ -272,14 +272,14 @@ public class MainClass {
 	     * At Level 5 => 100000
 	     * At Level 6 => 1000000
 	     * Total => 1111110
-*/                
+                
                 peopleAtLevel.put(LEVEL_ONE, new OrgLevelData(fullNames.subList(0, 10), DIRECTLY_MANAGES_LIMIT_LEVEL_ONE));	
                 peopleAtLevel.put(LEVEL_TWO, new OrgLevelData(fullNames.subList(10, 110), DIRECTLY_MANAGES_LIMIT_LEVEL_TWO));
                 peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(110, 1110), DIRECTLY_MANAGES_LIMIT_LEVEL_THREE));	
                 peopleAtLevel.put(LEVEL_FOUR, new OrgLevelData(fullNames.subList(1110, 11110),DIRECTLY_MANAGES_LIMIT_LEVEL_FOUR));	
                 peopleAtLevel.put(LEVEL_FIVE, new OrgLevelData(fullNames.subList(11110, 111110),DIRECTLY_MANAGES_LIMIT_LEVEL_FIVE));	
                 peopleAtLevel.put(LEVEL_SIX, new OrgLevelData(fullNames.subList(111110, 1111110),DIRECTLY_MANAGES_LIMIT_LEVEL_SIX));		       							
-		    
+*/		    
               
 /*        Case 5 : (Levels = 7, Manages Limit = 5)
 					At Level 1 => 200

@@ -98,7 +98,8 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 
 //    val neoDb = NeoDB("http://localhost:7474/db/data")
 
-    val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
+    //val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
+	val storeDir = "D:/rnd/apiary/NEO4J_DATA/apiary_1k"
     val neoDb = NeoDBBatchInserter(storeDir, new DefaultFileSystemAbstraction)
     builder buildWith neoDb
   }

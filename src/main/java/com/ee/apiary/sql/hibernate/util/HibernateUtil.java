@@ -18,10 +18,10 @@ public class HibernateUtil {
     static {
         try {
         	// for MySQL
-        	//sessionFactory = new AnnotationConfiguration().configure("hibernate-mysql.cfg.xml").buildSessionFactory();
+        	sessionFactory = new AnnotationConfiguration().configure("hibernate-mysql.cfg.xml").buildSessionFactory();
         	
         	//for SQL server
-        	sessionFactory = new AnnotationConfiguration().configure("hibernate-mssql.cfg.xml").buildSessionFactory();
+        	//sessionFactory = new AnnotationConfiguration().configure("hibernate-mssql.cfg.xml").buildSessionFactory();
         } catch (Throwable ex) {
             // Log exception!
             throw new ExceptionInInitializerError(ex);
