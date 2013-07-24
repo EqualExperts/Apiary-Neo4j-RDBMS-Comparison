@@ -29,7 +29,7 @@ order by Level;
 ## Count of People At all levels
 start n = node(*) return n.level as Level, count(n) as Total order by Level;
 
-## Traversal Query:
+## Aggregate Traversal Query:
 ## Find people reporting to a particular person starting at Level 1
 ## and their reportees (direct and indirect) break up by counts
 start n = node:Person(name = "Jennifer Brooks")
@@ -49,4 +49,49 @@ match n-[*1]->m-[?*]->o
 return m.name as Name, m.level as Level, count(o) as Total
 order by Level, Total desc;
 
+## Traversal Queries returning names of people that directly or indirectly report
+## to a particular person via intermediary bosses.
 
+## Return names of next level reportees
+################################################
+start n = node:Person(name = "Jennifer Brooks")
+match n-[*1]->m-[?*1]->o
+return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
+order by SubordinateLevel, ReporteeLevel;
+
+## Return names of next 2 level reportees
+################################################
+start n = node:Person(name = "Jennifer Brooks")
+match n-[*1]->m-[?*1..2]->o
+return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
+order by SubordinateLevel, ReporteeLevel;
+
+## Return names of next 3 level reportees
+################################################
+start n = node:Person(name = "Jennifer Brooks")
+match n-[*1]->m-[?*1..3]->o
+return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
+order by SubordinateLevel, ReporteeLevel;
+
+
+## Return names of next 4 level reportees
+################################################
+start n = node:Person(name = "Jennifer Brooks")
+match n-[*1]->m-[?*1..4]->o
+return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
+order by SubordinateLevel, ReporteeLevel;
+
+## Return names of next 5 level reportees
+################################################
+start n = node:Person(name = "Jennifer Brooks")
+match n-[*1]->m-[?*1..5]->o
+return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
+order by SubordinateLevel, ReporteeLevel;
+
+## TODO:
+## Hierarchy Lineage
+##############################################
+start n = node:Person(name = "first37 last222")
+match m<-[DIRECTLY_REPORTS_TO*]-n
+return m.name as Manager, m.level as ManagerLevel, n.name, n.level
+order by ManagerLevel;
