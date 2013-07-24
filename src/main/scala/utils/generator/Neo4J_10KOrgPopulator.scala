@@ -133,8 +133,10 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
     //      .distribute(Contiguous)
 
 //    val neoDb = NeoDB("http://localhost:7474/db/data")
-    val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
-    val neoDb = NeoDBBatchInserter(storeDir, new DefaultFileSystemAbstraction)
+    //	  val basePath = "D:/rnd/apiary"
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary"
+    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_10k")
+
     builder buildWith neoDb
   }
 }

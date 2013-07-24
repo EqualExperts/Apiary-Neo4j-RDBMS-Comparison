@@ -82,25 +82,9 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 //      .withPeopleAtLevel(5, 607)
 //      .distribute(Contiguous)
 
-    /**
-     * case 5:
-     * total people in organisation = 1000 with levels = 6, withPersonManagingMaxOf = 10, directlyReportingToMax = 1
-     *
-     * At Level 1 => 1
-     * At Level 2 => 5
-     * At Level 3 => 50
-     * At Level 4 => 94
-     * At Level 5 => 150
-     * At Level 6 => 250
-     * At Level 7 => 450
-     * Total => 1000
-     */
-
-//    val neoDb = NeoDB("http://localhost:7474/db/data")
-
-    //val storeDir = "/Users/dhavald/Documents/workspace/Apiary/NEO4J"
-	val storeDir = "D:/rnd/apiary/NEO4J_DATA/apiary_1k"
-    val neoDb = NeoDBBatchInserter(storeDir, new DefaultFileSystemAbstraction)
+    //	  val basePath = "D:/rnd/apiary"
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary"
+    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1k")
     builder buildWith neoDb
   }
 }

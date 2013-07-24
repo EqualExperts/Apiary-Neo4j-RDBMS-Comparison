@@ -8,6 +8,9 @@ start n = node(*) match n-[r?]->() return count(distinct(n)), count(distinct(r))
 start n = node(*) match n-[r?]->() delete r, n;
 
 
+## Delete Node 0
+start n = node(0) delete n;
+
 # People at Top Level
 ###################################################
 start n = node(*) where n.level = 1 return id(n) as ID, n.name as Name;
