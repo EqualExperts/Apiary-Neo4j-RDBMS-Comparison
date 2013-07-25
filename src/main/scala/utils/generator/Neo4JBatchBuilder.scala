@@ -1,6 +1,6 @@
 package utils.generator
 
-import org.neo4j.graphdb.{RelationshipType, Node}
+import org.neo4j.graphdb.{RelationshipType}
 import utils.generator.DistributionStrategy._
 import scala.annotation.tailrec
 import org.neo4j.unsafe.batchinsert.BatchInserter
@@ -36,7 +36,7 @@ private class Neo4JBatchBuilder (val neo4j: BatchInserter, val peopleAtLevels: M
   import collection.JavaConverters._
   private def toNode(neo4j: BatchInserter, level: Int, name: String): Long = {
     val properties = Map[String, AnyRef]().asJava
-    val node = neo4j.createNode(properties)
+    val node = neo4j createNode properties
     neo4j.setNodeProperty(node, PERSON_NAME, name)
     neo4j.setNodeProperty(node, "level", level)
     neo4j.setNodeProperty(node, "type", PERSON)
@@ -106,4 +106,3 @@ private class Neo4JBatchBuilder (val neo4j: BatchInserter, val peopleAtLevels: M
     info("PLEASE DELETE NODE WITH ID 0 MANUALLY!!!")
   }
 }
-

@@ -29,25 +29,43 @@ order by Level;
 ## Count of People At all levels
 start n = node(*) return n.level as Level, count(n) as Total order by Level;
 
-## Aggregate Traversal Query:
-## Find people reporting to a particular person starting at Level 1
-## and their reportees (direct and indirect) break up by counts
+## Traversal Aggregate Queries
+#################################################
+
+## Return count of next level reportees
+################################################
 start n = node:Person(name = "Jennifer Brooks")
-match n-[*1]->m-[?*]->o
-return m.name as Name, m.level as Level, count(o) as Total
-order by Level, Total desc;
+match n-[*1]->m-[?*1]->o
+return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, count(o) as Total
+order by SubordinateLevel;
 
-## Example at Level 2
-start n = node:Person(name = "Andrew Beckford")
-match n-[*1]->m-[?*]->o
-return m.name as Name, m.level as Level, count(o) as Total
-order by Level, Total desc;
+## Return names of next 2 level reportees
+################################################
+start n = node:Person(name = "Jennifer Brooks")
+match n-[*1]->m-[?*1..2]->o
+return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, count(o) as Total
+order by SubordinateLevel;
 
-## Example at Level 3
-start n = node:Person(name = "Andrew Myles")
-match n-[*1]->m-[?*]->o
-return m.name as Name, m.level as Level, count(o) as Total
-order by Level, Total desc;
+## Return names of next 3 level reportees
+################################################
+start n = node:Person(name = "Jennifer Brooks")
+match n-[*1]->m-[?*1..3]->o
+return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, count(o) as Total
+order by SubordinateLevel;
+
+## Return names of next 4 level reportees
+################################################
+start n = node:Person(name = "Jennifer Brooks")
+match n-[*1]->m-[?*1..4]->o
+return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, count(o) as Total
+order by SubordinateLevel
+
+## Return names of next 5 level reportees
+################################################
+start n = node:Person(name = "Jennifer Brooks")
+match n-[*1]->m-[?*1..5]->o
+return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, count(o) as Total
+order by SubordinateLevel
 
 ## Traversal Queries returning names of people that directly or indirectly report
 ## to a particular person via intermediary bosses.
