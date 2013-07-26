@@ -42,45 +42,9 @@ order by SubordinateLevel;
 ## Generic Query
 ################################################
 start n = node:Person(name = "fName lName")
-match n-[?*1]->m-[?*1..(visibilityLevel - 1)]->o
-return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
-order by SubordinateLevel, ReporteeLevel;
-
-## Return names of next level reportees
-################################################
-start n = node:Person(name = "Jennifer Brooks")
-match n-[*1]->m-[?*1]->o
-return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
-order by SubordinateLevel, ReporteeLevel;
-
-## Return names of next 2 level reportees
-################################################
-start n = node:Person(name = "Jennifer Brooks")
-match n-[*1]->m-[?*1..2]->o
-return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
-order by SubordinateLevel, ReporteeLevel;
-
-## Return names of next 3 level reportees
-################################################
-start n = node:Person(name = "Jennifer Brooks")
-match n-[*1]->m-[?*1..3]->o
-return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
-order by SubordinateLevel, ReporteeLevel;
-
-
-## Return names of next 4 level reportees
-################################################
-start n = node:Person(name = "Jennifer Brooks")
-match n-[*1]->m-[?*1..4]->o
-return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
-order by SubordinateLevel, ReporteeLevel;
-
-## Return names of next 5 level reportees
-################################################
-start n = node:Person(name = "Jennifer Brooks")
-match n-[*1]->m-[?*1..5]->o
-return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
-order by SubordinateLevel, ReporteeLevel;
+match p = n-[?*1..visibilityLevel]->m
+return nodes(p)
+order by length(p);
 
 ## TODO:
 ## Hierarchy Lineage
