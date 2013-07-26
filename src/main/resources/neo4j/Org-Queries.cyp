@@ -31,8 +31,8 @@ start n = node(*) return n.level as Level, count(n) as Total order by Level;
 
 ## Traversal Aggregate Query - Generic Form
 #################################################
-start n = node:Person(name = "some person")
-match n-[?*1..(totalLevels - 1)]-->m-[?*1..(totalLevels -2)]->o
+start n = node:Person(name = "fName lName")
+match n-[?*1..(totalLevels - 1)]->m-[?*1..(totalLevels - 2)]->o
 return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, count(o) as Total
 where n.level + visibilityLevel >= m.level
 order by SubordinateLevel;
@@ -41,8 +41,8 @@ order by SubordinateLevel;
 ## to a particular person via intermediary bosses.
 ## Generic Query
 ################################################
-start n = node:Person(name = "some person")
-match n-[?*1]-->m-[?*1..(visibilityLevel - 1)]->o
+start n = node:Person(name = "fName lName")
+match n-[?*1]->m-[?*1..(visibilityLevel - 1)]->o
 return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, o.name as Reportee, o.level as ReporteeLevel
 order by SubordinateLevel, ReporteeLevel;
 
@@ -85,7 +85,7 @@ order by SubordinateLevel, ReporteeLevel;
 ## TODO:
 ## Hierarchy Lineage
 ##############################################
-start n = node:Person(name = "first37 last222")
-match m<-[DIRECTLY_REPORTS_TO*]-n
+start n = node:Person(name = "fName lName")
+match m<-[DIRECTLY_REPORTS_TO|INDIRECTLY_REPORTS_TO*]-n
 return m.name as Manager, m.level as ManagerLevel, n.name, n.level
 order by ManagerLevel;
