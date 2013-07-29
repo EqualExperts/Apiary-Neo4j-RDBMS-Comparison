@@ -472,3 +472,592 @@ SELECT *
 	WHERE manager.person_id = (SELECT id
                                FROM person
                                WHERE name = "first1 last1");							   
+							   
+##########################################################################################################
+#total level=8
+#current level=6
+
+
+(   SELECT manager.person_id AS directReportees, count(reportee.directly_manages) AS count
+    FROM person_direct_reportee manager
+    JOIN person_direct_reportee reportee
+    ON manager.directly_manages = reportee.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last1117")
+ )   
+UNION
+ (   
+    SELECT manager.directly_manages AS directReportees, count(reportee.directly_manages) AS count
+    FROM person_direct_reportee manager
+    JOIN person_direct_reportee reportee
+    ON manager.directly_manages = reportee.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last1117")
+    GROUP BY directReportees
+
+)                           
+UNION
+(   
+    SELECT reportee.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager
+    JOIN person_direct_reportee reportee
+    ON manager.directly_manages = reportee.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last1117")
+    
+)
+
+#total level=8
+#current level=5
+
+(SELECT T.directReportees AS directReportees, sum(T.count) AS count
+ FROM (    
+    SELECT manager.person_id AS directReportees, 0 AS count
+	FROM person_direct_reportee manager
+	WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last117")   
+    UNION
+    
+	SELECT manager.person_id AS directReportees, count(manager.directly_manages) AS count
+    FROM person_direct_reportee manager
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last117")   
+    UNION                           
+    
+    SELECT manager.person_id AS directReportees, count(reportee.directly_manages) AS count
+    FROM person_direct_reportee manager
+    JOIN person_direct_reportee reportee
+    ON manager.directly_manages = reportee.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last117")
+    GROUP BY directReportees
+    
+    UNION
+    
+    SELECT manager.person_id AS directReportees, count(depth2Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last117")
+    GROUP BY directReportees
+  ) AS T
+ GROUP BY directReportees
+)
+UNION
+(   
+SELECT T.directReportees AS directReportees, sum(T.count) AS count
+FROM (    
+    
+    SELECT manager.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last117")   
+    UNION
+    
+    SELECT reportee.person_id AS directReportees, count(reportee.directly_manages) AS count
+    FROM person_direct_reportee manager
+    JOIN person_direct_reportee reportee
+    ON manager.directly_manages = reportee.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last117")
+    GROUP BY directReportees
+    
+    UNION
+    
+    SELECT depth1Reportees.person_id AS directReportees, count(depth2Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last117")
+    GROUP BY directReportees
+  ) AS T
+ GROUP BY directReportees
+)
+UNION
+ ( SELECT T.directReportees AS directReportees, sum(T.count) AS count
+	FROM(
+	
+	SELECT reportee.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager
+    JOIN person_direct_reportee reportee
+    ON manager.directly_manages = reportee.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last117")
+    GROUP BY directReportees
+	
+	UNION
+	
+	#no. of joins = total level - current level - 1, changes in SELECT clause and addition of GROUP BY clause;otherwise same as below SELECT
+    SELECT depth2Reportees.person_id AS directReportees, count(depth2Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last117")
+    GROUP BY directReportees                           
+) AS T
+GROUP BY directReportees 
+)                          
+UNION
+(   #always for the last level, max no. of joins = total level - current level - 1
+ 
+    SELECT depth2Reportees.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last117")
+    
+)
+#total level=8
+#current level=4
+
+(SELECT T.directReportees AS directReportees, sum(T.count) AS count
+ FROM (    
+  
+	SELECT manager.person_id AS directReportees, 0 AS count
+    FROM person_direct_reportee manager
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+	
+	UNION
+	
+	SELECT manager.person_id AS directReportees, count(manager.directly_manages) AS count
+    FROM person_direct_reportee manager
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")   
+    UNION                           
+    
+    SELECT manager.person_id AS directReportees, count(reportee.directly_manages) AS count
+    FROM person_direct_reportee manager
+    JOIN person_direct_reportee reportee
+    ON manager.directly_manages = reportee.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees
+    
+	UNION
+    
+	SELECT manager.person_id AS directReportees, count(depth2Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees
+	
+	UNION
+    
+    SELECT manager.person_id AS directReportees, count(depth3Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees
+  ) AS T
+ GROUP BY directReportees
+)
+
+UNION
+
+(SELECT T.directReportees AS directReportees, sum(T.count) AS count
+ FROM (    
+  
+	SELECT manager.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")   
+    UNION                           
+    
+    SELECT reportee.person_id AS directReportees, count(reportee.directly_manages) AS count
+    FROM person_direct_reportee manager
+    JOIN person_direct_reportee reportee
+    ON manager.directly_manages = reportee.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees
+    
+	UNION
+    
+	SELECT depth1Reportees.person_id AS directReportees, count(depth2Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees
+	
+	UNION
+    
+    SELECT depth1Reportees.person_id AS directReportees, count(depth3Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees
+  ) AS T
+ GROUP BY directReportees
+)
+UNION
+(   
+SELECT T.directReportees AS directReportees, sum(T.count) AS count
+FROM (    
+    
+    SELECT reportee.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager
+    JOIN person_direct_reportee reportee
+    ON manager.directly_manages = reportee.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+        
+    UNION
+    
+    SELECT depth2Reportees.person_id AS directReportees, count(depth2Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees
+	
+	UNION
+	
+	SELECT depth2Reportees.person_id AS directReportees, count(depth3Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees 
+  ) AS T
+ GROUP BY directReportees
+)
+UNION
+ ( #For level 7; inner unions = total levels - this level; max no. of joins = total level - current level - 1;
+	SELECT T.directReportees AS directReportees, sum(T.count) AS count
+	FROM(
+
+    SELECT depth2Reportees.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    	   
+	UNION
+	
+	#no. of joins = total level - current level - 1, changes in SELECT clause and addition of GROUP BY clause;otherwise same as below SELECT
+    SELECT depth3Reportees.person_id AS directReportees, count(depth3Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees                           
+) AS T
+GROUP BY directReportees 
+)                          
+UNION
+(   #For level 8; inner unions = total levels - this level; max no. of joins = total level - current level - 1;
+		
+ 
+    SELECT depth3Reportees.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    
+)
+
+#total level=8
+#current level=3
+
+(SELECT T.directReportees AS directReportees, sum(T.count) AS count
+ FROM (    
+  
+	SELECT manager.person_id AS directReportees, 0 AS count
+    FROM person_direct_reportee manager
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+	
+	UNION
+	
+	SELECT manager.person_id AS directReportees, count(manager.directly_manages) AS count
+    FROM person_direct_reportee manager
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")   
+    UNION                           
+    
+    SELECT manager.person_id AS directReportees, count(reportee.directly_manages) AS count
+    FROM person_direct_reportee manager
+    JOIN person_direct_reportee reportee
+    ON manager.directly_manages = reportee.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees
+    
+	UNION
+    
+	SELECT manager.person_id AS directReportees, count(depth2Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees
+	
+	UNION
+    
+    SELECT manager.person_id AS directReportees, count(depth3Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")
+    GROUP BY directReportees
+  ) AS T
+ GROUP BY directReportees
+)
+
+UNION
+#For level 5; inner unions = total levels - this level; max no. of joins = total level - current level - 1; 
+(SELECT T.directReportees AS directReportees, sum(T.count) AS count
+ FROM (    
+	>>>> TODO : continue from here
+	SELECT manager.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last17")   
+    UNION                           
+    
+    SELECT depth2Reportees.person_id AS directReportees, count(depth2Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last7")
+    GROUP BY directReportees
+    
+	UNION
+    
+	SELECT depth2Reportees.person_id AS directReportees, count(depth3Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last7")
+    GROUP BY directReportees
+	
+	UNION
+    
+    SELECT depth2Reportees.person_id AS directReportees, count(depth4Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+                JOIN person_direct_reportee depth4Reportees
+                ON depth3Reportees.directly_manages = depth4Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last7")
+    GROUP BY directReportees
+  ) AS T
+ GROUP BY directReportees
+)
+UNION
+( #For level 6; inner unions = total levels - this level; max no. of joins = total level - current level - 1;  
+SELECT T.directReportees AS directReportees, sum(T.count) AS count
+FROM (    
+    
+    SELECT depth2Reportees.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last7")
+    
+	UNION
+    
+    SELECT depth3Reportees.person_id AS directReportees, count(depth3Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last7")
+    GROUP BY directReportees
+	
+	UNION
+	
+	SELECT depth3Reportees.person_id AS directReportees, count(depth4Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+                JOIN person_direct_reportee depth4Reportees
+                ON depth3Reportees.directly_manages = depth4Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last7")
+    GROUP BY directReportees 
+  ) AS T
+ GROUP BY directReportees
+)
+UNION
+ ( #For level 7; inner unions = total levels - this level; max no. of joins = total level - current level - 1;
+	SELECT T.directReportees AS directReportees, sum(T.count) AS count
+	FROM(
+
+    SELECT depth3Reportees.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last7")
+	   
+	UNION
+	
+	#no. of joins = total level - current level - 1, changes in SELECT clause and addition of GROUP BY clause;otherwise same as below SELECT
+    SELECT depth4Reportees.person_id AS directReportees, count(depth4Reportees.directly_manages) AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+                JOIN person_direct_reportee depth4Reportees
+                ON depth3Reportees.directly_manages = depth4Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last7")
+    GROUP BY directReportees                           
+) AS T
+GROUP BY directReportees 
+)                          
+UNION
+(   #For level 8; inner unions = total levels - this level; max no. of joins = total level - current level - 1;
+		
+ 
+    SELECT depth4Reportees.directly_manages AS directReportees, 0 AS count
+    FROM person_direct_reportee manager 
+    JOIN person_direct_reportee depth1Reportees
+    ON manager.directly_manages = depth1Reportees.person_id
+        JOIN person_direct_reportee depth2Reportees
+        ON depth1Reportees.directly_manages = depth2Reportees.person_id
+            JOIN person_direct_reportee depth3Reportees
+            ON depth2Reportees.directly_manages = depth3Reportees.person_id
+                JOIN person_direct_reportee depth4Reportees
+                ON depth3Reportees.directly_manages = depth4Reportees.person_id
+    WHERE manager.person_id = (SELECT id
+                               FROM person
+                               WHERE name = "first1 last7")
+    
+)							   
