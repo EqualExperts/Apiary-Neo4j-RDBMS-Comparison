@@ -370,8 +370,7 @@ SELECT *
 	#2. Total levels can vary
 	#3. Visibility level will vary							   
 ##############################################################################
-## Traversal Queries returning names of people that directly or indirectly report
-## to a particular person via intermediary bosses.
+## Gather Subordinates names till a visibility level from a current level
 ##############################################################################
 
 #Visibility level = 1
