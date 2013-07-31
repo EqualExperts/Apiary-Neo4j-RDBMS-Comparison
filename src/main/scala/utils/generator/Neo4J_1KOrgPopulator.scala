@@ -64,7 +64,7 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 
     /**
      * case 4:
-     * total people in organisation = 1000 with levels = 6, withPersonManagingMaxOf = 10, directlyReportingToMax = 1
+     * total people in organisation = 1000 with levels = 6, withPersonManagingMaxOf = 19, directlyReportingToMax = 1
      *
      * At Level 1 => 1
      * At Level 2 => 5
@@ -109,13 +109,14 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 
     /**
      * Case 6 : (Levels = 8, Manages Limit = 5)
-     * At Level 1 => 2
-     * At Level 2 => 5
-     * At Level 3 => 20
-     * At Level 4 => 70
-     * At Level 5 => 140
-     * At Level 6 => 280
-     * At Level 7 => 483
+     * At Level 1 => 1
+     * At Level 2 => 3
+     * At Level 3 => 7
+     * At Level 4 => 12
+     * At Level 5 => 25
+     * At Level 6 => 52
+     * At Level 7 => 200
+     * At Level 8 => 700
      * */
 
     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 4)

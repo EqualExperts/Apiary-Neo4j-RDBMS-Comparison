@@ -25,67 +25,68 @@ object Neo4J_100KOrgPopulator extends App with NamesGenerator {
      *  Total => 100000
      */
 
-     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-                      .withPeopleAtLevel(1, 4000)
-                      .withPeopleAtLevel(2, 16000)
-                      .withPeopleAtLevel(3, 80000)
-                      .distribute(Even)
+//     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
+//                      .withPeopleAtLevel(1, 4000)
+//                      .withPeopleAtLevel(2, 16000)
+//                      .withPeopleAtLevel(3, 80000)
+//                      .distribute(Contiguous)
 
     /**
      * case 2:
      * total people in organisation = 1000 with levels = 4, withPersonManagingMaxOf = 5, directlyReportingToMax = 1
-     * At Level 1 => 10
-     * At Level 2 => 50
-     * At Level 3 => 200
-     * At Level 4 => 740
-     * Total => 1000
+     * At Level 1 => 1000
+     * At Level 2 => 5000
+     * At Level 3 => 20000
+     * At Level 4 => 74000
+     * Total => 100000
      */
 
-//    val builder  = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-//      .withPeopleAtLevel(1, 10)
-//      .withPeopleAtLevel(2, 43)
-//      .withPeopleAtLevel(3, 200)
-//      .withPeopleAtLevel(4, 747)
+//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
+//      .withPeopleAtLevel(1, 1000)
+//      .withPeopleAtLevel(2, 4300)
+//      .withPeopleAtLevel(3, 20000)
+//      .withPeopleAtLevel(4, 74700)
 //      .distribute(Even)
 
     /**
      * case 3:
      * total people in organisation = 1000 with levels = 5, withPersonManagingMaxOf = 5, directlyReportingToMax = 1
      *
-     * At Level 1 => 3
-     * At Level 2 => 15
-     * At Level 3 => 75
-     * At Level 4 => 300
-     * At Level 5 => 607
-     * Total => 1000
+     * At Level 1 => 300
+     * At Level 2 => 1500
+     * At Level 3 => 7500
+     * At Level 4 => 30000
+     * At Level 5 => 60700
+     * Total => 100000
      */
 
-    //    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-    //      .withPeopleAtLevel(1, 3)
-    //      .withPeopleAtLevel(2, 15)
-    //      .withPeopleAtLevel(3, 75)
-    //      .withPeopleAtLevel(4, 300)
-    //      .withPeopleAtLevel(5, 607)
+//        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
+//          .withPeopleAtLevel(1, 300)
+//          .withPeopleAtLevel(2, 1500)
+//          .withPeopleAtLevel(3, 7500)
+//          .withPeopleAtLevel(4, 30000)
+//          .withPeopleAtLevel(5, 60700)
 
     /**
      * case 4:
      * total people in organisation = 1000 with levels = 6, withPersonManagingMaxOf = 10, directlyReportingToMax = 1
      *
-     * At Level 1 => 1
-     * At Level 2 => 5
-     * At Level 3 => 94
-     * At Level 4 => 200
-     * At Level 5 => 300
-     * At Level 6 => 400
-     * Total => 1000
+     * At Level 1 => 2
+     * At Level 2 => 20
+     * At Level 3 => 100
+     * At Level 4 => 1000
+     * At Level 5 => 10000
+     * At Level 6 => 88878
+     * Total => 100000
      */
 
-    //    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
-    //      .withPeopleAtLevel(1, 3)
-    //      .withPeopleAtLevel(2, 15)
-    //      .withPeopleAtLevel(3, 75)
-    //      .withPeopleAtLevel(4, 300)
-    //      .withPeopleAtLevel(5, 607)
+        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
+          .withPeopleAtLevel(1, 2)
+          .withPeopleAtLevel(2, 20)
+          .withPeopleAtLevel(3, 100)
+          .withPeopleAtLevel(4, 1000)
+          .withPeopleAtLevel(5, 10000)
+          .withPeopleAtLevel(6, 88878)
     //      .distribute(Contiguous)
 
     /**
@@ -105,7 +106,7 @@ object Neo4J_100KOrgPopulator extends App with NamesGenerator {
 //    val neoDb = NeoDB("http://localhost:7474/db/data")
     //	  val basePath = "D:/rnd/apiary"
     val basePath = "/Users/dhavald/Documents/workspace/Apiary"
-    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_100k")
+    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_100k_l6")
 
     builder buildWith neoDb
   }
