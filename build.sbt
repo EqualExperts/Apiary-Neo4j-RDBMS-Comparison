@@ -12,6 +12,8 @@ resolvers += "Neo4J Snapshots and Versions" at "http://m2.neo4j.org/content/grou
 
 resolvers += "jboss" at "http://repository.jboss.org/maven2"
 
+dependencyClasspath in (Compile, Runtime) ++= unmanaged-jars
+
 libraryDependencies ++= Seq(
     "org.neo4j" % "neo4j" % "1.9",
     "org.neo4j" % "neo4j-rest-graphdb" % "1.9",
