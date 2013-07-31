@@ -108,7 +108,7 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 
 
     /**
-     * Case 6 : (Levels = 8, Manages Limit = 5)
+     * Case 6 : (Levels = 8, Manages Limit = 4)
      * At Level 1 => 1
      * At Level 2 => 3
      * At Level 3 => 7

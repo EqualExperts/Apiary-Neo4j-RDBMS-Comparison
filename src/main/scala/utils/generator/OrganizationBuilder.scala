@@ -72,7 +72,10 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
           new Neo4JBatchBuilder(neo4j.batchInserter, peopleAtLevels.toMap, managingMax).build(distributionStrategy)
           neo4j.shutdown
         }
-      case (levels, _) => showErrorMessage(levels.toList)
+      case (levels, _) => {
+        neo4j.shutdown
+        showErrorMessage(levels.toList)
+      }
     }
   }
 
