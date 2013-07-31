@@ -32,11 +32,7 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
   }
 
   private def illFormedLevels =
-    peopleAtLevels.keys filter { level =>
-      !isManageable(level, level + 1)
-    } map {
-      _ + 1
-    } toList
+    peopleAtLevels.keys filter { level => !isManageable(level, level + 1) } map { 1 + } toList
 
   def withPeopleAtLevel(level: Int, howMany: Int): OrganizationBuilder = {
     require(level > 0, "Level needs to be greater than 0")
