@@ -112,33 +112,33 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
     /**
      * Case 4 : (Levels = 6, Manages Limit = 10)
      * At Level 1 => 10
-     * At Level 2 => 100
-     * At Level 3 => 1000
-     * At Level 4 => 10000
-     * At Level 5 => 100000
-     * At Level 6 => 100000
+     * At Level 2 => 95
+     * At Level 3 => 950
+     * At Level 4 => 9500
+     * At Level 5 => 95000
+     * At Level 6 => 894445
      * Total => 1000000
      **/
-    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
-      .withPeopleAtLevel(1, 5)
-      .withPeopleAtLevel(2, 50)
-      .withPeopleAtLevel(3, 500)
-      .withPeopleAtLevel(4, 5000)
-      .withPeopleAtLevel(5, 50000)
-      .withPeopleAtLevel(6, 100000)
-      .distribute(Contiguous)
+//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
+//      .withPeopleAtLevel(1, 10)
+//      .withPeopleAtLevel(2, 95)
+//      .withPeopleAtLevel(3, 950)
+//      .withPeopleAtLevel(4, 9500)
+//      .withPeopleAtLevel(5, 95000)
+//      .withPeopleAtLevel(6, 894445)
+//      .distribute(Contiguous)
 
-/*
+    /**
 		 *	Case 5 : (Levels = 7, Manages Limit = 10)
 		 *  At Level 1 => 1
-         * At Level 2 => 10
-         * At Level 3 => 100
-         * At Level 4 => 1000
-         * At Level 5 => 10000
-         * At Level 6 => 100000
-         * At Level 7 => 1000000
+     * At Level 2 => 10
+     * At Level 3 => 100
+     * At Level 4 => 1000
+     * At Level 5 => 10000
+     * At Level 6 => 100000
+     * At Level 7 => 1000000
 		 * Total => 1111111
-
+     **/
 		val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
 			.withPeopleAtLevel(1, 1)
 			.withPeopleAtLevel(2, 10)
@@ -148,7 +148,7 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
 			.withPeopleAtLevel(6, 100000)
 			.withPeopleAtLevel(7, 1000000)
 			.distribute(Contiguous)
-*/	
+
 /*	
      * Case 6 : (Levels = 8, Manages Limit = 10)
      * At Level 1 => 1

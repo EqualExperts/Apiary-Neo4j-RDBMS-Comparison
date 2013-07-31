@@ -32,9 +32,11 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
   }
 
   private def illFormedLevels =
-    peopleAtLevels.toMap filter { case (level, _) =>
+    peopleAtLevels.keys filter { level =>
       !isManageable(level, level + 1)
-    } unzip
+    } map {
+      _ + 1
+    } toList
 
   def withPeopleAtLevel(level: Int, howMany: Int): OrganizationBuilder = {
     require(level > 0, "Level needs to be greater than 0")
@@ -68,13 +70,13 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
   def buildWith(neo4j: NeoDBBatchInserter): Unit = {
     info("Total in Org = %d people\n", totalPeople)
     illFormedLevels match {
-      case (Nil, _) => {
+      case Nil => {
           new Neo4JBatchBuilder(neo4j.batchInserter, peopleAtLevels.toMap, managingMax).build(distributionStrategy)
           neo4j.shutdown
         }
-      case (levels, _) => {
+      case levels => {
         neo4j.shutdown
-        showErrorMessage(levels.toList)
+        showErrorMessage(levels)
       }
     }
   }
@@ -82,18 +84,18 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
   def buildWith(neo4j: NeoDB): Unit = {
     info("Total in Org = %d people\n", totalPeople)
     illFormedLevels match {
-      case (Nil, _) => neo4j usingTx { graphDb =>
+      case Nil => neo4j usingTx { graphDb =>
           new Neo4JBuilder(graphDb, peopleAtLevels.toMap, managingMax).build(distributionStrategy)
         }
-      case (levels, _) => showErrorMessage(levels.toList)
+      case levels => showErrorMessage(levels)
     }
   }
 
   def buildWith(mysql: Connection): Unit = {
     info("Total in Org = %d people\n", totalPeople)
     illFormedLevels match {
-      case (Nil, _)    => new MySQLBuilder(mysql, peopleAtLevels.toMap).build
-      case (levels, _) => showErrorMessage(levels.toList)
+      case Nil    => new MySQLBuilder(mysql, peopleAtLevels.toMap).build
+      case levels => showErrorMessage(levels)
     }
   }
 }
