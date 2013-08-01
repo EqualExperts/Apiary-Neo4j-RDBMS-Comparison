@@ -169,7 +169,7 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
       .withPeopleAtLevel(4, 1375)
       .withPeopleAtLevel(5, 6875)
       .withPeopleAtLevel(6, 34375)
-	    .withPeopleAtLevel(7, 17187)
+	    .withPeopleAtLevel(7, 171875)
 	    .withPeopleAtLevel(8, 785159)
       .distribute(Contiguous)
 
