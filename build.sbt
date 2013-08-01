@@ -12,6 +12,13 @@ resolvers += "Neo4J Snapshots and Versions" at "http://m2.neo4j.org/content/grou
 
 resolvers += "jboss" at "http://repository.jboss.org/maven2"
 
+//console <<= (compilers in console, fullClasspath in Runtime, scalacOptions in console, initialCommands in console, streams) map {
+//  (cs, cp, options, initCommands, s) =>
+//     val cleanupCommands = ""
+//     (new Console(cs.scalac))(Build.data(cp), options, initCommands, cleanupCommands, s.log).foreach(msg => sys.error(msg))
+//     println()
+//}
+
 libraryDependencies ++= Seq(
     "org.neo4j" % "neo4j" % "1.9",
     "org.neo4j" % "neo4j-rest-graphdb" % "1.9",
