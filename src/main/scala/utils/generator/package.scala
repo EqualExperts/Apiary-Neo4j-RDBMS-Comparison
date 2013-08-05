@@ -26,4 +26,14 @@ package object generator {
     info(message + "...Complete. Execution Time %d(ms) =~ %.3f(secs)", diff, diff.toFloat/1000)
     result
   }
+
+  def measure[O](message: String, f: () => O): O = {
+    val startTime = System.currentTimeMillis
+    info(message + "...")
+    val result = f()
+    val diff = System.currentTimeMillis - startTime
+    info(message + "...Complete. Execution Time %d(ms) =~ %.3f(secs)", diff, diff.toFloat/1000)
+    result
+  }
+
 }

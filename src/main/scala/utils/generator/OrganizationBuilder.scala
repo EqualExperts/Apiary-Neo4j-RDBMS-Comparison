@@ -81,7 +81,7 @@ class OrganizationBuilder private (val names: List[String], val managingMax: Int
     info("Total in Org = %d people\n", totalPeople)
     illFormedLevels match {
       case Nil => neo4j usingTx { graphDb =>
-          new Neo4JBuilder(graphDb, peopleAtLevels.toMap, managingMax).build(distributionStrategy)
+          new Neo4JGraphBuilder(graphDb, peopleAtLevels.toMap, managingMax).build(distributionStrategy)
         }
       case levels => showErrorMessage(levels)
     }

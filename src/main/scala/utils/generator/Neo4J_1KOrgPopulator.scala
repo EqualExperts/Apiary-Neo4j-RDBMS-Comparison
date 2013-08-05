@@ -7,8 +7,12 @@ import org.neo4j.kernel.DefaultFileSystemAbstraction
 object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 
   override def main(args: Array[String]) = {
-    val names = syntheticNames(1000)
-//    val names = naturalNames(1000)
+//    val names = syntheticNames(1000)
+    val names = naturalNames(1000)
+
+    //	  val basePath = "D:/rnd/apiary"
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary"
+
 
     /**
      * case 1:
@@ -19,11 +23,11 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
      *  Total => 1000
      */
 
-//        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-//                            .withPeopleAtLevel(1, 40)
-//                            .withPeopleAtLevel(2, 160)
-//                            .withPeopleAtLevel(3, 800)
-//                            .distribute(Contiguous)
+        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
+                            .withPeopleAtLevel(1, 40)
+                            .withPeopleAtLevel(2, 160)
+                            .withPeopleAtLevel(3, 800)
+                            .distribute(Contiguous)
 
     /**
      * case 2:
@@ -119,20 +123,18 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
      * At Level 8 => 700
      * */
 
-    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 4)
-      .withPeopleAtLevel(1, 1)
-      .withPeopleAtLevel(2, 3)
-      .withPeopleAtLevel(3, 7)
-      .withPeopleAtLevel(4, 12)
-      .withPeopleAtLevel(5, 25)
-      .withPeopleAtLevel(6, 52)
-      .withPeopleAtLevel(7, 200)
-      .withPeopleAtLevel(8, 700)
-      .distribute(Contiguous)
+//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 4)
+//      .withPeopleAtLevel(1, 1)
+//      .withPeopleAtLevel(2, 3)
+//      .withPeopleAtLevel(3, 7)
+//      .withPeopleAtLevel(4, 12)
+//      .withPeopleAtLevel(5, 25)
+//      .withPeopleAtLevel(6, 52)
+//      .withPeopleAtLevel(7, 200)
+//      .withPeopleAtLevel(8, 700)
+//      .distribute(Contiguous)
 
-    //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary"
-    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1k_l8")
+    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1k_l3")
     builder buildWith neoDb
   }
 }

@@ -1,58 +1,42 @@
 package utils.generator
 
-import org.neo4j.graphdb.{RelationshipType, Node, GraphDatabaseService}
-import DistributionStrategy._
+import org.neo4j.graphdb.RelationshipType
+import utils.generator.DistributionStrategy._
 import scala.annotation.tailrec
 
-private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels: Map[Int, List[String]], val managingMax: Int) {
-
-  type Relationship = (Node, Node)
+abstract class Neo4JBuilder[N, R](val peopleAtLevels: Map[Int, List[String]], val managingMax: Int) {
   val maxLevels = peopleAtLevels.size
-  private val PERSON = "Person"
-  private val PERSON_NAME = "name"
-  private val personIndex = neo4j.index.forNodes(PERSON)
+  type Relation = (N, N)
+  protected val PERSON = "Person"
+  protected val PERSON_NAME = "name"
 
-  private object DIRECTLY_MANAGES extends RelationshipType {
+
+  protected object DIRECTLY_MANAGES extends RelationshipType {
     def name = getClass.getSimpleName.replace("$", "")
   }
 
-  private object INDIRECTLY_MANAGES extends RelationshipType {
+  protected object INDIRECTLY_MANAGES extends RelationshipType {
     def name = getClass.getSimpleName.replace("$", "")
   }
 
-  private def toNode(neo4j: GraphDatabaseService, level: Int, name: String): Node = {
-    val personNode = neo4j.createNode()
-    personNode.setProperty(PERSON_NAME, name)
-    personNode.setProperty("level", level)
-    personNode.setProperty("type", PERSON)
-    personNode
+  private def indexAll(nodesAtLevels: Map[Int, List[N]]) = {
+    val nodes = nodesAtLevels.values
+    nodes.flatten.foreach(persistToIndex)
   }
 
-  private def index(node: Node) = personIndex.add(node, PERSON_NAME, node.getProperty(PERSON_NAME))
+  private def makeRelationshipsBetween(nodesAtLevels: Map[Int, List[N]], useDistribution: DistributionStrategy): List[Relation] = {
 
-  private def indexAll(nodesAtLevels: Map[Int, List[Node]]) = nodesAtLevels.values.flatten.foreach(index)
+    def parentToChildrenRelationships(parentNode: N, children: List[N]): List[Relation] =
+      for (child <- children) yield (parentNode, child)
 
-  private def persistNodes(graphDb: GraphDatabaseService) =
-    peopleAtLevels map {
-      case (level, people) => (level, people map { toNode (graphDb, level, _) })
-    } withDefaultValue Nil
-
-  private def persistRelationships(relationships: List[Relationship]) =
-    relationships map { case (manager, reportee) => manager.createRelationshipTo(reportee, DIRECTLY_MANAGES) }
-
-  private def makeRelationshipsBetween(nodesAtLevels: Map[Int, List[Node]], distributionStrategy: DistributionStrategy): List[Relationship] = {
-
-    def parentToChildrenRelationships(parent: Node, children: List[Node]): List[Relationship] =
-      for (child <- children) yield (parent, child)
-
-    def between(parentNodes: List[Node], childNodes: List[Node]) : List[Relationship] = {
-      val manages = distributionStrategy match {
+    def between(parentNodes: List[N], childNodes: List[N]) : List[Relation] = {
+      val manages = useDistribution match {
         case Contiguous => managingMax
         case Even =>   Math.min(Math.ceil(childNodes.length.toFloat/parentNodes.length).toInt, managingMax)
       }
 
       @tailrec
-      def between0(acc: List[Relationship], parentNodes: List[Node], from: Int, to: Int): List[Relationship] =
+      def between0(acc: List[Relation], parentNodes: List[N], from: Int, to: Int): List[Relation] =
         parentNodes match {
           case Nil =>  acc
           case parent :: rest => {
@@ -64,7 +48,7 @@ private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels:
     }
 
     @tailrec
-    def relationships(acc: List[Relationship], level: Int) : List[Relationship] = {
+    def relationships(acc: List[Relation], level: Int) : List[Relation] = {
       if (level == maxLevels) acc
       else {
         val parentNodes = nodesAtLevels(level)
@@ -75,11 +59,23 @@ private class Neo4JBuilder (val neo4j: GraphDatabaseService, val peopleAtLevels:
     relationships(Nil, level = 1)
   }
 
-  def build(distributionStrategy: DistributionStrategy) = {
-    val people = measure("Persisting People", persistNodes, neo4j)
+  private def persistNodes() =
+    peopleAtLevels.map { case (level, people) =>
+                            (level, people.map { persistNode (level, _) })
+                  }.withDefaultValue(Nil)
+
+  def build(useDistribution: DistributionStrategy) = {
+    val people = measure("Persisting People", persistNodes)
     measure("Indexing People", indexAll, people)
-    info("Creating Relationships using %s Distribution strategy", distributionStrategy)
-    val managerReporteePairs = makeRelationshipsBetween(people, distributionStrategy)
+    info("Creating Relationships using %s Distribution strategy", useDistribution)
+    val managerReporteePairs = makeRelationshipsBetween(people, useDistribution)
     measure("Persisting Relationships", persistRelationships, managerReporteePairs)
+    afterBuild
   }
+
+  protected def afterBuild = {}
+  protected def createIndex(name: String) : AnyRef
+  protected def persistNode(level: Int, name: String): N
+  protected def persistToIndex(node: N): Unit
+  protected def persistRelationships(relationships: List[Relation]) : List[R]
 }

@@ -43,7 +43,7 @@ object Neo4J_100KOrgPopulator extends App with NamesGenerator {
 
     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
       .withPeopleAtLevel(1, 1000)
-      .withPeopleAtLevel(2, 5000)
+      .withPeopleAtLevel(2, 500000000)
       .withPeopleAtLevel(3, 20000)
       .withPeopleAtLevel(4, 74000)
 //      .distribute(Even)
