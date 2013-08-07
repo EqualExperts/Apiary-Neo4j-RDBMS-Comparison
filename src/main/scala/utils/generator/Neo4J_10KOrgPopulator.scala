@@ -134,7 +134,7 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
 
 //    val neoDb = NeoDB("http://localhost:7474/db/data")
     //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary"
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
     val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_10k_l8")
 
     builder buildWith neoDb
