@@ -76,13 +76,23 @@ public class MainClass {
         }
         SqlOrgHierarchy sqlOrgHierarchy = new SqlOrgHierarchy.Builder(orgDataAtLevel).build();
         //sqlOrgHierarchy.checkForInConsistentData();
-        System.out.println("Creating person objects....");
+        System.out.println("Started creating person objects....");
+        long tStartPerson = System.currentTimeMillis();
         SortedMap<Integer, OrgLevelData> levelWithPeople = sqlOrgHierarchy.toLevelWithPersonObjs(orgDataAtLevel);
-        System.out.println("Creating direct managers....");
+        long tEndPerson = System.currentTimeMillis();
+        System.out.println("Created person objects. Time taken : " + (tEndPerson - tStartPerson)/1000 + " sec/s");
+
+        System.out.println("Started creating direct managers....");
+        long tStartDirectManager = System.currentTimeMillis();
         List<DirectManager> directManagers = sqlOrgHierarchy.createDirectManagerRelationships(levelWithPeople);
-        System.out.println("Saving data....");
+        long tEndDirectManager = System.currentTimeMillis();
+        System.out.println("Created direct managers. Time taken : " + (tEndDirectManager - tStartDirectManager)/1000 + " sec/s");
+
+        System.out.println("Started saving data....");
+        long tStartSave = System.currentTimeMillis();
         SqlOrgHierarchyDAO.saveOrgData(levelWithPeople, directManagers);
-        System.out.println("Organisation data populated in DB");
+        long tEndSave = System.currentTimeMillis();
+        System.out.println("Organisation data saved in DB. Time taken : " + (tEndSave - tStartSave)/1000 + " sec/s");
     }
 
     private static SortedMap<Integer, OrgLevelData> compileOrgDataFromResources() throws IOException {
@@ -183,9 +193,8 @@ public class MainClass {
        // peopleAtLevel.put(LEVEL_THIRTEEN, new OrgLevelData(fullNames.subList(120, 400),DIRECTLY_MANAGES_LIMIT_LEVEL_THIRTEEN));
        // peopleAtLevel.put(LEVEL_FOURTEEN, new OrgLevelData(fullNames.subList(400, 2000),DIRECTLY_MANAGES_LIMIT_LEVEL_FOURTEEN));
        // peopleAtLevel.put(LEVEL_FIFTEEN, new OrgLevelData(fullNames.subList(2000, 10000),DIRECTLY_MANAGES_LIMIT_LEVEL_FIFTEEN));
-        
 
-		
+
 /*        Case 1 :  /*
 					* Case 1 : (Levels = 3, Manages Limit = 100)
 					* At Level 1 => 100
@@ -233,8 +242,24 @@ public class MainClass {
                 peopleAtLevel.put(LEVEL_ONE, new OrgLevelData(fullNames.subList(0, 40), DIRECTLY_MANAGES_LIMIT_LEVEL_ONE));	
 		        peopleAtLevel.put(LEVEL_TWO, new OrgLevelData(fullNames.subList(40, 200), DIRECTLY_MANAGES_LIMIT_LEVEL_TWO));
 		        peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(200, 1000), DIRECTLY_MANAGES_LIMIT_LEVEL_THREE));	
-*/    
-/*        Case 2 : (Levels = 4, Manages Limit = 5)  
+*/
+
+        /**
+         * case 1:
+         * total people in organisation = 2000000, with Levels = 3, withPersonManagingMaxOf = 1000, directlyReportingToMax = 1
+         *  At Level 1 => 10
+         *  At Level 2 => 10000
+         *  At Level 3 => 1989990
+         *  Total => 2000000
+
+
+        peopleAtLevel.put(LEVEL_ONE, new OrgLevelData(fullNames.subList(0, 10), 1000));
+        peopleAtLevel.put(LEVEL_TWO, new OrgLevelData(fullNames.subList(10, 10010), 1000));
+        peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(10010, 2000000), 1000));
+*/
+
+
+/*        Case 2 : (Levels = 4, Manages Limit = 5)
          val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
                           .withPeopleAtLevel(1, 10)
                           .withPeopleAtLevel(2, 43)
@@ -294,7 +319,26 @@ public class MainClass {
 		        peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(408, 20408), 50));	
 		        peopleAtLevel.put(LEVEL_FOUR, new OrgLevelData(fullNames.subList(20408, 1000000),50));	
 */
-   
+
+/**
+                 * case 2:
+                 * total people in organisation = 2000000 with levels = 4, withPersonManagingMaxOf = 500, directlyReportingToMax = 1
+                 * At Level 1 => 5
+                 * At Level 2 => 25
+                 * At Level 3 => 4000
+                 * At Level 4 => 1995970
+                 * Total => 2000000
+
+
+                 peopleAtLevel.put(LEVEL_ONE, new OrgLevelData(fullNames.subList(0, 5), 500));
+                 peopleAtLevel.put(LEVEL_TWO, new OrgLevelData(fullNames.subList(5, 30), 500));
+                 peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(30, 4030), 500));
+                 peopleAtLevel.put(LEVEL_FOUR, new OrgLevelData(fullNames.subList(4030, 2000000),500));
+ */
+
+
+
+
 /*		Case 3 : (Levels = 5, Manages Limit = 5)
 			      At Level 1 => 3      
 			      At Level 2 => 15   
@@ -362,7 +406,24 @@ public class MainClass {
 		        peopleAtLevel.put(LEVEL_FOUR, new OrgLevelData(fullNames.subList(3255, 81380),25));	
 		        peopleAtLevel.put(LEVEL_FIVE, new OrgLevelData(fullNames.subList(81380, 1000000),25));
 */
- 
+/**
+         * case 3:
+         * total people in organisation = 2000000 with levels = 5, withPersonManagingMaxOf = 500, directlyReportingToMax = 1
+         *
+         * At Level 1 => 3
+         * At Level 2 => 15
+         * At Level 3 => 400
+         * At Level 4 => 4000
+         * At Level 5 => 1995582
+         * Total => 2000000
+
+         peopleAtLevel.put(LEVEL_ONE, new OrgLevelData(fullNames.subList(0, 3), 500));
+         peopleAtLevel.put(LEVEL_TWO, new OrgLevelData(fullNames.subList(3, 18), 500));
+         peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(18, 418), 500));
+         peopleAtLevel.put(LEVEL_FOUR, new OrgLevelData(fullNames.subList(418, 4418),500));
+         peopleAtLevel.put(LEVEL_FIVE, new OrgLevelData(fullNames.subList(4418, 2000000),500));
+ */
+
 /*
 				* case 4:
 				* total people in organisation = 100000 with levels = 6, withPersonManagingMaxOf = 10, directlyReportingToMax = 1
@@ -492,6 +553,25 @@ public class MainClass {
                 peopleAtLevel.put(LEVEL_SIX, new OrgLevelData(fullNames.subList(105555, 1000000),10));
 */
 
+/**
+             * case 4:
+             * total people in organisation = 2000000 with levels = 6, withPersonManagingMaxOf = 500, directlyReportingToMax = 1
+             *
+             * At Level 1 => 3
+             * At Level 2 => 10
+             * At Level 3 => 50
+             * At Level 4 => 400
+             * At Level 5 => 20000
+             * At Level 6 => 1979537
+             * Total => 2000000
+
+            peopleAtLevel.put(LEVEL_ONE, new OrgLevelData(fullNames.subList(0, 3), 500));
+            peopleAtLevel.put(LEVEL_TWO, new OrgLevelData(fullNames.subList(3, 13), 500));
+            peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(13, 63), 500));
+            peopleAtLevel.put(LEVEL_FOUR, new OrgLevelData(fullNames.subList(63, 463),500));
+            peopleAtLevel.put(LEVEL_FIVE, new OrgLevelData(fullNames.subList(463, 20463),500));
+            peopleAtLevel.put(LEVEL_SIX, new OrgLevelData(fullNames.subList(20463, 2000000),500));
+ */
  /*
 				* case 5:
 				* total people in organisation = 100000 with levels = 7, withPersonManagingMaxOf = 5, directlyReportingToMax = 1
@@ -634,7 +714,31 @@ public class MainClass {
 		        peopleAtLevel.put(LEVEL_SIX, new OrgLevelData(fullNames.subList(23405, 187245),8));									
 		        peopleAtLevel.put(LEVEL_SEVEN, new OrgLevelData(fullNames.subList(187245, 1000000),8));
 */
-				
+
+/**
+             * case 5:
+             * total people in organisation = 2000000 with levels = 7, withPersonManagingMaxOf = 100, directlyReportingToMax = 1
+             *
+             * At Level 1 => 2
+             * At Level 2 => 50
+             * At Level 3 => 200
+             * At Level 4 => 1000
+             * At Level 5 => 10000
+             * At Level 6 => 100000
+             * At Level 7 => 1888748
+             * Total => 2000000
+
+
+             peopleAtLevel.put(LEVEL_ONE, new OrgLevelData(fullNames.subList(0, 2), 100));
+             peopleAtLevel.put(LEVEL_TWO, new OrgLevelData(fullNames.subList(2, 52), 100));
+             peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(52, 252), 100));
+             peopleAtLevel.put(LEVEL_FOUR, new OrgLevelData(fullNames.subList(252, 1252),100));
+             peopleAtLevel.put(LEVEL_FIVE, new OrgLevelData(fullNames.subList(1252, 11252),100));
+             peopleAtLevel.put(LEVEL_SIX, new OrgLevelData(fullNames.subList(11252, 111252),100));
+             peopleAtLevel.put(LEVEL_SEVEN, new OrgLevelData(fullNames.subList(111252, 2000000),100));
+ */
+
+
 /*val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 4)
       .withPeopleAtLevel(1, 5)
       .withPeopleAtLevel(2, 19)
@@ -749,7 +853,7 @@ public class MainClass {
 						* At Level 7 => 171875
 						* At Level 8 => 785159
 						*  Total => 1000000
-*/    
+
 						peopleAtLevel.put(LEVEL_ONE, new OrgLevelData(fullNames.subList(0, 11), DIRECTLY_MANAGES_LIMIT_LEVEL_ONE));	
 		                peopleAtLevel.put(LEVEL_TWO, new OrgLevelData(fullNames.subList(11, 66), DIRECTLY_MANAGES_LIMIT_LEVEL_TWO));
 		                peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(66, 341), DIRECTLY_MANAGES_LIMIT_LEVEL_THREE));	
@@ -758,7 +862,29 @@ public class MainClass {
 		                peopleAtLevel.put(LEVEL_SIX, new OrgLevelData(fullNames.subList(8591, 42966),DIRECTLY_MANAGES_LIMIT_LEVEL_SIX));									
 		                peopleAtLevel.put(LEVEL_SEVEN, new OrgLevelData(fullNames.subList(42966, 214841),DIRECTLY_MANAGES_LIMIT_LEVEL_SEVEN));	
 		                peopleAtLevel.put(LEVEL_EIGHT, new OrgLevelData(fullNames.subList(214841, 1000000),DIRECTLY_MANAGES_LIMIT_LEVEL_EIGHT));
- 	 
+*/
+/**
+         * case 6:
+         * total people in organisation = 2000000 with levels = 8, withPersonManagingMaxOf = 50, directlyReportingToMax = 1
+         *
+         * At Level 1 => 2
+         * At Level 2 => 20
+         * At Level 3 => 100
+         * At Level 4 => 500
+         * At Level 5 => 5000
+         * At Level 6 => 10000
+         * At Level 7 => 50000
+         * At Level 8 => 1934378
+         * Total => 2000000
+ */
+         peopleAtLevel.put(LEVEL_ONE, new OrgLevelData(fullNames.subList(0, 2), 50));
+         peopleAtLevel.put(LEVEL_TWO, new OrgLevelData(fullNames.subList(2, 22), 50));
+         peopleAtLevel.put(LEVEL_THREE, new OrgLevelData(fullNames.subList(22, 122), 50));
+         peopleAtLevel.put(LEVEL_FOUR, new OrgLevelData(fullNames.subList(122, 622),50));
+         peopleAtLevel.put(LEVEL_FIVE, new OrgLevelData(fullNames.subList(622, 5622),50));
+         peopleAtLevel.put(LEVEL_SIX, new OrgLevelData(fullNames.subList(5622, 15622),50));
+         peopleAtLevel.put(LEVEL_SEVEN, new OrgLevelData(fullNames.subList(15622, 65622),50));
+         peopleAtLevel.put(LEVEL_EIGHT, new OrgLevelData(fullNames.subList(65622, 2000000),50));
 
 
 	
