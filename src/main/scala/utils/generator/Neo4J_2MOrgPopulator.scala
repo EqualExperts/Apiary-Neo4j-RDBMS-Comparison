@@ -96,15 +96,15 @@ object Neo4J_2MOrgPopulator extends App with NamesGenerator {
      * Total => 2000000
      */
 
-            val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 100)
-              .withPeopleAtLevel(1, 2)
-              .withPeopleAtLevel(2, 50)
-              .withPeopleAtLevel(3, 200)
-              .withPeopleAtLevel(4, 1000)
-              .withPeopleAtLevel(5, 10000)
-              .withPeopleAtLevel(6, 100000)
-              .withPeopleAtLevel(7, 1888748)
-              .distribute(Contiguous)
+//            val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 100)
+//              .withPeopleAtLevel(1, 2)
+//              .withPeopleAtLevel(2, 50)
+//              .withPeopleAtLevel(3, 200)
+//              .withPeopleAtLevel(4, 1000)
+//              .withPeopleAtLevel(5, 10000)
+//              .withPeopleAtLevel(6, 100000)
+//              .withPeopleAtLevel(7, 1888748)
+//              .distribute(Contiguous)
 
     /**
      * case 6:
@@ -121,21 +121,21 @@ object Neo4J_2MOrgPopulator extends App with NamesGenerator {
      * Total => 2000000
      */
 
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
-//      .withPeopleAtLevel(1, 2)
-//      .withPeopleAtLevel(2, 20)
-//      .withPeopleAtLevel(3, 100)
-//      .withPeopleAtLevel(4, 500)
-//      .withPeopleAtLevel(5, 5000)
-//      .withPeopleAtLevel(6, 10000)
-//      .withPeopleAtLevel(7, 50000)
-//      .withPeopleAtLevel(8, 1934378)
-//      .distribute(Contiguous)
+    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
+      .withPeopleAtLevel(1, 2)
+      .withPeopleAtLevel(2, 20)
+      .withPeopleAtLevel(3, 100)
+      .withPeopleAtLevel(4, 500)
+      .withPeopleAtLevel(5, 5000)
+      .withPeopleAtLevel(6, 10000)
+      .withPeopleAtLevel(7, 50000)
+      .withPeopleAtLevel(8, 1934378)
+      .distribute(Contiguous)
 
     //    val neoDb = NeoDB("http://localhost:7474/db/data")
     //	  val basePath = "D:/rnd/apiary"
     val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
-    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_2m_l7")
+    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_2m_l8")
 
     builder buildWith neoDb
   }

@@ -7,7 +7,6 @@ start n = node(*) match n-[r?]->() return count(distinct(n)), count(distinct(r))
 ## Delete All nodes and relationships
 start n = node(*) match n-[r?]->() delete r, n;
 
-
 ## Delete Node 0
 start n = node(0) delete n;
 
