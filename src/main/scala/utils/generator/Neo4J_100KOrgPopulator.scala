@@ -18,18 +18,18 @@ object Neo4J_100KOrgPopulator extends App with NamesGenerator {
 
     /**
      * case 1:
-     * total people in organisation = 100000, with Levels = 3, withPersonManagingMaxOf = 5, directlyReportingToMax = 1
+     * total people in organisation = 100000, with Levels = 3, withPersonManagingMaxOf = 500, directlyReportingToMax = 1
      *  At Level 1 => 4000
      *  At Level 2 => 16000
      *  At Level 3 => 80000
      *  Total => 100000
      */
 
-//     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-//                      .withPeopleAtLevel(1, 4000)
-//                      .withPeopleAtLevel(2, 16000)
-//                      .withPeopleAtLevel(3, 80000)
-//                      .distribute(Contiguous)
+     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 500)
+                      .withPeopleAtLevel(1, 10)
+                      .withPeopleAtLevel(2, 1000)
+                      .withPeopleAtLevel(3, 98990)
+                      .distribute(Contiguous)
 
     /**
      * case 2:
@@ -41,11 +41,11 @@ object Neo4J_100KOrgPopulator extends App with NamesGenerator {
      * Total => 100000
      */
 
-    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-      .withPeopleAtLevel(1, 1000)
-      .withPeopleAtLevel(2, 500000000)
-      .withPeopleAtLevel(3, 20000)
-      .withPeopleAtLevel(4, 74000)
+//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
+//      .withPeopleAtLevel(1, 1000)
+//      .withPeopleAtLevel(2, 500000000)
+//      .withPeopleAtLevel(3, 20000)
+//      .withPeopleAtLevel(4, 74000)
 //      .distribute(Even)
 
     /**
@@ -139,8 +139,8 @@ object Neo4J_100KOrgPopulator extends App with NamesGenerator {
 
     //    val neoDb = NeoDB("http://localhost:7474/db/data")
     //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary"
-    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_100k_l4")
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
+    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_100k_l3")
 
     builder buildWith neoDb
   }
