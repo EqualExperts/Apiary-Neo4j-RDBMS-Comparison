@@ -8,6 +8,8 @@ import org.neo4j.graphdb.index.IndexHits
 import java.util
 import org.neo4j.unsafe.batchinsert.{BatchInserters, BatchInserterImpl}
 import org.neo4j.kernel.impl.nioneo.store.FileSystemAbstraction
+import org.neo4j.kernel.EmbeddedGraphDatabase
+import org.neo4j.graphdb.factory.GraphDatabaseFactory
 
 class NeoDB private (val neo4j: GraphDatabaseService) {
 
@@ -194,8 +196,20 @@ class NeoDB private (val neo4j: GraphDatabaseService) {
   }
 }
 
+object Mode extends Enumeration {
+  type Mode = Value
+  val Embedded, Server = Value
+}
+
+import Mode._
+
 object NeoDB {
-  def apply(url: String) = new NeoDB(new RestGraphDatabase(url))
+  def apply(url: String, mode: Mode = Server) = mode match {
+    case Server => new NeoDB(new RestGraphDatabase(url))
+    case Embedded => new NeoDB(new GraphDatabaseFactory().newEmbeddedDatabase(url))
+    case _  => sys.error("Don't know how to process the Mode")
+  }
+
   def apply(url: String, user: String, password: String) = new NeoDB(new RestGraphDatabase(url, user, password))
 }
 

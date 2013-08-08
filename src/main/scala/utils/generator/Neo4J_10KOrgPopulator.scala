@@ -18,11 +18,11 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      *  Total => 10000
      */
 
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-//                       .withPeopleAtLevel(1, 400)
-//                       .withPeopleAtLevel(2, 1600)
-//                       .withPeopleAtLevel(3, 8000)
-//                       .distribute(Contiguous)
+    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
+                       .withPeopleAtLevel(1, 4)
+                       .withPeopleAtLevel(2, 200)
+                       .withPeopleAtLevel(3, 9796)
+                       .distribute(Contiguous)
 
     /**
      * case 2:
@@ -121,21 +121,21 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      * Total => 10000
      */
 
-        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-          .withPeopleAtLevel(1, 4)
-          .withPeopleAtLevel(2, 20)
-          .withPeopleAtLevel(3, 80)
-          .withPeopleAtLevel(4, 250)
-          .withPeopleAtLevel(5, 700)
-          .withPeopleAtLevel(6, 1400)
-          .withPeopleAtLevel(7, 2500)
-          .withPeopleAtLevel(8, 5046)
-          .distribute(Contiguous)
+//        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
+//          .withPeopleAtLevel(1, 4)
+//          .withPeopleAtLevel(2, 20)
+//          .withPeopleAtLevel(3, 80)
+//          .withPeopleAtLevel(4, 250)
+//          .withPeopleAtLevel(5, 700)
+//          .withPeopleAtLevel(6, 1400)
+//          .withPeopleAtLevel(7, 2500)
+//          .withPeopleAtLevel(8, 5046)
+//          .distribute(Contiguous)
 
 //    val neoDb = NeoDB("http://localhost:7474/db/data")
     //	  val basePath = "D:/rnd/apiary"
     val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
-    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_10k_l8")
+    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_10k_l3")
 
     builder buildWith neoDb
   }
