@@ -71,21 +71,21 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
      * Total => 1000000
      **/
 
-    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 1000)
-      .withPeopleAtLevel(1, 10)
-      .withPeopleAtLevel(2, 10000)
-      .withPeopleAtLevel(3, 989990)
-      .distribute(Contiguous)
+//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 1000)
+//      .withPeopleAtLevel(1, 10)
+//      .withPeopleAtLevel(2, 10000)
+//      .withPeopleAtLevel(3, 989990)
+//      .distribute(Contiguous)
 
     /**
-     * Case 2 : (Levels = 4, Manages Limit = 50)
+     * Case 2 : (Levels = 4, Manages Limit = 500)
      * At Level 1 => 8
      * At Level 2 => 400
      * At Level 3 => 20000
      * At Level 4 => 979592
      * Total => 1000000
      **/
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
+//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 500)
 //      .withPeopleAtLevel(1, 8)
 //      .withPeopleAtLevel(2, 400)
 //      .withPeopleAtLevel(3, 20000)
@@ -93,7 +93,7 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
 //      .distribute(Contiguous)
 
     /**
-     * Case 3 : (Levels = 5, Manages Limit = 25)
+     * Case 3 : (Levels = 5, Manages Limit = 500)
      * At Level 1 => 5
      * At Level 2 => 125
      * At Level 3 => 3125
@@ -162,19 +162,19 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
      *  Total => 1000000
      */
 
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-//      .withPeopleAtLevel(1, 11)
-//      .withPeopleAtLevel(2, 55)
-//      .withPeopleAtLevel(3, 275)
-//      .withPeopleAtLevel(4, 1375)
-//      .withPeopleAtLevel(5, 6875)
-//      .withPeopleAtLevel(6, 34375)
-//	    .withPeopleAtLevel(7, 171875)
-//	    .withPeopleAtLevel(8, 785159)
-//      .distribute(Contiguous)
+    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
+      .withPeopleAtLevel(1, 2)
+      .withPeopleAtLevel(2, 20)
+      .withPeopleAtLevel(3, 100)
+      .withPeopleAtLevel(4, 500)
+      .withPeopleAtLevel(5, 5000)
+      .withPeopleAtLevel(6, 10000)
+	    .withPeopleAtLevel(7, 50000)
+	    .withPeopleAtLevel(8, 934378)
+      .distribute(Contiguous)
 
 	//val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1m_case6")  
-	  val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1m_l3")
+	  val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1m_l8")
     builder buildWith neoDb
   }
 }
