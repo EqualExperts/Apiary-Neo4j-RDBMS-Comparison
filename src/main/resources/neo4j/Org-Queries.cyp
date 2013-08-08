@@ -31,19 +31,26 @@ start n = node(*) return n.level as Level, count(n) as Total order by Level;
 ## Traversal Aggregate Query - Generic Form
 #################################################
 start n = node:Person(name = "fName lName")
-match n-[?*0..(totalLevels - 1)]->m-[?*1..(totalLevels - 2)]->o
+match n-[:DIRECTLY_MANAGES*0..(totalLevels - 1)]->m-[:DIRECTLY_MANAGES*1..(totalLevels - 2)]->o
 where n.level + visibilityLevel >= m.level
-return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, count(o) as Total
-order by SubordinateLevel;
+return m.name as Subordinate, count(o) as Total;
+
+# removed as a part of query optimization
+# return n.name as BigBoss, m.name as Subordinate, m.level as SubordinateLevel, count(o) as Total
+# order by SubordinateLevel;
+################################################
 
 ## Traversal Queries returning names of people that directly or indirectly report
 ## to a particular person via intermediary bosses.
 ## Generic Query
 ################################################
 start n = node:Person(name = "fName lName")
-match p = n-[?*1..visibilityLevel]->m
-return nodes(p)
-order by length(p);
+match p = n-[:DIRECTLY_MANAGES*1..visibilityLevel]->m
+return nodes(p);
+
+#
+# After removing order by we got up to 50% improvement in query response time
+# order by length(p);
 
 ## TODO:
 ## Hierarchy Lineage
