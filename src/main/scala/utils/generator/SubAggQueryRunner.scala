@@ -3,9 +3,12 @@ package utils.generator
 import utils.Mode._
 import utils.NeoDB
 
-object SubAggQueryRunner extends App with CypherQueryExecutor {
+object SubAggQueryRunner extends App
+with CypherQueryExecutor with MemoryStatsReporter {
 
   override def main(args: Array[String]) = {
+    memStats
+
     val totalLevels = 3
     // Get this manually from neo-shell
     val params = Map("name" -> "first88 last136")
