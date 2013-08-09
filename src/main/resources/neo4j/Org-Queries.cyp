@@ -31,7 +31,7 @@ start n = node(*) return n.level as Level, count(n) as Total order by Level;
 ## Traversal Aggregate Query - Generic Form
 #################################################
 start n = node:Person(name = "fName lName")
-match n-[:DIRECTLY_MANAGES*0..(totalLevels - 1)]->m-[:DIRECTLY_MANAGES*1..(totalLevels - 2)]->o
+match n-[:DIRECTLY_MANAGES*0..(totalLevels - n.level)]->m-[:DIRECTLY_MANAGES*1..(totalLevels - n.level)]->o
 where n.level + visibilityLevel >= m.level
 return m.name as Subordinate, count(o) as Total;
 

@@ -27,5 +27,3 @@ object OverallAggQueryRunner extends App with CypherQueryExecutor {
     neo4j.shutdown
   }
 }
-
-
