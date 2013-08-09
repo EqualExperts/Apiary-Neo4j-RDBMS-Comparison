@@ -8,9 +8,9 @@ trait CypherQueryExecutor {
     info("Executing Parameteric Cypher query %s\n", cql)
     val startTime = System.currentTimeMillis
     val result = neo4j.execute(cql, params)
-    val difference = System.currentTimeMillis - startTime
+    val executionTime = System.currentTimeMillis - startTime
     info("Execution result %s\n", result.dumpToString)
-    info("Execution Took %d (ms)\n", difference)
-    (result, difference)
+    info("Execution Took %d (ms)\n", executionTime)
+    (result, executionTime)
   }
 }
