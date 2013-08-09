@@ -3,9 +3,12 @@ package utils.generator
 import utils.NeoDB
 import utils.Mode._
 
-object OverallAggQueryRunner extends App with CypherQueryExecutor {
+object OverallAggQueryRunner extends App
+with CypherQueryExecutor with MemoryStatsReporter {
 
   override def main(args: Array[String]) = {
+    memStats
+
     val totalLevels = 3
 
     //	  val basePath = "D:/rnd/apiary"

@@ -5,7 +5,10 @@ import org.neo4j.index.lucene.unsafe.batchinsert.LuceneBatchInserterIndexProvide
 import org.neo4j.helpers.collection.MapUtil
 import java.util
 
-private class Neo4JBatchBuilder (val neo4j: BatchInserter, override val peopleAtLevels: Map[Int, List[String]], override val managingMax: Int) extends Neo4JBuilder[Long, Long](peopleAtLevels, managingMax) {
+private class Neo4JBatchBuilder (val neo4j: BatchInserter,
+                                 override val peopleAtLevels: Map[Int, List[String]],
+                                 override val managingMax: Int)
+  extends Neo4JBuilder[Long, Long](peopleAtLevels, managingMax) {
 
   private val indexProvider = new LuceneBatchInserterIndexProvider(neo4j)
   private val personIndex = createIndex(PERSON)
