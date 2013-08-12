@@ -109,7 +109,7 @@ object Neo4J_100KOrgPopulator extends App with NamesGenerator {
 //          .distribute(Contiguous)
 
     /**
-     * Case 4  - Redistributed: (Levels = 6, Manages Limit = 500)
+     * Case 4  - Redistributed: (Levels = 6, Manages Limit = 300)
      * At Level 1 => 3
      * At Level 2 => 10
      * At Level 3 => 50
