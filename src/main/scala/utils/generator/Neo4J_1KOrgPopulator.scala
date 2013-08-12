@@ -2,7 +2,6 @@ package utils.generator
 
 import utils.{NeoDBBatchInserter, NeoDB}
 import DistributionStrategy._
-import org.neo4j.kernel.DefaultFileSystemAbstraction
 
 object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 
@@ -11,7 +10,7 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
     val names = naturalNames(1000)
 
     //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary"
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
 
 
     /**
@@ -23,11 +22,11 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
      *  Total => 1000
      */
 
-        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-                            .withPeopleAtLevel(1, 40)
-                            .withPeopleAtLevel(2, 160)
-                            .withPeopleAtLevel(3, 800)
-                            .distribute(Contiguous)
+//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
+//                        .withPeopleAtLevel(1, 3)
+//                        .withPeopleAtLevel(2, 10)
+//                        .withPeopleAtLevel(3, 987)
+//                        .distribute(Contiguous)
 
     /**
      * case 2:
@@ -39,12 +38,12 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
      * Total => 1000
      */
 
-//     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-//                          .withPeopleAtLevel(1, 10)
-//                          .withPeopleAtLevel(2, 43)
-//                          .withPeopleAtLevel(3, 200)
-//                          .withPeopleAtLevel(4, 747)
-//                          .distribute(Contiguous)
+//   val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
+//      .withPeopleAtLevel(1, 3)
+//      .withPeopleAtLevel(2, 10)
+//      .withPeopleAtLevel(3, 100)
+//      .withPeopleAtLevel(4, 887)
+//      .distribute(Contiguous)
 
     /**
      * case 3:
@@ -60,10 +59,10 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 
 //    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
 //      .withPeopleAtLevel(1, 3)
-//      .withPeopleAtLevel(2, 15)
-//      .withPeopleAtLevel(3, 75)
-//      .withPeopleAtLevel(4, 300)
-//      .withPeopleAtLevel(5, 607)
+//      .withPeopleAtLevel(2, 10)
+//      .withPeopleAtLevel(3, 50)
+//      .withPeopleAtLevel(4, 250)
+//      .withPeopleAtLevel(5, 687)
 //      .distribute(Contiguous)
 
     /**
@@ -79,13 +78,13 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
      * Total => 1000
      */
 
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 19)
-//      .withPeopleAtLevel(1, 1)
-//      .withPeopleAtLevel(2, 5)
-//      .withPeopleAtLevel(3, 94)
-//      .withPeopleAtLevel(4, 200)
+//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
+//      .withPeopleAtLevel(1, 2)
+//      .withPeopleAtLevel(2, 10)
+//      .withPeopleAtLevel(3, 50)
+//      .withPeopleAtLevel(4, 125)
 //      .withPeopleAtLevel(5, 300)
-//      .withPeopleAtLevel(6, 400)
+//      .withPeopleAtLevel(6, 513)
 //      .distribute(Contiguous)
 
 
@@ -123,18 +122,18 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
      * At Level 8 => 700
      * */
 
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 4)
-//      .withPeopleAtLevel(1, 1)
-//      .withPeopleAtLevel(2, 3)
-//      .withPeopleAtLevel(3, 7)
-//      .withPeopleAtLevel(4, 12)
-//      .withPeopleAtLevel(5, 25)
-//      .withPeopleAtLevel(6, 52)
-//      .withPeopleAtLevel(7, 200)
-//      .withPeopleAtLevel(8, 700)
-//      .distribute(Contiguous)
+    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 4)
+      .withPeopleAtLevel(1, 1)
+      .withPeopleAtLevel(2, 3)
+      .withPeopleAtLevel(3, 7)
+      .withPeopleAtLevel(4, 12)
+      .withPeopleAtLevel(5, 25)
+      .withPeopleAtLevel(6, 52)
+      .withPeopleAtLevel(7, 200)
+      .withPeopleAtLevel(8, 700)
+      .distribute(Contiguous)
 
-    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1k_l3")
+    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1k_l8")
     builder buildWith neoDb
   }
 }
