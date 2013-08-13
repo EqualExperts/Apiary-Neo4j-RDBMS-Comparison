@@ -204,7 +204,7 @@ object Mode extends Enumeration {
 import Mode._
 
 object NeoDB {
-  def apply(url: String, mode: Mode = Server) = mode match {
+  def apply(url: String, mode: Mode) = mode match {
     case Server => new NeoDB(new RestGraphDatabase(url))
     case Embedded => new NeoDB(new GraphDatabaseFactory().newEmbeddedDatabase(url))
     case _  => sys.error("Don't know how to process the Mode")

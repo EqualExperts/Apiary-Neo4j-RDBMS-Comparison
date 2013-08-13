@@ -1,21 +1,9 @@
 package utils.generator
 
 import utils.NeoDB
-import utils.Mode._
 
-object OverallAggQueryRunner extends App
-with CypherQueryExecutor with MemoryStatsReporter {
-
-  override def main(args: Array[String]) = {
-    memStats
-
-    val totalLevels = 3
-
-    //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
-    val fileUrl = basePath + "/NEO4J_DATA/apiary_100k_l" + totalLevels
-
-    implicit val neo4j = NeoDB(fileUrl, Embedded)
+object OverallAggQueryRunner extends CypherQueryExecutor with MemoryStatsReporter {
+  def runFor(level: Int)(implicit neo4j: NeoDB) = {
     val aggCql =
       """
         |start n = node(*)
@@ -25,8 +13,10 @@ with CypherQueryExecutor with MemoryStatsReporter {
 
     val (_, coldCacheExecTime) = execute(aggCql)
     val (_, warmCacheExecTime) = execute(aggCql)
-    printf("For Level %d => Cold Cache Exec Time = %d (ms)\n", totalLevels, coldCacheExecTime)
-    printf("For Level %d => Warm Cache Exec Time = %d (ms)\n", totalLevels, warmCacheExecTime)
-    neo4j.shutdown
+    val queryName = getClass.getSimpleName.replace("$", "").replace("Runner", "")
+    val resultString = "%s => For Level %d => %s Cache Exec Time = %d (ms)\n"
+    val coldCacheResult = resultString.format(queryName, level, "Cold", coldCacheExecTime)
+    val warmCacheResult = resultString.format(queryName, level, "Warm", warmCacheExecTime)
+    List(coldCacheResult, warmCacheResult)
   }
 }

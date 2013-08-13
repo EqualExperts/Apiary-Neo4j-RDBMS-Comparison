@@ -9,7 +9,7 @@ trait CypherQueryExecutor {
     val startTime = System.currentTimeMillis
     val result = neo4j.execute(cql, params)
     val executionTime = System.currentTimeMillis - startTime
-    info("Execution result:\n%s\n", result.dumpToString)
+//    info("Execution result:\n%s\n", result.dumpToString)
     info("Execution Took %d (ms)\n", executionTime)
     (result, executionTime)
   }

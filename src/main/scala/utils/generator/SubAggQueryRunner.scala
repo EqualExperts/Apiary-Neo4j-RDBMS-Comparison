@@ -1,25 +1,13 @@
 package utils.generator
 
-import utils.Mode._
 import utils.NeoDB
 
 object SubAggQueryRunner extends App
-with CypherQueryExecutor with MemoryStatsReporter {
-
-  override def main(args: Array[String]) = {
-    memStats
-
-    val totalLevels = 3
-    // Get this manually from neo-shell
-    val params = Map("name" -> "first88 last136")
-
-    //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
-    val fileUrl = basePath + "/NEO4J_DATA/apiary_100k_l" + totalLevels
-
-    implicit val neo4j = NeoDB(fileUrl, Embedded)
-    val visibilityLevel = totalLevels - 1 //always max visibility
-    val traversableLevels = totalLevels - 1 //actually its totalLevels - currentlevel
+with CypherQueryExecutor with PersonWithMaxReportees with MemoryStatsReporter {
+  def runFor(level: Int)(implicit neo4j: NeoDB) = {
+    val params = getPersonWithMaxReportees(level)
+    val visibilityLevel = level - 1 //always max visibility
+    val traversableLevels = level - 1 //actually its totalLevels - currentlevel
     val subAggCql =
       """
         |start n = node:Person(name = {name})
@@ -30,9 +18,11 @@ with CypherQueryExecutor with MemoryStatsReporter {
 
     val (_, coldCacheExecTime) = execute(subAggCql, params)
     val (_, warmCacheExecTime) = execute(subAggCql, params)
-    printf("For Level %d => Cold Cache Exec Time = %d (ms)\n", totalLevels, coldCacheExecTime)
-    printf("For Level %d => Warm Cache Exec Time = %d (ms)\n", totalLevels, warmCacheExecTime)
-    neo4j.shutdown
+    val queryName = getClass.getSimpleName.replace("$", "").replace("Runner", "")
+    val resultString = "%s => For Level %d => %s Cache Exec Time = %d (ms)\n"
+    val coldCacheResult = resultString.format(queryName, level, "Cold", coldCacheExecTime)
+    val warmCacheResult = resultString.format(queryName, level, "Warm", warmCacheExecTime)
+    List(coldCacheResult, warmCacheResult)
   }
 }
 
