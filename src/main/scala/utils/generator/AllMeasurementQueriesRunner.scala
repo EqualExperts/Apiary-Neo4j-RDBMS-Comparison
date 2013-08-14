@@ -35,8 +35,17 @@ object AllMeasurementQueriesRunner extends App with MemoryStatsReporter {
     memStats
 //     basePath = "D:/rnd/apiary"
     val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
-    val fileUrl = basePath + "/NEO4J_DATA/apiary_100k_l"
-    val results = ((3 to 8) flatMap { runQuery(fileUrl, _) }).toList
+    val orgSizes = List("1k", "10k", "100k", "1m")
+    val fileUrls = orgSizes map { basePath + "/NEO4J_DATA/apiary_" + _ + "_l" }
+    println(fileUrls)
+    val results = fileUrls map { fileUrl =>
+      ((3 to 8) flatMap { level =>
+        val completeUrl = fileUrl + level
+        println("Taking measurements for ---> " + completeUrl)
+        runQuery(completeUrl, level) }).toList
+    }
     println("RESULTS:" + results.mkString("\n"))
+
+    memStats
   }
 }
