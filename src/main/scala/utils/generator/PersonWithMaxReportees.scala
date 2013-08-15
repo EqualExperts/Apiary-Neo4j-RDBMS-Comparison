@@ -23,15 +23,14 @@ trait PersonWithMaxReportees extends CypherQueryExecutor {
       val (countResult, _) = execute(totalSubCql, params)
       val count = countResult.map { rs => rs("count") }
         .find(_ => true)
-        .get
-        .asInstanceOf[Long]
+        .get.asInstanceOf[Long]
       name -> count
     }.toMap
 
     val maxCount = namesWithCount.values.max
     val name = namesWithCount.find { case (n, c) => c == maxCount }.get
     val personWithMaxReporteeCount = Map[String, Any]("name" -> name)
-    println("Person With Max Reportee Count = " + personWithMaxReporteeCount)
+    info("Person With Max Reportee Count = " + personWithMaxReporteeCount)
     personWithMaxReporteeCount
   }
 }
