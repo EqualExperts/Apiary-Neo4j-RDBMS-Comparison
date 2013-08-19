@@ -3,10 +3,9 @@ package utils.generator
 import utils.NeoDB
 
 object SubNameQueryRunner extends App
-with CypherQueryExecutor with EssentialQueries with MemoryStatsReporter {
+with CypherQueryExecutor with MemoryStatsReporter {
 
-  def runFor(level: Int)(implicit neo4j: NeoDB) = {
-    val params = getPersonWithMaxReportees(level)
+  def runFor(level: Int, params: Map[String, Any])(implicit neo4j: NeoDB) = {
     val visibilityLevel = level - 1
     val subNameCql =
       """

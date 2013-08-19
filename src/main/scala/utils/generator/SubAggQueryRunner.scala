@@ -3,11 +3,8 @@ package utils.generator
 import utils.NeoDB
 
 object SubAggQueryRunner extends App
-with CypherQueryExecutor with EssentialQueries with MemoryStatsReporter {
-  def runFor(level: Int)(implicit neo4j: NeoDB) = {
-//    deleteRefNodeIfPresent(neo4j)
-
-    val params = getPersonWithMaxReportees(level)
+with CypherQueryExecutor with MemoryStatsReporter {
+  def runFor(level: Int, params: Map[String, Any])(implicit neo4j: NeoDB) = {
     val visibilityLevel = level - 1 //always max visibility
     val traversableLevels = level - 1 //actually its totalLevels - currentlevel
     val subAggCql =

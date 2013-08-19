@@ -3,18 +3,18 @@ package utils.generator
 import utils.Mode._
 import utils.NeoDB
 
-object AllMeasurementQueriesRunner extends App with MemoryStatsReporter {
+object AllMeasurementQueriesRunner extends App with EssentialQueries with MemoryStatsReporter {
 
-  def runSubNameQuery(fileUrl: String, level: Int) = {
+  def runSubNameQuery(fileUrl: String, level: Int, params: Map[String, Any]) = {
     implicit val neo4j = NeoDB(fileUrl, Embedded)
-    val result = SubNameQueryRunner.runFor(level)
+    val result = SubNameQueryRunner.runFor(level, params)
     neo4j.shutdown
     result
   }
 
-  def runSubAggQuery(fileUrl: String, level: Int) = {
+  def runSubAggQuery(fileUrl: String, level: Int, params: Map[String, Any]) = {
     implicit val neo4j = NeoDB(fileUrl, Embedded)
-    val result = SubAggQueryRunner.runFor(level)
+    val result = SubAggQueryRunner.runFor(level, params)
     neo4j.shutdown
     result
   }
@@ -27,8 +27,13 @@ object AllMeasurementQueriesRunner extends App with MemoryStatsReporter {
   }
 
   def runQueries(fileUrl: String, level: Int) = {
-    val subNameResults = runSubNameQuery(fileUrl, level)
-    val subAggResults = runSubAggQuery(fileUrl, level)
+    implicit val neo4j = NeoDB(fileUrl, Embedded)
+    deleteRefNodeIfPresent
+    val params = getPersonWithMaxReportees(level)
+    neo4j.shutdown
+
+    val subNameResults = runSubNameQuery(fileUrl, level, params)
+    val subAggResults = runSubAggQuery(fileUrl, level, params)
     val overallAggResults = runOverallAggQuery(fileUrl, level)
     subNameResults ::: subAggResults ::: overallAggResults
   }
@@ -37,8 +42,8 @@ object AllMeasurementQueriesRunner extends App with MemoryStatsReporter {
     memStats
 //     basePath = "D:/rnd/apiary"
     val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
-    val orgSizes = List("1k", "10k", "100k", "1m")
-//    val orgSizes = List("1k")
+//    val orgSizes = List("1k", "10k", "100k", "1m")
+    val orgSizes = List("1k")
     val fileUrls = orgSizes map { basePath + "/NEO4J_DATA/apiary_" + _ + "_l" }
     val results = fileUrls flatMap { fileUrl =>
       ((3 to 8) flatMap { level =>
@@ -46,10 +51,10 @@ object AllMeasurementQueriesRunner extends App with MemoryStatsReporter {
         val message = "Below are Measurements for ---> " + completeUrl
         info(message)
         message :: runQueries(completeUrl, level)
-      }).toList
+      }) toList
     }
 
-    info("RESULTS:\n%s", results.mkString("\n"))
+    info("RESULTS:\n%s", results mkString "\n")
 
     memStats
   }
