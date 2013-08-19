@@ -3,9 +3,11 @@ package utils.generator
 import utils.NeoDB
 
 object SubAggQueryRunner extends App
-with CypherQueryExecutor with PersonWithMaxReportees with MemoryStatsReporter {
-  def runFor(level: Int)(implicit neo4j: NeoDB) = {
-    val params = getPersonWithMaxReportees(level)
+with CypherQueryExecutor with EssentialQueries with MemoryStatsReporter {
+  def runFor(neo4j: NeoDB, level: Int) = {
+//    deleteRefNodeIfPresent(neo4j)
+
+    val params = getPersonWithMaxReportees(neo4j, level)
     val visibilityLevel = level - 1 //always max visibility
     val traversableLevels = level - 1 //actually its totalLevels - currentlevel
     val subAggCql =
@@ -16,8 +18,8 @@ with CypherQueryExecutor with PersonWithMaxReportees with MemoryStatsReporter {
         |return m.name as Subordinate, count(o) as Total;
       """.format(traversableLevels, traversableLevels, visibilityLevel).stripMargin
 
-    val (_, coldCacheExecTime) = execute(subAggCql, params)
-    val (_, warmCacheExecTime) = execute(subAggCql, params)
+    val (_, coldCacheExecTime) = execute(neo4j, subAggCql, params)
+    val (_, warmCacheExecTime) = execute(neo4j, subAggCql, params)
     val queryName = getClass.getSimpleName.replace("$", "").replace("Runner", "")
     val resultString = "%s => For Level %d => %s Cache Exec Time = %d (ms)\n"
     val coldCacheResult = resultString.format(queryName, level, "Cold", coldCacheExecTime)

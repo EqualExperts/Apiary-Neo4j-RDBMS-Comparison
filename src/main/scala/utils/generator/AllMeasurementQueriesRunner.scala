@@ -6,20 +6,21 @@ import utils.NeoDB
 object AllMeasurementQueriesRunner extends App with MemoryStatsReporter {
 
   def runSubNameQuery(fileUrl: String, level: Int) = {
-    implicit val neo4j = NeoDB(fileUrl + level, Embedded)
-    val result = SubNameQueryRunner.runFor(level)
+    val neo4j = NeoDB(fileUrl + level, Embedded)
+    val result = SubNameQueryRunner.runFor(neo4j, level)
     neo4j.shutdown
     result
   }
+
   def runSubAggQuery(fileUrl: String, level: Int) = {
-    implicit val neo4j = NeoDB(fileUrl + level, Embedded)
-    val result = SubAggQueryRunner.runFor(level)
+    val neo4j = NeoDB(fileUrl + level, Embedded)
+    val result = SubAggQueryRunner.runFor(neo4j, level)
     neo4j.shutdown
     result
   }
   def runOverallAggQuery(fileUrl: String, level: Int) = {
     implicit val neo4j = NeoDB(fileUrl + level, Embedded)
-    val result = OverallAggQueryRunner.runFor(level)
+    val result = OverallAggQueryRunner.runFor(neo4j, level)
     neo4j.shutdown
     result
   }

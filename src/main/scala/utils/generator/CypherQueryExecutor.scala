@@ -4,7 +4,7 @@ import scala.Predef._
 import utils.NeoDB
 
 trait CypherQueryExecutor {
-  def execute(cql: String, params: Map[String, Any] = Map[String, Any]())(implicit neo4j: NeoDB) = {
+  def execute(neo4j: NeoDB, cql: String, params: Map[String, Any] = Map[String, Any]()) = {
     info("Executing Parameteric Cypher query %s\n", cql)
     val startTime = System.currentTimeMillis
     val result = neo4j.execute(cql, params)

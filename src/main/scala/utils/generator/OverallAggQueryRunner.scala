@@ -2,8 +2,10 @@ package utils.generator
 
 import utils.NeoDB
 
-object OverallAggQueryRunner extends CypherQueryExecutor with MemoryStatsReporter {
-  def runFor(level: Int)(implicit neo4j: NeoDB) = {
+object OverallAggQueryRunner extends CypherQueryExecutor with EssentialQueries with MemoryStatsReporter {
+  def runFor(neo4j: NeoDB, level: Int) = {
+//    deleteRefNodeIfPresent(neo4j)
+
     val aggCql =
       """
         |start n = node(*)
@@ -11,8 +13,8 @@ object OverallAggQueryRunner extends CypherQueryExecutor with MemoryStatsReporte
         |order by Level;
       """.stripMargin
 
-    val (_, coldCacheExecTime) = execute(aggCql)
-    val (_, warmCacheExecTime) = execute(aggCql)
+    val (_, coldCacheExecTime) = execute(neo4j, aggCql)
+    val (_, warmCacheExecTime) = execute(neo4j, aggCql)
     val queryName = getClass.getSimpleName.replace("$", "").replace("Runner", "")
     val resultString = "%s => For Level %d => %s Cache Exec Time = %d (ms)\n"
     val coldCacheResult = resultString.format(queryName, level, "Cold", coldCacheExecTime)
