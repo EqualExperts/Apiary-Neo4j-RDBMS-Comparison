@@ -114,7 +114,7 @@ class NeoDB private (val neo4j: GraphDatabaseService) {
       //      println(result.dumpToString)
       for (row <- result) {
         val (_, value) = row.head
-        if (row.size == 1) {
+        if (row.size > 1) {
           value match {
             case r: Relationship => printf("Relationship: %s", r.getType.name)
             case n: Node => printf("%s: %s", n.getProperty("type"), n.getProperty("name"))
@@ -122,7 +122,7 @@ class NeoDB private (val neo4j: GraphDatabaseService) {
           }
           println()
         } else {
-          println("Row = " + row)
+          println("Row With Single Column = " + row)
         }
       }
     }

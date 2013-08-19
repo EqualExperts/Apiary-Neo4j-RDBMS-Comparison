@@ -4,10 +4,10 @@ import utils.NeoDB
 
 object SubAggQueryRunner extends App
 with CypherQueryExecutor with EssentialQueries with MemoryStatsReporter {
-  def runFor(neo4j: NeoDB, level: Int) = {
+  def runFor(level: Int)(implicit neo4j: NeoDB) = {
 //    deleteRefNodeIfPresent(neo4j)
 
-    val params = getPersonWithMaxReportees(neo4j, level)
+    val params = getPersonWithMaxReportees(level)
     val visibilityLevel = level - 1 //always max visibility
     val traversableLevels = level - 1 //actually its totalLevels - currentlevel
     val subAggCql =
@@ -18,8 +18,8 @@ with CypherQueryExecutor with EssentialQueries with MemoryStatsReporter {
         |return m.name as Subordinate, count(o) as Total;
       """.format(traversableLevels, traversableLevels, visibilityLevel).stripMargin
 
-    val (_, coldCacheExecTime) = execute(neo4j, subAggCql, params)
-    val (_, warmCacheExecTime) = execute(neo4j, subAggCql, params)
+    val (_, coldCacheExecTime) = execute(subAggCql, params)
+    val (_, warmCacheExecTime) = execute(subAggCql, params)
     val queryName = getClass.getSimpleName.replace("$", "").replace("Runner", "")
     val resultString = "%s => For Level %d => %s Cache Exec Time = %d (ms)\n"
     val coldCacheResult = resultString.format(queryName, level, "Cold", coldCacheExecTime)
