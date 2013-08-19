@@ -41,9 +41,8 @@ with CypherQueryExecutor with MemoryStatsReporter {
     implicit val neo4j = NeoDB(completeUrl, Embedded)
     val result = runFor(level, params)
     neo4j.shutdown
-    result
-    info("RESULTS:\n%s", result mkString "\n")
     memStats
+    info("RESULTS:\n%s", result mkString "\n")
   }
 
 }
