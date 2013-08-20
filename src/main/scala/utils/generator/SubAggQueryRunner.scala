@@ -19,11 +19,13 @@ with CypherQueryExecutor with MemoryStatsReporter {
 
     val (_, coldCacheExecTime) = execute(subAggCql, params)
     val (_, warmCacheExecTime) = execute(subAggCql, params)
+    val (_, hotCacheExecTime) = execute(subAggCql, params)
     val queryName = getClass.getSimpleName.replace("$", "").replace("Runner", "")
     val resultString = "%s => For Level %d => %s Cache Exec Time = %d (ms)\n"
     val coldCacheResult = resultString.format(queryName, level, "Cold", coldCacheExecTime)
     val warmCacheResult = resultString.format(queryName, level, "Warm", warmCacheExecTime)
-    List(coldCacheResult, warmCacheResult)
+    val hotCacheResult = resultString.format(queryName, level, "Hot", hotCacheExecTime)
+    List(coldCacheResult, warmCacheResult, hotCacheResult)
   }
 
   override def main(args: Array[String]) {

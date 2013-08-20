@@ -14,11 +14,13 @@ object OverallAggQueryRunner extends App with CypherQueryExecutor with MemorySta
 
     val (_, coldCacheExecTime) = execute(aggCql)
     val (_, warmCacheExecTime) = execute(aggCql)
+    val (_, hotCacheExecTime) = execute(aggCql)
     val queryName = getClass.getSimpleName.replace("$", "").replace("Runner", "")
     val resultString = "%s => For Level %d => %s Cache Exec Time = %d (ms)\n"
     val coldCacheResult = resultString.format(queryName, level, "Cold", coldCacheExecTime)
     val warmCacheResult = resultString.format(queryName, level, "Warm", warmCacheExecTime)
-    List(coldCacheResult, warmCacheResult)
+    val hotCacheResult = resultString.format(queryName, level, "Hot", hotCacheExecTime)
+    List(coldCacheResult, warmCacheResult, hotCacheResult)
   }
 
   def runOverallAggQuery(fileUrl: String, level: Int) : List[String] = {

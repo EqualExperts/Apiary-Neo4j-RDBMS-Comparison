@@ -27,5 +27,6 @@ case class TopLevel extends AllTopLevelPeopleWithMaxCount {
     "1m_l7" -> "first309 last896",
     "1m_l8" -> "first327 last51")
 
-  def newNames(basePath: String, orgSizes: List[String], levels: Range) = runPersonWithMaxReporteesQuery(basePath, orgSizes, levels)
+  def newNames(basePath: String, orgSizes: List[String], levels: Range) =
+    runPersonWithMaxReporteesQuery(basePath, orgSizes, levels)
 }
