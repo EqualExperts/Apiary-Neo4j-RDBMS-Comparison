@@ -26,9 +26,6 @@ abstract class Neo4JBuilder[N, R](val peopleAtLevels: Map[Int, List[String]], va
 
   private def makeRelationshipsBetween(nodesAtLevels: Map[Int, List[N]], useDistribution: DistributionStrategy): List[Relation] = {
 
-    def parentToChildrenRelationships(parentNode: N, children: List[N]): List[Relation] =
-      for (child <- children) yield (parentNode, child)
-
     def between(parentNodes: List[N], childNodes: List[N]) : List[Relation] = {
       val manages = useDistribution match {
         case Contiguous => managingMax
@@ -40,8 +37,9 @@ abstract class Neo4JBuilder[N, R](val peopleAtLevels: Map[Int, List[String]], va
         parentNodes match {
           case Nil =>  acc
           case parent :: rest => {
-            val rs = parentToChildrenRelationships(parent, childNodes.slice(from, to))
-            between0(rs ::: acc, rest, from + manages, to + manages)
+            val children = childNodes.slice(from, to)
+            val parentChildrenRelationships = children map { child => (parent, child) }
+            between0(parentChildrenRelationships ::: acc, rest, from + manages, to + manages)
           }
         }
       between0(Nil, parentNodes, 0, manages)

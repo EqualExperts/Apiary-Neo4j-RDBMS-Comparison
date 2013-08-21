@@ -32,8 +32,8 @@ with CypherQueryExecutor with MemoryStatsReporter {
     memStats
     //     basePath = "D:/rnd/apiary"
     val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable/NEO4J_DATA/apiary_"
-    val orgSize = "1k"
-    val level = 3
+    val orgSize = "1m"
+    val level = 8
     val orgSizeAndLevel = orgSize + "_l"  + level
     val completeUrl = basePath + orgSizeAndLevel
 //    val topLevelPerson = TopLevel().newNames(basePath, List(orgSize), level to level)

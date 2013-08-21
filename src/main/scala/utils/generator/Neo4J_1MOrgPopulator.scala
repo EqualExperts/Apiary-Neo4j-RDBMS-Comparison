@@ -139,15 +139,15 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
      * At Level 7 => 812755
 		 * Total => 1000000
      **/
-		val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 100)
-      .withPeopleAtLevel(1, 3)
-      .withPeopleAtLevel(2, 23)
-      .withPeopleAtLevel(3, 100)
-      .withPeopleAtLevel(4, 1800)
-      .withPeopleAtLevel(5, 20480)
-      .withPeopleAtLevel(6, 164840)
-      .withPeopleAtLevel(7, 812754)
-			.distribute(Contiguous)
+//		val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 100)
+//      .withPeopleAtLevel(1, 3)
+//      .withPeopleAtLevel(2, 23)
+//      .withPeopleAtLevel(3, 100)
+//      .withPeopleAtLevel(4, 1800)
+//      .withPeopleAtLevel(5, 20480)
+//      .withPeopleAtLevel(6, 164840)
+//      .withPeopleAtLevel(7, 812754)
+//			.distribute(Contiguous)
 
     /*
      * Case 6 : (Levels = 8, Manages Limit = 50)
@@ -162,19 +162,19 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
      *  Total => 1000000
      */
 
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
-//      .withPeopleAtLevel(1, 2)
-//      .withPeopleAtLevel(2, 20)
-//      .withPeopleAtLevel(3, 100)
-//      .withPeopleAtLevel(4, 500)
-//      .withPeopleAtLevel(5, 5000)
-//      .withPeopleAtLevel(6, 10000)
-//	    .withPeopleAtLevel(7, 50000)
-//	    .withPeopleAtLevel(8, 934378)
-//      .distribute(Contiguous)
+    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
+      .withPeopleAtLevel(1, 10)
+      .withPeopleAtLevel(2, 500)
+      .withPeopleAtLevel(3, 25000)
+      .withPeopleAtLevel(4, 100000)
+      .withPeopleAtLevel(5, 200000)
+      .withPeopleAtLevel(6, 400000)
+	    .withPeopleAtLevel(7, 200000)
+	    .withPeopleAtLevel(8, 74490)
+      .distribute(Contiguous)
 
 	//val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1m_case6")  
-	  val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1m_l7")
+	  val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1m_l8")
     builder buildWith neoDb
   }
 }

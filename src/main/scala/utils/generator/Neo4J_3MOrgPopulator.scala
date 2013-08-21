@@ -72,14 +72,14 @@ object Neo4J_3MOrgPopulator extends App with NamesGenerator {
      * Total => 3000000
      */
 
-      val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 500)
-        .withPeopleAtLevel(1, 3)
-        .withPeopleAtLevel(2, 10)
-        .withPeopleAtLevel(3, 50)
-        .withPeopleAtLevel(4, 400)
-        .withPeopleAtLevel(5, 20000)
-        .withPeopleAtLevel(6, 2979537)
-        .distribute(Contiguous)
+//      val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 500)
+//        .withPeopleAtLevel(1, 10)
+//        .withPeopleAtLevel(2, 500)
+//        .withPeopleAtLevel(3, 250000)
+//        .withPeopleAtLevel(4, 750000)
+//        .withPeopleAtLevel(5, 1600000)
+//        .withPeopleAtLevel(6, 399490)
+//        .distribute(Contiguous)
 
     /**
      * case 5:
@@ -120,21 +120,21 @@ object Neo4J_3MOrgPopulator extends App with NamesGenerator {
      * Total => 3000000
      */
 
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
-//      .withPeopleAtLevel(1, 2)
-//      .withPeopleAtLevel(2, 20)
-//      .withPeopleAtLevel(3, 100)
-//      .withPeopleAtLevel(4, 500)
-//      .withPeopleAtLevel(5, 5000)
-//      .withPeopleAtLevel(6, 10000)
-//      .withPeopleAtLevel(7, 60000)
-//      .withPeopleAtLevel(8, 2924378)
-//      .distribute(Contiguous)
+    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
+      .withPeopleAtLevel(1, 2)
+      .withPeopleAtLevel(2, 50)
+      .withPeopleAtLevel(3, 2500)
+      .withPeopleAtLevel(4, 125000)
+      .withPeopleAtLevel(5, 400000)
+      .withPeopleAtLevel(6, 1000000)
+      .withPeopleAtLevel(7, 1400000)
+      .withPeopleAtLevel(8, 72448)
+      .distribute(Contiguous)
 
     //    val neoDb = NeoDB("http://localhost:7474/db/data")
     //	  val basePath = "D:/rnd/apiary"
     val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
-    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_3m_l6")
+    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_3m_l8")
 
     builder buildWith neoDb
   }

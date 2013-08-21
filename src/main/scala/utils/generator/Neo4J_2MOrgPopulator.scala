@@ -36,9 +36,9 @@ object Neo4J_2MOrgPopulator extends App with NamesGenerator {
 
 //        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 500)
 //                          .withPeopleAtLevel(1, 5)
-//                          .withPeopleAtLevel(2, 25)
-//                          .withPeopleAtLevel(3, 4000)
-//                          .withPeopleAtLevel(4, 1995970)
+//                          .withPeopleAtLevel(2, 500)
+//                          .withPeopleAtLevel(3, 250000)
+//                          .withPeopleAtLevel(4, 1749495)
 //                          .distribute(Contiguous)
 
     /**
@@ -55,10 +55,10 @@ object Neo4J_2MOrgPopulator extends App with NamesGenerator {
 
 //            val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 500)
 //              .withPeopleAtLevel(1, 3)
-//              .withPeopleAtLevel(2, 15)
-//              .withPeopleAtLevel(3, 400)
-//              .withPeopleAtLevel(4, 4000)
-//              .withPeopleAtLevel(5, 1995582)
+//              .withPeopleAtLevel(2, 500)
+//              .withPeopleAtLevel(3, 25000)
+//              .withPeopleAtLevel(4, 1250000)
+//              .withPeopleAtLevel(5, 724497)
 
     /**
      * case 4:
@@ -73,13 +73,13 @@ object Neo4J_2MOrgPopulator extends App with NamesGenerator {
      * Total => 2000000
      */
 
-//            val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 500)
+//            val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
 //              .withPeopleAtLevel(1, 3)
-//              .withPeopleAtLevel(2, 10)
-//              .withPeopleAtLevel(3, 50)
-//              .withPeopleAtLevel(4, 400)
-//              .withPeopleAtLevel(5, 20000)
-//              .withPeopleAtLevel(6, 1979537)
+//              .withPeopleAtLevel(2, 150)
+//              .withPeopleAtLevel(3, 7500)
+//              .withPeopleAtLevel(4, 112500)
+//              .withPeopleAtLevel(5, 1687500)
+//              .withPeopleAtLevel(6, 192347)
 //              .distribute(Contiguous)
 
     /**
@@ -96,14 +96,14 @@ object Neo4J_2MOrgPopulator extends App with NamesGenerator {
      * Total => 2000000
      */
 
-//            val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 100)
+//            val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
 //              .withPeopleAtLevel(1, 2)
-//              .withPeopleAtLevel(2, 50)
-//              .withPeopleAtLevel(3, 200)
-//              .withPeopleAtLevel(4, 1000)
-//              .withPeopleAtLevel(5, 10000)
-//              .withPeopleAtLevel(6, 100000)
-//              .withPeopleAtLevel(7, 1888748)
+//              .withPeopleAtLevel(2, 100)
+//              .withPeopleAtLevel(3, 500)
+//              .withPeopleAtLevel(4, 2500)
+//              .withPeopleAtLevel(5, 125000)
+//              .withPeopleAtLevel(6, 925000)
+//              .withPeopleAtLevel(7, 946898)
 //              .distribute(Contiguous)
 
     /**
@@ -123,14 +123,14 @@ object Neo4J_2MOrgPopulator extends App with NamesGenerator {
 
     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
       .withPeopleAtLevel(1, 2)
-      .withPeopleAtLevel(2, 20)
-      .withPeopleAtLevel(3, 100)
-      .withPeopleAtLevel(4, 500)
-      .withPeopleAtLevel(5, 5000)
-      .withPeopleAtLevel(6, 10000)
-      .withPeopleAtLevel(7, 50000)
-      .withPeopleAtLevel(8, 1934378)
-      .distribute(Contiguous)
+      .withPeopleAtLevel(2, 50)
+      .withPeopleAtLevel(3, 2500)
+      .withPeopleAtLevel(4, 125000)
+      .withPeopleAtLevel(5, 400000)
+      .withPeopleAtLevel(6, 600000)
+      .withPeopleAtLevel(7, 800000)
+      .withPeopleAtLevel(8, 72448)
+//      .distribute(Contiguous)
 
     //    val neoDb = NeoDB("http://localhost:7474/db/data")
     //	  val basePath = "D:/rnd/apiary"
