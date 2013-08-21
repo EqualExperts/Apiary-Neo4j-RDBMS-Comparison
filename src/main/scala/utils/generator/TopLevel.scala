@@ -37,7 +37,7 @@ case class TopLevel extends AllTopLevelPeopleWithMaxCount {
     "3m_l5" -> "",
     "3m_l6" -> "",
     "3m_l7" -> "",
-    "3m_l8" -> "")
+    "3m_l8" -> "first783 last3")
 
 
   def newNames(basePath: String, orgSizes: List[String], levels: Range) =
