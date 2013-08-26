@@ -57,7 +57,7 @@ import org.hibernate.cfg.AnnotationConfiguration
  */
 object DB_1M_OrgPopulator extends App {
   override def main(args: Array[String]) = {
-   val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable/NEO4J_DATA/apiary_1m_l8"
+   val basePath = "/Users/dhavald/Documents/workspace/Apiary/NEO4J_DATA/apiary_1m_l8"
    val orgSize = 1000000
 
     /**

@@ -2,7 +2,6 @@ package utils.generator
 
 import utils.generator.DistributionStrategy._
 import org.neo4j.unsafe.batchinsert.BatchInserters
-import org.hibernate.cfg.AnnotationConfiguration
 
 object DB_10K_OrgPopulator extends App {
   override def main(args: Array[String]) = {

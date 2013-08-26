@@ -3,7 +3,6 @@ package utils.generator
 
 import org.neo4j.unsafe.batchinsert.{BatchInserters}
 import DistributionStrategy._
-import org.hibernate.cfg.AnnotationConfiguration
 
 /**
  * Note: You may need to enable and change the old value 64M of the wrapper.java.maxmemory property

@@ -7,7 +7,7 @@ object DB_1K_OrgPopulator extends App {
 
   override def main(args: Array[String]) = {
     //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable/NEO4J_DATA/apiary_1k_l3"
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary/NEO4J_DATA/apiary_1k_l3"
     val orgSize = 1000
 
     /**

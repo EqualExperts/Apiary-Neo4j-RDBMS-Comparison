@@ -6,7 +6,7 @@ import org.neo4j.unsafe.batchinsert.BatchInserters
 object DB_2M_OrgPopulator extends App {
   override def main(args: Array[String]) = {
     val orgSize = 2000000
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable/NEO4J_DATA/apiary_2m_l8"
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary/NEO4J_DATA/apiary_2m_l8"
 
     /**
      * case 1:

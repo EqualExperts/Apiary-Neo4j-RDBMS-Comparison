@@ -2,7 +2,7 @@ package utils.generator
 
 import DistributionStrategy._
 import org.neo4j.unsafe.batchinsert.BatchInserters
-import org.hibernate.cfg.AnnotationConfiguration
+
 
 object DB_3M_OrgPopulator extends App with NamesGenerator {
   override def main(args: Array[String]) = {
