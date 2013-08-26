@@ -2,9 +2,8 @@ package utils.generator
 
 import DistributionStrategy._
 import org.neo4j.unsafe.batchinsert.BatchInserters
-import org.hibernate.cfg.AnnotationConfiguration
 
-object Neo4J_1KOrgPopulator extends App {
+object DB_1K_OrgPopulator extends App {
 
   override def main(args: Array[String]) = {
     //	  val basePath = "D:/rnd/apiary"
@@ -21,9 +20,6 @@ object Neo4J_1KOrgPopulator extends App {
      */
     new OrgLevelBuilder(orgSize, 3, Contiguous) {
       val neo4j = BatchInserters.inserter(basePath + level)
-      val sessionFactory = new AnnotationConfiguration()
-                            .configure("hibernate-mysql.cfg.xml")
-                            .buildSessionFactory
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 100)
             .withPeopleAtLevel(1, 3)
             .withPeopleAtLevel(2, 10)
@@ -40,12 +36,14 @@ object Neo4J_1KOrgPopulator extends App {
      * Total => 1000
      */
 
-//   val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
-//      .withPeopleAtLevel(1, 3)
-//      .withPeopleAtLevel(2, 10)
-//      .withPeopleAtLevel(3, 100)
-//      .withPeopleAtLevel(4, 887)
-//      .distribute(Contiguous)
+    new OrgLevelBuilder(orgSize, 4, Contiguous) {
+      val neo4j = BatchInserters.inserter(basePath + level)
+      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 10)
+        .withPeopleAtLevel(1, 3)
+        .withPeopleAtLevel(2, 10)
+        .withPeopleAtLevel(3, 100)
+        .withPeopleAtLevel(4, 887)
+    }.build
 
     /**
      * case 3:
@@ -59,13 +57,15 @@ object Neo4J_1KOrgPopulator extends App {
      * Total => 1000
      */
 
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-//      .withPeopleAtLevel(1, 3)
-//      .withPeopleAtLevel(2, 10)
-//      .withPeopleAtLevel(3, 50)
-//      .withPeopleAtLevel(4, 250)
-//      .withPeopleAtLevel(5, 687)
-//      .distribute(Contiguous)
+    new OrgLevelBuilder(orgSize, 5, Contiguous) {
+      val neo4j = BatchInserters.inserter(basePath + level)
+      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 5)
+      .withPeopleAtLevel(1, 3)
+      .withPeopleAtLevel(2, 10)
+      .withPeopleAtLevel(3, 50)
+      .withPeopleAtLevel(4, 250)
+      .withPeopleAtLevel(5, 687)
+    }.build
 
     /**
      * case 4:
@@ -80,14 +80,16 @@ object Neo4J_1KOrgPopulator extends App {
      * Total => 1000
      */
 
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 10)
-//      .withPeopleAtLevel(1, 2)
-//      .withPeopleAtLevel(2, 10)
-//      .withPeopleAtLevel(3, 50)
-//      .withPeopleAtLevel(4, 125)
-//      .withPeopleAtLevel(5, 300)
-//      .withPeopleAtLevel(6, 513)
-//      .distribute(Contiguous)
+    new OrgLevelBuilder(orgSize, 6, Contiguous) {
+      val neo4j = BatchInserters.inserter(basePath + level)
+      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 10)
+      .withPeopleAtLevel(1, 2)
+      .withPeopleAtLevel(2, 10)
+      .withPeopleAtLevel(3, 50)
+      .withPeopleAtLevel(4, 125)
+      .withPeopleAtLevel(5, 300)
+      .withPeopleAtLevel(6, 513)
+    }.build
 
 
     /**
@@ -101,16 +103,18 @@ object Neo4J_1KOrgPopulator extends App {
      * At Level 7 => 483
      * */
 
-//     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 5)
-//      .withPeopleAtLevel(1, 2)
-//      .withPeopleAtLevel(2, 5)
-//      .withPeopleAtLevel(3, 20)
-//      .withPeopleAtLevel(4, 70)
-//      .withPeopleAtLevel(5, 140)
-//      .withPeopleAtLevel(6, 280)
-//      .withPeopleAtLevel(7, 483)
-//      .distribute(Contiguous)
 
+    new OrgLevelBuilder(orgSize, 7, Contiguous) {
+      val neo4j = BatchInserters.inserter(basePath + level)
+      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 5)
+      .withPeopleAtLevel(1, 2)
+      .withPeopleAtLevel(2, 5)
+      .withPeopleAtLevel(3, 20)
+      .withPeopleAtLevel(4, 70)
+      .withPeopleAtLevel(5, 140)
+      .withPeopleAtLevel(6, 280)
+      .withPeopleAtLevel(7, 483)
+    }.build
 
     /**
      * Case 6 : (Levels = 8, Manages Limit = 4)
@@ -124,16 +128,18 @@ object Neo4J_1KOrgPopulator extends App {
      * At Level 8 => 700
      * */
 
-//    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 4)
-//      .withPeopleAtLevel(1, 1)
-//      .withPeopleAtLevel(2, 3)
-//      .withPeopleAtLevel(3, 7)
-//      .withPeopleAtLevel(4, 12)
-//      .withPeopleAtLevel(5, 25)
-//      .withPeopleAtLevel(6, 52)
-//      .withPeopleAtLevel(7, 200)
-//      .withPeopleAtLevel(8, 700)
-//      .distribute(Contiguous)
 
+    new OrgLevelBuilder(orgSize, 8, Contiguous) {
+      val neo4j = BatchInserters.inserter(basePath + level)
+      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 5)
+      .withPeopleAtLevel(1, 1)
+      .withPeopleAtLevel(2, 3)
+      .withPeopleAtLevel(3, 7)
+      .withPeopleAtLevel(4, 12)
+      .withPeopleAtLevel(5, 25)
+      .withPeopleAtLevel(6, 52)
+      .withPeopleAtLevel(7, 200)
+      .withPeopleAtLevel(8, 700)
+    }.build
   }
 }

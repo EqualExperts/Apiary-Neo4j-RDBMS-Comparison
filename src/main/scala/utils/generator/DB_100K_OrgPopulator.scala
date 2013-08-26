@@ -12,7 +12,7 @@ import org.hibernate.cfg.AnnotationConfiguration
  * # Maximum Java Heap Size (in MB)
  * wrapper.java.maxmemory=512
  */
-object Neo4J_100KOrgPopulator extends App  {
+object DB_100K_OrgPopulator extends App  {
 
   override def main(args: Array[String]) = {
     val orgSize = 100000
@@ -28,7 +28,6 @@ object Neo4J_100KOrgPopulator extends App  {
      */
     new OrgLevelBuilder(orgSize, 3, Contiguous) {
       val neo4j = BatchInserters.inserter(basePath + level)
-      val sessionFactory = new AnnotationConfiguration().configure("hibernate-mysql.cfg.xml").buildSessionFactory();
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 500)
         .withPeopleAtLevel(1, 10)
         .withPeopleAtLevel(2, 1000)
@@ -46,7 +45,6 @@ object Neo4J_100KOrgPopulator extends App  {
      **/
 //    new OrgLevelBuilder(orgSize, 4, Contiguous) {
 //      val neo4j = BatchInserters.inserter(basePath + level)
-//      val rdbms =  null
 //      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 500)
 //        .withPeopleAtLevel(1, 5)
 //        .withPeopleAtLevel(2, 25)
@@ -65,7 +63,6 @@ object Neo4J_100KOrgPopulator extends App  {
      **/
 //    new OrgLevelBuilder(orgSize, 5, Contiguous) {
 //      val neo4j = BatchInserters.inserter(basePath + level)
-//      val rdbms =  null
 //      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 500)
 //        .withPeopleAtLevel(1, 5)
 //        .withPeopleAtLevel(2, 80)
@@ -86,7 +83,6 @@ object Neo4J_100KOrgPopulator extends App  {
      **/
 //    new OrgLevelBuilder(orgSize, 6, Contiguous) {
 //      val neo4j = BatchInserters.inserter(basePath + level)
-//      val rdbms =  null
 //      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 300)
 //        .withPeopleAtLevel(1, 3)
 //        .withPeopleAtLevel(2, 10)
@@ -111,7 +107,6 @@ object Neo4J_100KOrgPopulator extends App  {
 
 //    new OrgLevelBuilder(orgSize, 7, Contiguous) {
 //      val neo4j = BatchInserters.inserter(basePath + level)
-//      val rdbms =  null
 //      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 100)
 //        .withPeopleAtLevel(1, 3)
 //        .withPeopleAtLevel(2, 23)
@@ -136,7 +131,6 @@ object Neo4J_100KOrgPopulator extends App  {
          */
 //    new OrgLevelBuilder(orgSize, 7, Contiguous) {
 //      val neo4j = BatchInserters.inserter(basePath + level)
-//      val rdbms =  null
 //      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 50)
 //        .withPeopleAtLevel(1, 2)
 //        .withPeopleAtLevel(2, 20)

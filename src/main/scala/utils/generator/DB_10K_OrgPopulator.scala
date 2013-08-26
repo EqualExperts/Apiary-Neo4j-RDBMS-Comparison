@@ -4,7 +4,7 @@ import utils.generator.DistributionStrategy._
 import org.neo4j.unsafe.batchinsert.BatchInserters
 import org.hibernate.cfg.AnnotationConfiguration
 
-object Neo4J_10KOrgPopulator extends App {
+object DB_10K_OrgPopulator extends App {
   override def main(args: Array[String]) = {
     val basePath = "/Users/dhavald/Documents/workspace/Apiary/NEO4J_DATA/apiary_10k_l7"
     val orgSize = 10000
@@ -96,10 +96,6 @@ object Neo4J_10KOrgPopulator extends App {
      */
     new OrgLevelBuilder(orgSize, 3, Contiguous) {
       val neo4j = BatchInserters.inserter(basePath + level)
-      val sessionFactory = new AnnotationConfiguration()
-        .configure("hibernate-mysql.cfg.xml")
-        .buildSessionFactory
-
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 20)
         .withPeopleAtLevel(1, 2)
         .withPeopleAtLevel(2, 22)

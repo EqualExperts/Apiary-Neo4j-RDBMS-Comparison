@@ -55,7 +55,7 @@ import org.hibernate.cfg.AnnotationConfiguration
  *[Wed Jul 24 11:35:16 IST 2013] [INFO]: Persisting Relationships...Complete. Execution Time 4443(ms) =~ 4.443(secs)
  *[Wed Jul 24 11:35:19 IST 2013] [INFO]: PLEASE DELETE NODE WITH ID 0 MANUALLY!!!
  */
-object Neo4J_1MOrgPopulator extends App {
+object DB_1M_OrgPopulator extends App {
   override def main(args: Array[String]) = {
    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable/NEO4J_DATA/apiary_1m_l8"
    val orgSize = 1000000
@@ -161,7 +161,6 @@ object Neo4J_1MOrgPopulator extends App {
 
     new OrgLevelBuilder(orgSize, 8, Contiguous) {
       val neo4j = BatchInserters.inserter(basePath + level)
-      val sessionFactory = new AnnotationConfiguration().configure("hibernate-mysql.cfg.xml").buildSessionFactory();
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 50)
       .withPeopleAtLevel(1, 10)
       .withPeopleAtLevel(2, 500)

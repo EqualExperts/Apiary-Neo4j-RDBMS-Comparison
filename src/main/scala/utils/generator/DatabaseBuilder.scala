@@ -1,10 +1,8 @@
 package utils.generator
 
-import org.neo4j.graphdb.RelationshipType
 import utils.generator.DistributionStrategy._
 import scala.annotation.tailrec
 
-//TODO: Move out Neo4J Specific stuff
 abstract class DatabaseBuilder[N, R](val useDistribution: DistributionStrategy,
                                   val peopleAtLevels: Map[Int, List[String]],
                                   val managingMax: Int)
@@ -12,24 +10,8 @@ abstract class DatabaseBuilder[N, R](val useDistribution: DistributionStrategy,
 
   val maxLevels = peopleAtLevels.size
   type Relation = (N, N)
-  protected val PERSON = "Person"
-  protected val PERSON_NAME = "name"
 
-
-  protected object DIRECTLY_MANAGES extends RelationshipType {
-    def name = getClass.getSimpleName.replace("$", "")
-  }
-
-  protected object INDIRECTLY_MANAGES extends RelationshipType {
-    def name = getClass.getSimpleName.replace("$", "")
-  }
-
-  private def indexAll(nodesAtLevels: Map[Int, List[N]]) = {
-    val nodes = nodesAtLevels.values
-    nodes.flatten.foreach(persistToIndex)
-  }
-
-  private def makeRelationshipsBetween(nodesAtLevels: Map[Int, List[N]], useDistribution: DistributionStrategy): List[Relation] = {
+  protected def makeRelationshipsBetween(nodesAtLevels: Map[Int, List[N]], useDistribution: DistributionStrategy): List[Relation] = {
 
     def between(parentNodes: List[N], childNodes: List[N]) : List[Relation] = {
       val manages = useDistribution match {
@@ -62,14 +44,13 @@ abstract class DatabaseBuilder[N, R](val useDistribution: DistributionStrategy,
     relationships(Nil, level = 1)
   }
 
-  private def persistNodes() =
+  protected def persistNodes() =
     peopleAtLevels.map { case (level, people) =>
                             (level, people.map { persistNode (level, _) })
                   }.withDefaultValue(Nil)
 
   override def build = {
     val people = measure("Persisting People", persistNodes)
-    measure("Indexing People", indexAll, people)
     info("Creating Relationships using %s Distribution strategy", useDistribution)
     val managerReporteePairs = makeRelationshipsBetween(people, useDistribution)
     measure("Persisting Relationships", persistRelationships, managerReporteePairs)
@@ -77,8 +58,6 @@ abstract class DatabaseBuilder[N, R](val useDistribution: DistributionStrategy,
   }
 
   protected def afterBuild = {}
-  protected def createIndex(name: String) : AnyRef
   protected def persistNode(level: Int, name: String): N
-  protected def persistToIndex(node: N): Unit
   protected def persistRelationships(relationships: List[Relation]) : List[R]
 }
