@@ -1,8 +1,7 @@
 package utils.generator
 
-import utils.{NeoDBBatchInserter, NeoDB}
-import DistributionStrategy._
-import org.neo4j.kernel.DefaultFileSystemAbstraction
+import utils.{NeoDB}
+import org.neo4j.unsafe.batchinsert.{BatchInserters}
 
 /**
  * Note: You may need to enable and change the old value 64M of the wrapper.java.maxmemory property
@@ -11,10 +10,20 @@ import org.neo4j.kernel.DefaultFileSystemAbstraction
  * # Maximum Java Heap Size (in MB)
  * wrapper.java.maxmemory=512
  */
-object Neo4J_100KOrgPopulator extends App with NamesGenerator {
+object Neo4J_100KOrgPopulator extends App  {
+
   override def main(args: Array[String]) = {
-      val names = syntheticNames(100000)
-//    val names = naturalNames(100000)
+    val orgSize = 100000
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary/NEO4J_DATA/apiary_100k_l"
+
+    new OrgLevelBuilder(orgSize, 3) {
+      val neo4j = BatchInserters.inserter(basePath + level)
+      val rdbms =  null
+      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 500)
+        .withPeopleAtLevel(1, 10)
+        .withPeopleAtLevel(2, 1000)
+        .withPeopleAtLevel(3, 98990)
+    }.build
 
     /**
      * case 1:
@@ -25,6 +34,11 @@ object Neo4J_100KOrgPopulator extends App with NamesGenerator {
      *  Total => 100000
      */
 
+//     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 500)
+//                      .withPeopleAtLevel(1, 10)
+//                      .withPeopleAtLevel(2, 1000)
+//                      .withPeopleAtLevel(3, 98990)
+//                      .distribute(Contiguous)
 //     val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 500)
 //          .withPeopleAtLevel(1, 10)
 //          .withPeopleAtLevel(2, 1000)

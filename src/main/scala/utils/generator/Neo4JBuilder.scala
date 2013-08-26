@@ -4,7 +4,11 @@ import org.neo4j.graphdb.RelationshipType
 import utils.generator.DistributionStrategy._
 import scala.annotation.tailrec
 
-abstract class Neo4JBuilder[N, R](val peopleAtLevels: Map[Int, List[String]], val managingMax: Int) {
+abstract class Neo4JBuilder[N, R](val useDistribution: DistributionStrategy,
+                                  val peopleAtLevels: Map[Int, List[String]],
+                                  val managingMax: Int)
+  extends Builder {
+
   val maxLevels = peopleAtLevels.size
   type Relation = (N, N)
   protected val PERSON = "Person"
@@ -62,7 +66,7 @@ abstract class Neo4JBuilder[N, R](val peopleAtLevels: Map[Int, List[String]], va
                             (level, people.map { persistNode (level, _) })
                   }.withDefaultValue(Nil)
 
-  def build(useDistribution: DistributionStrategy) = {
+  override def build = {
     val people = measure("Persisting People", persistNodes)
     measure("Indexing People", indexAll, people)
     info("Creating Relationships using %s Distribution strategy", useDistribution)
