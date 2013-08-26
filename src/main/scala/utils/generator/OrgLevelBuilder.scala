@@ -12,12 +12,8 @@ abstract class OrgLevelBuilder(val orgSize: Int, val level: Int, val distributio
   //lazy val names = naturalNames(orgSize)
   val orgDef: OrganizationDef
 
-  override def build = {
-    val orgBuilder = new OrganizationBuilder(orgDef, distribution)
-      with Neo4jBatchBuilderComponent
-      with SQLBuilderComponent {
+  override def build = new OrganizationBuilder(orgDef, distribution) with Neo4jBatchBuilderComponent with SQLBuilderComponent {
       val neo4jBatchBuilder = new Neo4jBatchBuilder(neo4j)
       val sqlBuilder = new SQLBuilder(sessionFactory)
-    }
-  }
+    }.build
 }
