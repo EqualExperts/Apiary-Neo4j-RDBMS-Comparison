@@ -11,9 +11,11 @@ abstract class OrgLevelBuilder(val orgSize: Int, val level: Int, val usingDistri
   val orgDef: OrganizationDef
 
   import SQLDatabase._
-  override def build = new OrganizationBuilder(orgDef, usingDistribution) with Neo4jBatchBuilderComponent with RDBMSBuilderComponent {
-  val neo4jBatchBuilder = new Neo4jBatchBuilder(neo4j)
-  val rdbmsBuilder = new RDBMSBuilder(MySQL -> "hibernate-mysql.cfg.xml",
+
+  override def build =
+    new OrganizationBuilder(orgDef, usingDistribution) with Neo4jBatchBuilderComponent with RDBMSBuilderComponent {
+      val neo4jBatchBuilder = new Neo4jBatchBuilder(neo4j)
+      val rdbmsBuilder = new RDBMSBuilder(MySQL -> "hibernate-mysql.cfg.xml",
                                       MSSQL -> "hibernate-mssql.cfg.xml")
-  }.build
+    }.build
 }
