@@ -67,12 +67,12 @@ public class MainClass {
 	
 	
 	public static void main(String[] args) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.close();
-
+//        Session session = HibernateUtil.getSessionFactory().openSession();
+//        session.close();
+//
         SortedMap<Integer, OrgLevelData> orgDataAtLevel = null;
         try {
-            orgDataAtLevel = compileOrgDataFromResources();
+            orgDataAtLevel = compileOrgDataFromResources(); //Names Generator
         System.out.println("Organisation data compiled");
         } catch (IOException e) {
             System.err.println(" IO Exception : " + e.getMessage());

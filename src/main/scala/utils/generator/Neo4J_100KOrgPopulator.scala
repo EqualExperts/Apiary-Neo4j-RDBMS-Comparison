@@ -3,6 +3,8 @@ package utils.generator
 
 import org.neo4j.unsafe.batchinsert.{BatchInserters}
 import DistributionStrategy._
+import org.hibernate.cfg.AnnotationConfiguration
+
 /**
  * Note: You may need to enable and change the old value 64M of the wrapper.java.maxmemory property
  * in neo4j-wrapper.conf.
@@ -26,7 +28,7 @@ object Neo4J_100KOrgPopulator extends App  {
      */
     new OrgLevelBuilder(orgSize, 3, Contiguous) {
       val neo4j = BatchInserters.inserter(basePath + level)
-      val rdbms =  null
+      val sessionFactory = new AnnotationConfiguration().configure("hibernate-mysql.cfg.xml").buildSessionFactory();
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 500)
         .withPeopleAtLevel(1, 10)
         .withPeopleAtLevel(2, 1000)

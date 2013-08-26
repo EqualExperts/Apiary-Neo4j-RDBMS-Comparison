@@ -1,17 +1,15 @@
 package utils.generator
 
-import utils.{NeoDBBatchInserter, NeoDB}
 import DistributionStrategy._
+import org.neo4j.unsafe.batchinsert.BatchInserters
+import org.hibernate.cfg.AnnotationConfiguration
 
-object Neo4J_1KOrgPopulator extends App with NamesGenerator {
+object Neo4J_1KOrgPopulator extends App {
 
   override def main(args: Array[String]) = {
-//    val names = syntheticNames(1000)
-    val names = naturalNames(1000)
-
     //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
-
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable/NEO4J_DATA/apiary_1k_l3"
+    val orgSize = 1000
 
     /**
      * case 1:
@@ -21,12 +19,16 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
      *  At Level 3 => 800
      *  Total => 1000
      */
-
-    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 100)
-                        .withPeopleAtLevel(1, 3)
-                        .withPeopleAtLevel(2, 10)
-                        .withPeopleAtLevel(3, 987)
-                        .distribute(Contiguous)
+    new OrgLevelBuilder(orgSize, 3, Contiguous) {
+      val neo4j = BatchInserters.inserter(basePath + level)
+      val sessionFactory = new AnnotationConfiguration()
+                            .configure("hibernate-mysql.cfg.xml")
+                            .buildSessionFactory
+      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 100)
+            .withPeopleAtLevel(1, 3)
+            .withPeopleAtLevel(2, 10)
+            .withPeopleAtLevel(3, 987)
+    }.build
 
     /**
      * case 2:
@@ -133,7 +135,5 @@ object Neo4J_1KOrgPopulator extends App with NamesGenerator {
 //      .withPeopleAtLevel(8, 700)
 //      .distribute(Contiguous)
 
-    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1k_l3")
-    builder buildWith neoDb
   }
 }

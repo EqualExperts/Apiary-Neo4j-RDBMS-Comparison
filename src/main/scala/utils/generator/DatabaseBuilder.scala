@@ -4,7 +4,8 @@ import org.neo4j.graphdb.RelationshipType
 import utils.generator.DistributionStrategy._
 import scala.annotation.tailrec
 
-abstract class Neo4JBuilder[N, R](val useDistribution: DistributionStrategy,
+//TODO: Move out Neo4J Specific stuff
+abstract class DatabaseBuilder[N, R](val useDistribution: DistributionStrategy,
                                   val peopleAtLevels: Map[Int, List[String]],
                                   val managingMax: Int)
   extends Builder {

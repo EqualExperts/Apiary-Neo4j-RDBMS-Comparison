@@ -1,14 +1,13 @@
 package utils.generator
 
-import utils.{NeoDBBatchInserter, NeoDB}
-import DistributionStrategy._
-import org.neo4j.kernel.DefaultFileSystemAbstraction
+import utils.generator.DistributionStrategy._
+import org.neo4j.unsafe.batchinsert.BatchInserters
+import org.hibernate.cfg.AnnotationConfiguration
 
-object Neo4J_10KOrgPopulator extends App with NamesGenerator {
+object Neo4J_10KOrgPopulator extends App {
   override def main(args: Array[String]) = {
-    val names = syntheticNames(10000)
-//    val names = naturalNames(10000)
-
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary/NEO4J_DATA/apiary_10k_l7"
+    val orgSize = 10000
     /**
      * case 1:
      * total people in organisation = 10000, with Levels = 3, withPersonManagingMaxOf = 100, directlyReportingToMax = 1
@@ -95,16 +94,21 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
      * At Level 7 => 4830
      * Total => 10000
      */
+    new OrgLevelBuilder(orgSize, 3, Contiguous) {
+      val neo4j = BatchInserters.inserter(basePath + level)
+      val sessionFactory = new AnnotationConfiguration()
+        .configure("hibernate-mysql.cfg.xml")
+        .buildSessionFactory
 
-        val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 20)
-          .withPeopleAtLevel(1, 2)
-          .withPeopleAtLevel(2, 22)
-          .withPeopleAtLevel(3, 300)
-          .withPeopleAtLevel(4, 700)
-          .withPeopleAtLevel(5, 1300)
-          .withPeopleAtLevel(6, 2800)
-          .withPeopleAtLevel(7, 4876)
-//          .distribute(Contiguous)
+      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 20)
+        .withPeopleAtLevel(1, 2)
+        .withPeopleAtLevel(2, 22)
+        .withPeopleAtLevel(3, 300)
+        .withPeopleAtLevel(4, 700)
+        .withPeopleAtLevel(5, 1300)
+        .withPeopleAtLevel(6, 2800)
+        .withPeopleAtLevel(7, 4876)
+    }
 
     /**
      * case 6:
@@ -134,9 +138,5 @@ object Neo4J_10KOrgPopulator extends App with NamesGenerator {
 
 //    val neoDb = NeoDB("http://localhost:7474/db/data")
     //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
-    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_10k_l7")
-
-    builder buildWith neoDb
   }
 }

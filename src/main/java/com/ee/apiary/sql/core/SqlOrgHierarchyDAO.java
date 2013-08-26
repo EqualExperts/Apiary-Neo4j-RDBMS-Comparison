@@ -41,7 +41,7 @@ public class SqlOrgHierarchyDAO {
             int i = 0;
             for (DirectManager directManager : directManagers) {
                 session.save(directManager);
-               // System.out.println("Saving direct manager : " + directManager.getPerson().getName());
+               // System.out.println("Saving direct manager : " + directManager.getManager().getName());
                 if(i % 40 == 0){ //flush a batch of inserts and release memory
                 	session.flush();
                 	session.clear();

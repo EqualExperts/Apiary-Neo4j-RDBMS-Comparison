@@ -1,8 +1,8 @@
 package utils.generator
 
-import utils.{NeoDBBatchInserter, NeoDB}
 import DistributionStrategy._
-import org.neo4j.kernel.DefaultFileSystemAbstraction
+import org.neo4j.unsafe.batchinsert.BatchInserters
+import org.hibernate.cfg.AnnotationConfiguration
 
 /**
  * Note: You may need to enable and change the old value 64M of the wrapper.java.maxmemory property
@@ -55,13 +55,10 @@ import org.neo4j.kernel.DefaultFileSystemAbstraction
  *[Wed Jul 24 11:35:16 IST 2013] [INFO]: Persisting Relationships...Complete. Execution Time 4443(ms) =~ 4.443(secs)
  *[Wed Jul 24 11:35:19 IST 2013] [INFO]: PLEASE DELETE NODE WITH ID 0 MANUALLY!!!
  */
-object Neo4J_1MOrgPopulator extends App with NamesGenerator {
+object Neo4J_1MOrgPopulator extends App {
   override def main(args: Array[String]) = {
-    val names = syntheticNames(1000000)
-//    val names = naturalNames(1000000)
-//    val neoDb = NeoDB("http://localhost:7474/db/data")
-//    val basePath = "D:/rnd/apiary"
-   val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
+   val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable/NEO4J_DATA/apiary_1m_l8"
+   val orgSize = 1000000
 
     /**
      * Case 1 : (Levels = 3, Manages Limit = 1000)
@@ -162,7 +159,10 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
      *  Total => 1000000
      */
 
-    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
+    new OrgLevelBuilder(orgSize, 8, Contiguous) {
+      val neo4j = BatchInserters.inserter(basePath + level)
+      val sessionFactory = new AnnotationConfiguration().configure("hibernate-mysql.cfg.xml").buildSessionFactory();
+      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 50)
       .withPeopleAtLevel(1, 10)
       .withPeopleAtLevel(2, 500)
       .withPeopleAtLevel(3, 25000)
@@ -171,10 +171,6 @@ object Neo4J_1MOrgPopulator extends App with NamesGenerator {
       .withPeopleAtLevel(6, 400000)
 	    .withPeopleAtLevel(7, 200000)
 	    .withPeopleAtLevel(8, 74490)
-      .distribute(Contiguous)
-
-	//val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1m_case6")  
-	  val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_1m_l8")
-    builder buildWith neoDb
+    }
   }
 }

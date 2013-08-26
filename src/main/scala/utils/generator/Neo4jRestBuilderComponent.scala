@@ -18,7 +18,7 @@ trait Neo4jRestBuilderComponent extends Builder {
   }
 
   class Neo4jRestBuilder (val neo4j: GraphDatabaseService)
-  extends Neo4JBuilder[Node, Relationship](distributionStrategy, orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf) {
+  extends DatabaseBuilder[Node, Relationship](distributionStrategy, orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf) {
 
     private val personIndex = createIndex(PERSON)
 

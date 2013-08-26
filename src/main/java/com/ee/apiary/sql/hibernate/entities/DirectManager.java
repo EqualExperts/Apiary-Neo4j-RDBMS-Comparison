@@ -20,38 +20,39 @@ public class DirectManager {
 
     @ManyToOne
     @JoinColumn(name="person_id")
-    private Person person;
+    private Person manager;
 
     @ManyToOne
     @JoinColumn(name="directly_manages")
-    private Person directlyManagedPerson;
+    private Person reportee;
 
-    public DirectManager(Person person, Person directlyManagedPerson) {
-        this.person = person;
-        this.directlyManagedPerson = directlyManagedPerson;
+    public DirectManager(Person manager, Person reportee) {
+        this.manager = manager;
+        this.reportee = reportee;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    @Deprecated
+    private void setId(Long id) {
         this.id = id;
     }
 
-    public Person getPerson() {
-        return person;
+    public Person getManager() {
+        return manager;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setManager(Person manager) {
+        this.manager = manager;
     }
 
-    public Person getDirectlyManagedPerson() {
-        return directlyManagedPerson;
+    public Person getReportee() {
+        return reportee;
     }
 
-    public void setDirectlyManagedPerson(Person directlyManagedPerson) {
-        this.directlyManagedPerson = directlyManagedPerson;
+    public void setReportee(Person reportee) {
+        this.reportee = reportee;
     }
 }

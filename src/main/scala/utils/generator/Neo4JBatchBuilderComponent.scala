@@ -24,7 +24,7 @@ trait Neo4jBatchBuilderComponent extends Builder {
   }
 
   class Neo4jBatchBuilder (val neo4j: BatchInserter)
-  extends Neo4JBuilder[Long, Long](distributionStrategy,
+  extends DatabaseBuilder[Long, Long](distributionStrategy,
       orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf) {
 
     private val indexProvider = new LuceneBatchInserterIndexProvider(neo4j)

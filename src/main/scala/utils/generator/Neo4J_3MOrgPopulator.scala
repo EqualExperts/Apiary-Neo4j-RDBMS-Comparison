@@ -1,12 +1,13 @@
 package utils.generator
 
-import utils.{NeoDBBatchInserter, NeoDB}
 import DistributionStrategy._
+import org.neo4j.unsafe.batchinsert.BatchInserters
+import org.hibernate.cfg.AnnotationConfiguration
 
 object Neo4J_3MOrgPopulator extends App with NamesGenerator {
   override def main(args: Array[String]) = {
-    val names = syntheticNames(3000000)
-    //    val names = naturalNames(3000000)
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary/NEO4J_DATA/apiary_3m_l8"
+    val orgSize = 3000000
 
     /**
      * case 1:
@@ -119,23 +120,18 @@ object Neo4J_3MOrgPopulator extends App with NamesGenerator {
      * At Level 8 => 1934378
      * Total => 3000000
      */
-
-    val builder = OrganizationBuilder(names, withPersonManagingMaxOf = 50)
-      .withPeopleAtLevel(1, 2)
-      .withPeopleAtLevel(2, 50)
-      .withPeopleAtLevel(3, 2500)
-      .withPeopleAtLevel(4, 125000)
-      .withPeopleAtLevel(5, 400000)
-      .withPeopleAtLevel(6, 1000000)
-      .withPeopleAtLevel(7, 1400000)
-      .withPeopleAtLevel(8, 72448)
-      .distribute(Contiguous)
-
-    //    val neoDb = NeoDB("http://localhost:7474/db/data")
-    //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary_Stable"
-    val neoDb = NeoDBBatchInserter(basePath + "/NEO4J_DATA/apiary_3m_l8")
-
-    builder buildWith neoDb
+    new OrgLevelBuilder(orgSize, 8, Contiguous) {
+      val neo4j = BatchInserters.inserter(basePath + level)
+      val sessionFactory = new AnnotationConfiguration().configure("hibernate-mysql.cfg.xml").buildSessionFactory();
+      val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 50)
+        .withPeopleAtLevel(1, 2)
+        .withPeopleAtLevel(2, 50)
+        .withPeopleAtLevel(3, 2500)
+        .withPeopleAtLevel(4, 125000)
+        .withPeopleAtLevel(5, 400000)
+        .withPeopleAtLevel(6, 1000000)
+        .withPeopleAtLevel(7, 1400000)
+        .withPeopleAtLevel(8, 72448)
+    }
   }
 }
