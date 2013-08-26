@@ -48,7 +48,7 @@ trait SQLBuilderComponent extends Builder {
       person
     }
 
-    def flushSessionIfRequired =
+    private def flushSessionIfRequired =
       if (records % 40 == 0) {
         session.flush
         session.clear
@@ -64,6 +64,7 @@ trait SQLBuilderComponent extends Builder {
       relationships map { case(manager, reportee) =>
         val relationship = new DirectManager(manager, reportee)
         session.save(relationship)
+        flushSessionIfRequired
         relationship
       }
     }
