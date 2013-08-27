@@ -1,6 +1,7 @@
 package utils.generator
 
-import org.neo4j.graphdb.{Relationship, Node, GraphDatabaseService}
+import org.neo4j.graphdb.{Relationship, Node}
+import org.neo4j.rest.graphdb.RestGraphDatabase
 
 trait Neo4jRestBuilderComponent extends Builder {
   self: OrganizationBuilder =>
@@ -11,13 +12,16 @@ trait Neo4jRestBuilderComponent extends Builder {
     super.build
     info("Building using Neo4j Rest Builder")
     neo4jRestBuilder.build
+    neo4jRestBuilder.shutdown
   }
 
-  class Neo4jRestBuilder(val neo4j: GraphDatabaseService)
-    extends Neo4jBuilder[Node, Relationship](distributionStrategy, orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf) {
+  class Neo4jRestBuilder(val neo4jUrl: String)
+  extends Neo4jBuilder[Node, Relationship](distributionStrategy,
+                             orgDef.peopleWithLevels,
+                             orgDef.withPersonManagingMaxOf) {
 
+    val neo4j = new RestGraphDatabase(neo4jUrl)
     private val personIndex = createIndex(PERSON)
-
     protected override def createIndex(name: String) = neo4j.index.forNodes(name)
 
     protected override def persistNode(level: Int, name: String): Node = {
@@ -35,7 +39,6 @@ trait Neo4jRestBuilderComponent extends Builder {
         case (manager, reportee) => manager.createRelationshipTo(reportee, DIRECTLY_MANAGES)
       }
 
-
+    def shutdown = neo4j.shutdown
   }
-
 }

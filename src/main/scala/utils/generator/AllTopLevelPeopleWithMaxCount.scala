@@ -20,7 +20,7 @@ trait AllTopLevelPeopleWithMaxCount extends EssentialQueries {
 //    val orgSizes = List("1k")
 //    val fileUrls = orgSizes map { basePath + "/NEO4J_DATA/apiary_" + _ + "_l" }
     val fileUrls = orgSizes map { basePath + _ + "_l" }
-    val results = fileUrls flatMap { fileUrl =>
+    fileUrls flatMap { fileUrl =>
       (levels flatMap { level =>
         val completeUrl = fileUrl + level
         info("Finding Person With Max Reportee for ==> %s\n", completeUrl)
@@ -28,6 +28,5 @@ trait AllTopLevelPeopleWithMaxCount extends EssentialQueries {
       }) toList
     }
 //    info("RESULTS:\n%s", results mkString "\n")
-    results
   }
 }

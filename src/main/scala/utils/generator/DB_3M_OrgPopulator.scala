@@ -121,7 +121,7 @@ object DB_3M_OrgPopulator extends App with NamesGenerator {
      * Total => 3000000
      */
     new OrgLevelBuilder(orgSize, 8, Contiguous) {
-      val neo4j = BatchInserters.inserter(basePath + level)
+      val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 50)
         .withPeopleAtLevel(1, 2)
         .withPeopleAtLevel(2, 50)

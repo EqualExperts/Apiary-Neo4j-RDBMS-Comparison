@@ -94,7 +94,7 @@ object DB_10K_OrgPopulator extends App {
      * Total => 10000
      */
     new OrgLevelBuilder(orgSize, 3, Contiguous) {
-      val neo4j = BatchInserters.inserter(basePath + level)
+      val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 20)
         .withPeopleAtLevel(1, 2)
         .withPeopleAtLevel(2, 22)

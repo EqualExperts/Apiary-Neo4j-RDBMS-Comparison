@@ -19,7 +19,7 @@ object DB_1K_OrgPopulator extends App {
      *  Total => 1000
      */
     new OrgLevelBuilder(orgSize, 3, Contiguous) {
-      val neo4j = BatchInserters.inserter(basePath + level)
+      val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 100)
             .withPeopleAtLevel(1, 3)
             .withPeopleAtLevel(2, 10)
@@ -37,7 +37,7 @@ object DB_1K_OrgPopulator extends App {
      */
 
     new OrgLevelBuilder(orgSize, 4, Contiguous) {
-      val neo4j = BatchInserters.inserter(basePath + level)
+      val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 10)
         .withPeopleAtLevel(1, 3)
         .withPeopleAtLevel(2, 10)
@@ -58,7 +58,7 @@ object DB_1K_OrgPopulator extends App {
      */
 
     new OrgLevelBuilder(orgSize, 5, Contiguous) {
-      val neo4j = BatchInserters.inserter(basePath + level)
+      val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 5)
       .withPeopleAtLevel(1, 3)
       .withPeopleAtLevel(2, 10)
@@ -81,7 +81,7 @@ object DB_1K_OrgPopulator extends App {
      */
 
     new OrgLevelBuilder(orgSize, 6, Contiguous) {
-      val neo4j = BatchInserters.inserter(basePath + level)
+      val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 10)
       .withPeopleAtLevel(1, 2)
       .withPeopleAtLevel(2, 10)
@@ -105,7 +105,7 @@ object DB_1K_OrgPopulator extends App {
 
 
     new OrgLevelBuilder(orgSize, 7, Contiguous) {
-      val neo4j = BatchInserters.inserter(basePath + level)
+      val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 5)
       .withPeopleAtLevel(1, 2)
       .withPeopleAtLevel(2, 5)
@@ -130,7 +130,7 @@ object DB_1K_OrgPopulator extends App {
 
 
     new OrgLevelBuilder(orgSize, 8, Contiguous) {
-      val neo4j = BatchInserters.inserter(basePath + level)
+      val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 5)
       .withPeopleAtLevel(1, 1)
       .withPeopleAtLevel(2, 3)

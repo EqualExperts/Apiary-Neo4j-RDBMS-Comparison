@@ -1,6 +1,6 @@
 package utils.generator
 
-import org.neo4j.unsafe.batchinsert.BatchInserter
+import org.neo4j.unsafe.batchinsert.{BatchInserters, BatchInserter}
 import org.neo4j.index.lucene.unsafe.batchinsert.LuceneBatchInserterIndexProvider
 import org.neo4j.helpers.collection.MapUtil
 import java.util
@@ -19,14 +19,14 @@ trait Neo4jBatchBuilderComponent extends Builder {
       info("Building using Neo4j Batch Builder")
       neo4jBatchBuilder.build
     } finally {
-      neo4jBatchBuilder.shutdownIndex
+      neo4jBatchBuilder.shutdown
     }
   }
 
-  class Neo4jBatchBuilder(val neo4j: BatchInserter)
-    extends Neo4jBuilder[Long, Long](distributionStrategy, orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf)
-    with EssentialQueries {
+  class Neo4jBatchBuilder(val storeDir: String)
+    extends Neo4jBuilder[Long, Long](distributionStrategy, orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf) {
 
+    private val neo4j = BatchInserters.inserter(storeDir)
     private val indexProvider = new LuceneBatchInserterIndexProvider(neo4j)
     private val personIndex = createIndex(PERSON)
 
@@ -36,9 +36,10 @@ trait Neo4jBatchBuilderComponent extends Builder {
       personIndex
     }
 
-    def shutdownIndex = {
-      info("Shutting down index for %s", getClass.getSimpleName)
+    def shutdown = {
+      info("Shutting down for %s", getClass.getSimpleName)
       indexProvider.shutdown
+      neo4j.shutdown
     }
 
     import collection.JavaConverters._
@@ -65,7 +66,5 @@ trait Neo4jBatchBuilderComponent extends Builder {
           val properties = Map[String, AnyRef]().asJava
           neo4j.createRelationship(manager, reportee, DIRECTLY_MANAGES, properties)
       }
-
   }
-
 }
