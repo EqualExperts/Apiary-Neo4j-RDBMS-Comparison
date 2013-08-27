@@ -16,9 +16,8 @@
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
         <property name="hibernate.jdbc.batch_size">40</property>
 
-        <!--<property name="hibernate.hbm2ddl.auto">create</property>-->
-        <mapping class="com.ee.apiary.sql.hibernate.entities.Person"/>
-        <mapping class="com.ee.apiary.sql.hibernate.entities.DirectManager"/>
+        <mapping class="domain.Person"/>
+        <mapping class="domain.DirectManager"/>
 
     </session-factory>
 </hibernate-configuration>

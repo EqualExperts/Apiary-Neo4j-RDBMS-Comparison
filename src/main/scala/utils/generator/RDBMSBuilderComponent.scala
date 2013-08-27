@@ -1,8 +1,8 @@
 package utils.generator
 
-import com.ee.apiary.sql.hibernate.entities.{Person, DirectManager}
 import org.hibernate.SessionFactory
 import org.hibernate.cfg.AnnotationConfiguration
+import domain.{DirectManager, Person}
 
 object SQLDatabase extends Enumeration {
   type SQLDatabase = Value
@@ -12,7 +12,7 @@ object SQLDatabase extends Enumeration {
 trait RDBMSBuilderComponent extends Builder {
   self: OrganizationBuilder =>
 
-  val rdbmsBuilder : RDBMSBuilder
+  val rdbmsBuilder: RDBMSBuilder
 
   override def build = {
     super.build
@@ -24,10 +24,11 @@ trait RDBMSBuilderComponent extends Builder {
 
   class RDBMSBuilder(databases: (SQLDatabase, String)*) extends Builder {
     override def build =
-      databases map { case (database, hibernateConfig) =>
-       info("Building for %s", database)
-       val sessionFactory = new AnnotationConfiguration().configure(hibernateConfig).buildSessionFactory
-       withinTxn(new SQLBuilder(sessionFactory))
+      databases map {
+        case (database, hibernateConfig) =>
+          info("Building for %s", database)
+          val sessionFactory = new AnnotationConfiguration().configure(hibernateConfig).buildSessionFactory
+          withinTxn(new SQLBuilder(sessionFactory))
       }
 
     private def withinTxn(sqlBuilder: SQLBuilder) = {
@@ -36,15 +37,15 @@ trait RDBMSBuilderComponent extends Builder {
         sqlBuilder.build
         transaction.commit
       } catch {
-        case e : Throwable => transaction.rollback
+        case e: Throwable => transaction.rollback
       } finally {
         sqlBuilder.shutdown
       }
     }
   }
 
-  private class SQLBuilder (val sessionFactory: SessionFactory)
-  extends DatabaseBuilder[Person, DirectManager](distributionStrategy, orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf) {
+  private class SQLBuilder(val sessionFactory: SessionFactory)
+    extends DatabaseBuilder[Person, DirectManager](distributionStrategy, orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf) {
     var records = 0
     val session = sessionFactory.openSession
     val peopleWithLevels = orgDef.peopleWithLevels
@@ -73,12 +74,14 @@ trait RDBMSBuilderComponent extends Builder {
       else records += 1
 
     protected def persistRelationships(relationships: List[Relation]): List[DirectManager] = {
-      relationships map { case(manager, reportee) =>
-        val relationship = new DirectManager(manager, reportee)
-        session.save(relationship)
-        flushSessionIfRequired
-        relationship
+      relationships map {
+        case (manager, reportee) =>
+          val relationship = new DirectManager(manager, reportee)
+          session.save(relationship)
+          flushSessionIfRequired
+          relationship
       }
     }
   }
+
 }

@@ -1,29 +1,23 @@
-package com.ee.apiary.sql.hibernate.entities;
+package domain;
 
 
 import javax.persistence.*;
 
-/**
- * Created with IntelliJ IDEA.
- * User: anuj
- * Date: 26/6/13
- * Time: 4:39 PM
- * To change this template use File | Settings | File Templates.
- */
+
 @Entity
-@Table(name="person")
+@Table(name = "person")
 
 public class Person {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="level")
+    @Column(name = "level")
     private Integer level;
 
     public Person(String name, Integer level) {
@@ -35,6 +29,7 @@ public class Person {
         return id;
     }
 
+    @Deprecated
     public void setId(Long id) {
         this.id = id;
     }
@@ -43,15 +38,17 @@ public class Person {
         return name;
     }
 
+    @Deprecated
     public void setName(String name) {
         this.name = name;
     }
 
-	public Integer getLevel() {
-		return level;
-	}
+    public Integer getLevel() {
+        return level;
+    }
 
-	public void setLevel(Integer level) {
-		this.level = level;
-	}
+    @Deprecated
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 }
