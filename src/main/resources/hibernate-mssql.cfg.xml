@@ -4,22 +4,21 @@
 <hibernate-configuration>
 
 
-
     <session-factory>
         <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
         <property name="hibernate.connection.username">apiary</property>
-       <property name="hibernate.connection.password">apiary</property>
-        <property name="hibernate.connection.url">jdbc:sqlserver://127.0.0.1\MSSQLSERVER:1433;databaseName=apiary_1m</property>
+        <property name="hibernate.connection.password">apiary</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://127.0.0.1\MSSQLSERVER:1433;databaseName=apiary_1m
+        </property>
         <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
         <!--<property name="hibernate.default_schema">apiary_1k</property>-->
         <property name="current_session_context_class">thread</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-				<property name="hibernate.jdbc.batch_size">40</property>
-        
+        <property name="hibernate.jdbc.batch_size">40</property>
+
         <!--<property name="hibernate.hbm2ddl.auto">create</property>-->
         <mapping class="com.ee.apiary.sql.hibernate.entities.Person"/>
         <mapping class="com.ee.apiary.sql.hibernate.entities.DirectManager"/>
-        <mapping class="com.ee.apiary.sql.hibernate.entities.IndirectManager"/>
-        
-        </session-factory>
+
+    </session-factory>
 </hibernate-configuration>

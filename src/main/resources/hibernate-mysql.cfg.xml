@@ -4,7 +4,6 @@
 <hibernate-configuration>
 
 
-
     <session-factory>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.username">root</property>
@@ -15,12 +14,11 @@
         <property name="hibernate.default_schema">apiary_100k</property>
         <property name="current_session_context_class">thread</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-				<property name="hibernate.jdbc.batch_size">40</property>
-        
+        <property name="hibernate.jdbc.batch_size">40</property>
+
         <!--<property name="hibernate.hbm2ddl.auto">create</property>-->
         <mapping class="com.ee.apiary.sql.hibernate.entities.Person"/>
         <mapping class="com.ee.apiary.sql.hibernate.entities.DirectManager"/>
-        <mapping class="com.ee.apiary.sql.hibernate.entities.IndirectManager"/>
-        
-        </session-factory>
+
+    </session-factory>
 </hibernate-configuration>
