@@ -30,10 +30,10 @@ abstract class Neo4jBuilder[N, R](override val useDistribution: DistributionStra
     info("Creating Relationships using %s Distribution strategy", useDistribution)
     val managerReporteePairs = makeRelationshipsBetween(people, useDistribution)
     measure("Persisting Relationships", persistRelationships, managerReporteePairs)
-    afterBuild
   }
 
-  protected def createIndex(name: String) : AnyRef
+  protected def createIndex(name: String): AnyRef
+
   protected def persistToIndex(node: N): Unit
 
 }

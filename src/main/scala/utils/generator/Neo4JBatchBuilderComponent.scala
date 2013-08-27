@@ -11,21 +11,21 @@ trait Neo4jBatchBuilderComponent extends Builder {
   val neo4jBatchBuilder: Neo4jBatchBuilder
 
   override def build = {
-//    Runtime.getRuntime.addShutdownHook(new Thread {
-//      neo4jBatchBuilder.shutdown
-//    })
+    //    Runtime.getRuntime.addShutdownHook(new Thread {
+    //      neo4jBatchBuilder.shutdown
+    //    })
     try {
       super.build
       info("Building using Neo4j Batch Builder")
       neo4jBatchBuilder.build
     } finally {
-      neo4jBatchBuilder.shutdown
+      neo4jBatchBuilder.shutdownIndex
     }
   }
 
-  class Neo4jBatchBuilder (val neo4j: BatchInserter)
-  extends Neo4jBuilder[Long, Long](distributionStrategy,
-      orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf) {
+  class Neo4jBatchBuilder(val neo4j: BatchInserter)
+    extends Neo4jBuilder[Long, Long](distributionStrategy, orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf)
+    with EssentialQueries {
 
     private val indexProvider = new LuceneBatchInserterIndexProvider(neo4j)
     private val personIndex = createIndex(PERSON)
@@ -36,9 +36,13 @@ trait Neo4jBatchBuilderComponent extends Builder {
       personIndex
     }
 
-    private def shutdownIndex = indexProvider.shutdown
+    def shutdownIndex = {
+      info("Shutting down index for %s", getClass.getSimpleName)
+      indexProvider.shutdown
+    }
 
     import collection.JavaConverters._
+
     protected override def persistNode(level: Int, name: String): Long = {
       val properties = Map[String, AnyRef]().asJava
       val node = neo4j.createNode(properties)
@@ -56,20 +60,12 @@ trait Neo4jBatchBuilderComponent extends Builder {
     }
 
     protected override def persistRelationships(relationships: List[Relation]) =
-      relationships map { case (manager, reportee) =>
-        val properties = Map[String, AnyRef]().asJava
-        neo4j.createRelationship(manager, reportee, DIRECTLY_MANAGES, properties)
+      relationships map {
+        case (manager, reportee) =>
+          val properties = Map[String, AnyRef]().asJava
+          neo4j.createRelationship(manager, reportee, DIRECTLY_MANAGES, properties)
       }
 
-    def shutdown = {
-      info("Shutting down %s", getClass.getSimpleName)
-      shutdownIndex
-      neo4j.shutdown
-    }
-
-    protected override def afterBuild = {
-      shutdown
-      info("PLEASE DELETE NODE WITH ID 0 MANUALLY!!!")
-    }
   }
+
 }

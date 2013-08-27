@@ -8,17 +8,13 @@ trait Neo4jRestBuilderComponent extends Builder {
   val neo4jRestBuilder: Neo4jRestBuilder
 
   override def build = {
-    try {
-      super.build
-      info("Building using Neo4j Rest Builder")
-      neo4jRestBuilder.build
-    } finally {
-      neo4jRestBuilder.shutdown
-    }
+    super.build
+    info("Building using Neo4j Rest Builder")
+    neo4jRestBuilder.build
   }
 
-  class Neo4jRestBuilder (val neo4j: GraphDatabaseService)
-  extends Neo4jBuilder[Node, Relationship](distributionStrategy, orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf) {
+  class Neo4jRestBuilder(val neo4j: GraphDatabaseService)
+    extends Neo4jBuilder[Node, Relationship](distributionStrategy, orgDef.peopleWithLevels, orgDef.withPersonManagingMaxOf) {
 
     private val personIndex = createIndex(PERSON)
 
@@ -34,12 +30,12 @@ trait Neo4jRestBuilderComponent extends Builder {
 
     protected override def persistToIndex(node: Node) = personIndex.add(node, PERSON_NAME, node.getProperty(PERSON_NAME))
 
-    protected override def persistRelationships(relationships: List[Relation])  =
-      relationships map { case (manager, reportee) => manager.createRelationshipTo(reportee, DIRECTLY_MANAGES) }
+    protected override def persistRelationships(relationships: List[Relation]) =
+      relationships map {
+        case (manager, reportee) => manager.createRelationshipTo(reportee, DIRECTLY_MANAGES)
+      }
 
-    def shutdown = {
-      info("Shutting down %s", getClass.getSimpleName)
-      neo4j.shutdown
-    }
+
   }
+
 }
