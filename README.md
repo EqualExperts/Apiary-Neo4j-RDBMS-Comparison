@@ -1,5 +1,4 @@
-##Apiary - Neo4j-RDBMS Comparison <img src="http://www.equalexperts.com/asset/images/EE-Labs-Logo-200x121px.jpg" height="90" width="120" align="right">
-
+##Apiary - Neo4j-RDBMS Comparison <a href="http://www.eelabs.co.uk/projects/tayra/"><img src="http://www.equalexperts.com/asset/images/EE-Labs-Logo-200x121px.jpg" height="90" width="120" align="right"></a>
 
 ###What is Apiary?
 The application aims at graphically representing an organization that contains different groups/units of employees. 
