@@ -1,7 +1,7 @@
-Apiary - Neo4j-RDBMS Comparison
-===============================
+##Apiary - Neo4j-RDBMS Comparison <img src="http://www.equalexperts.com/asset/images/EE-Labs-Logo-200x121px.jpg" height="90" width="120" align="right">
 
-##What is Apiary?
+
+###What is Apiary?
 The application aims at graphically representing an organization that contains different groups/units of employees. 
 Metaphorically, a group/unit can be viewed as a beehive and an employee as a bee and hence the whole organization 
 becomes an apiary - hence the application name.  
@@ -12,12 +12,12 @@ Typical Usecases
 	For example, in a IT Services company or a captive center,  Adam may be reporting directly to Jack Ass, but for his project work, he would be functionally reporting to Jennifer and Harry as they are responsible for Cash Management and Corporate Banking.
 	As the number of employees increase, so would the relationships and cross-functional reporting, eventually developing into a complex model that is non-hierarchical.
 
-## De-Risking
+### De-Risking
 Before jumping straight in to development of such an app, we asked the question that enterprise folks would ask - 
 "what makes it a case for Neo4J? and can you prove it?" Basically de-risking and making a case for management buy in.  
 
 
-## Build Info
+### Build Info
 We are using SBT 0.12.3 for our builds.  You can download it from [here](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html)
 Please do not checkin Eclipse or Intellij or any IDE specific files.  For Idea or Eclipse they
 can be generated using
