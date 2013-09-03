@@ -14,6 +14,7 @@ Typical Usecases
 ### De-Risking
 Before jumping straight in to development of such an app, we asked the question that enterprise folks would ask - 
 "what makes it a case for Neo4J? and can you prove it?" Basically de-risking and making a case for management buy in.  
+Hence this comparison.
 
 
 ### Build Info
