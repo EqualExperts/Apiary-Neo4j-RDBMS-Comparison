@@ -1,13 +1,12 @@
 package utils.generator
 
 import DistributionStrategy._
-import org.neo4j.unsafe.batchinsert.BatchInserters
 
 object DB_1K_OrgPopulator extends App {
 
   override def main(args: Array[String]) = {
     //	  val basePath = "D:/rnd/apiary"
-    val basePath = "/Users/dhavald/Documents/workspace/Apiary/NEO4J_DATA/apiary_1k_l3"
+    val basePath = "/Users/dhavald/Documents/workspace/Apiary-Neo4j-RDBMS-Comparison/NEO4J_DATA/apiary_1k_l"
     val orgSize = 1000
 
     /**
@@ -35,7 +34,7 @@ object DB_1K_OrgPopulator extends App {
      * At Level 4 => 740
      * Total => 1000
      */
-
+    /*
     new OrgLevelBuilder(orgSize, 4, Contiguous) {
       val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 10)
@@ -141,5 +140,7 @@ object DB_1K_OrgPopulator extends App {
       .withPeopleAtLevel(7, 200)
       .withPeopleAtLevel(8, 700)
     }.build
+
+    */
   }
 }

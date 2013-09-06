@@ -3,6 +3,9 @@ package utils
 import java.util.Date
 
 package object generator {
+  private val id = new java.util.concurrent.atomic.AtomicLong(1)
+  def nextId = id.getAndIncrement
+
   def logToConsole(logLevel: String, text: String, xs: Any*) =
     printf("[" + new Date + "] [" + logLevel + "]: " + text + "\n", xs: _*)
 

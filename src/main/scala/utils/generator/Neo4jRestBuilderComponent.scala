@@ -26,6 +26,7 @@ trait Neo4jRestBuilderComponent extends Builder {
 
     protected override def persistNode(level: Int, name: String): Node = {
       val personNode = neo4j.createNode()
+      personNode.setProperty("id", nextId)
       personNode.setProperty(PERSON_NAME, name)
       personNode.setProperty("level", level)
       personNode.setProperty("type", PERSON)
