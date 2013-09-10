@@ -48,7 +48,7 @@ trait Neo4jBatchBuilderComponent extends Builder {
       val properties = Map[String, AnyRef]().asJava
       val node = neo4j.createNode(properties)
       neo4j.setNodeProperty(node, PERSON_NAME, name)
-      neo4j.setNodeProperty(node, "id", nextId)
+      neo4j.setNodeProperty(node, "sid", nextId)
       neo4j.setNodeProperty(node, "level", level)
       neo4j.setNodeProperty(node, "type", PERSON)
       node
