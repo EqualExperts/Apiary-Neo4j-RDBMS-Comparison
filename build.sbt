@@ -22,7 +22,7 @@ resolvers += "jboss" at "http://repository.jboss.org/maven2"
 libraryDependencies ++= Seq(
     "org.neo4j" % "neo4j" % "1.9",
     "org.neo4j" % "neo4j-rest-graphdb" % "1.9",
-    "org.specs2" %% "specs2" % "2.1-SNAPSHOT" % "test",
+    "org.specs2" % "specs2_2.10" % "2.2" % "test",
     "mysql" % "mysql-connector-java" % "5.1.9",
     "org.hibernate" % "hibernate-core" % "3.5.5-Final",
     "org.hibernate.javax.persistence" % "hibernate-jpa-2.0-api" % "1.0.1.Final",
