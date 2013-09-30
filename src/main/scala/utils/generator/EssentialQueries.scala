@@ -1,18 +1,17 @@
 package utils.generator
 
-import utils.NeoDB
+import utils.{Mode, NeoDB}
 import org.neo4j.cypher.EntityNotFoundException
+import utils.Mode.Mode
+import utils.Mode.Mode
 
 trait EssentialQueries extends CypherQueryExecutor {
-  def deleteRefNodeIfPresent(implicit neo4j: NeoDB) = {
-    val deleteRefNodeCql =
-      """
-        |start n = node(0)
-        |delete n;
-      """.stripMargin
 
+  def deleteRefNodeIfPresent(implicit neo4j: NeoDB) = {
     try {
-      execute(deleteRefNodeCql)
+      neo4j.usingTx { neo4j =>
+        neo4j.getNodeById(0).delete
+      }
       info("Deleted Reference Node")
     } catch {
       case e: EntityNotFoundException => info("No Reference Node to Delete")
