@@ -6,18 +6,22 @@ import utils.{Mode, NeoDB}
 abstract class OrgLevelBuilder(val orgSize: Int, val level: Int, val usingDistribution: DistributionStrategy)
   extends Builder with NamesGenerator with EssentialQueries {
   val neo4jStoreDir: String
-  lazy val names = syntheticNames(orgSize)
-  //lazy val names = naturalNames(orgSize)
+  //lazy val names = syntheticNames(orgSize)
+  lazy val names = naturalNames(orgSize)
   val orgDef: OrganizationDef
 
   import SQLDatabase._
 
   override def build = {
-    val builder = new OrganizationBuilder(orgDef, usingDistribution) with Neo4jBatchBuilderComponent with RDBMSBuilderComponent {
+  /*  val builder = new OrganizationBuilder(orgDef, usingDistribution) with Neo4jBatchBuilderComponent with RDBMSBuilderComponent {
       val neo4jBatchBuilder = new Neo4jBatchBuilder(neo4jStoreDir)
       val rdbmsBuilder = new RDBMSBuilder(MySQL -> "hibernate-mysql.cfg.xml",
                                           MSSQL -> "hibernate-mssql.cfg.xml")
-    }
+  }
+  */
+  val builder = new OrganizationBuilder(orgDef, usingDistribution) with Neo4jRestBuilderComponent {
+    val neo4jRestBuilder = new Neo4jRestBuilder(neo4jStoreDir)
+  }
     builder.build
     deleteNeo4jRefNode
   }

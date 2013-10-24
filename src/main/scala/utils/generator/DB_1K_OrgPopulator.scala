@@ -17,6 +17,7 @@ object DB_1K_OrgPopulator extends App {
      *  At Level 3 => 800
      *  Total => 1000
      */
+/*
     new OrgLevelBuilder(orgSize, 3, Contiguous) {
       val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 100)
@@ -24,6 +25,7 @@ object DB_1K_OrgPopulator extends App {
             .withPeopleAtLevel(2, 10)
             .withPeopleAtLevel(3, 987)
     }.build
+*/
 
     /**
      * case 2:
@@ -34,7 +36,8 @@ object DB_1K_OrgPopulator extends App {
      * At Level 4 => 740
      * Total => 1000
      */
-    /*
+
+/*
     new OrgLevelBuilder(orgSize, 4, Contiguous) {
       val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 10)
@@ -43,6 +46,7 @@ object DB_1K_OrgPopulator extends App {
         .withPeopleAtLevel(3, 100)
         .withPeopleAtLevel(4, 887)
     }.build
+*/
 
     /**
      * case 3:
@@ -57,7 +61,8 @@ object DB_1K_OrgPopulator extends App {
      */
 
     new OrgLevelBuilder(orgSize, 5, Contiguous) {
-      val neo4jStoreDir = basePath + level
+      //val neo4jStoreDir = basePath + level
+      val neo4jStoreDir = "http://<ip of DB server>:<port of DB env.>/db/data"
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 5)
       .withPeopleAtLevel(1, 3)
       .withPeopleAtLevel(2, 10)
@@ -79,6 +84,7 @@ object DB_1K_OrgPopulator extends App {
      * Total => 1000
      */
 
+/*
     new OrgLevelBuilder(orgSize, 6, Contiguous) {
       val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 10)
@@ -89,6 +95,7 @@ object DB_1K_OrgPopulator extends App {
       .withPeopleAtLevel(5, 300)
       .withPeopleAtLevel(6, 513)
     }.build
+*/
 
 
     /**
@@ -103,6 +110,7 @@ object DB_1K_OrgPopulator extends App {
      * */
 
 
+/*
     new OrgLevelBuilder(orgSize, 7, Contiguous) {
       val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 5)
@@ -114,6 +122,7 @@ object DB_1K_OrgPopulator extends App {
       .withPeopleAtLevel(6, 280)
       .withPeopleAtLevel(7, 483)
     }.build
+*/
 
     /**
      * Case 6 : (Levels = 8, Manages Limit = 4)
@@ -128,6 +137,7 @@ object DB_1K_OrgPopulator extends App {
      * */
 
 
+/*
     new OrgLevelBuilder(orgSize, 8, Contiguous) {
       val neo4jStoreDir = basePath + level
       val orgDef = OrganizationDef(names, withPersonManagingMaxOf = 5)
@@ -140,7 +150,7 @@ object DB_1K_OrgPopulator extends App {
       .withPeopleAtLevel(7, 200)
       .withPeopleAtLevel(8, 700)
     }.build
+*/
 
-    */
   }
 }
