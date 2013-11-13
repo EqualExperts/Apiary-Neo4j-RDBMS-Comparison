@@ -29,7 +29,8 @@ abstract class OrgLevelBuilder(val orgSize: Int, val level: Int, val usingDistri
   private def deleteNeo4jRefNode = {
     info("Opening connection to Neo4j DB at : %s to delete reference node", neo4jStoreDir)
     import Mode._
-    implicit val neo4jDatabase = NeoDB(neo4jStoreDir, Embedded)
+    //implicit val neo4jDatabase = NeoDB(neo4jStoreDir, Embedded)
+    implicit val neo4jDatabase = NeoDB(neo4jStoreDir, Server)
     deleteRefNodeIfPresent
     info("Shutting Neo4j DB at : %s after deleting reference node", neo4jStoreDir)
     neo4jDatabase.shutdown
