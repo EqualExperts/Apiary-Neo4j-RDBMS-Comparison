@@ -20,7 +20,7 @@ So this project, really is about that comparison and the white-paper that has re
 
 
 ### Report
-You can download the White-paper/report from [here](https://github.com/EqualExperts/Apiary-Neo4j-RDBMS-Comparison/blob/master/reports/Neo4j-MySql-MsSql-Comparison-Final.pdf)
+You can download the White-paper/report from a href="https://github.com/EqualExperts/Apiary-Neo4j-RDBMS-Comparison/blob/master/reports/Neo4j-MySql-MsSql-Comparison-Final.pdf">here</a>
 
 ### Build Info
 We are using SBT 0.12.3 for our builds.  You can download it from [here](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html)
