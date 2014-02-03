@@ -16,6 +16,11 @@ Before jumping straight in to development of such an app, we asked the question 
 "what makes it a case for Neo4J? and can you prove it?" Basically de-risking and making a case for management buy in. 
 Further, its more about convincing ourselves as well and hence this comparison.
 
+So this project, really is about that comparison and the white-paper that has resulted from it.  It is not the actual Apiary Project.
+
+
+### Report
+You can download the White-paper/report from [here](https://github.com/EqualExperts/Apiary-Neo4j-RDBMS-Comparison/blob/master/reports/Neo4j-MySql-MsSql-Comparison-Final.pdf)
 
 ### Build Info
 We are using SBT 0.12.3 for our builds.  You can download it from [here](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html)
